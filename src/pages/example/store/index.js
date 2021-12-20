@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { get } from '@request'
 
 export const useCounterStore = defineStore('counter', {
   state: () => {
@@ -10,5 +11,8 @@ export const useCounterStore = defineStore('counter', {
     increment() {
       this.count++
     },
+    getData() {
+      get()
+    }
   },
 })
