@@ -81,6 +81,11 @@ module.exports = {
           allowFirstLine: true,
         },
       },
-    ]
+    ],
+    'vue/singleline-html-element-content-newline': ['error', {
+      'ignoreWhenNoAttributes': false,
+      'ignoreWhenEmpty': false,
+      'ignores': ['pre', 'textarea']
+    }],
   }
 }
