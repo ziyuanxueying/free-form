@@ -1,29 +1,23 @@
 import { parse } from 'url'
-import { thrift } from '@thrift-api/request'
-import thriftVersion from './thriftVersion'
-import injects from './injects/index'
-import { mapTheVerison } from '@utils'
 const SSO_ERR_STATUS = 401
 const AUTH_ERR_CODE = 403
 
-const thriftlessInstance = thrift.create({
-  baseURL: '/api/thriftless',
-  versionMap: thriftVersion
-})
 
-thriftlessInstance.interceptors.request.use(config => {
-  const paths = config.url.split('/').filter(Boolean)
-  const injectKey = paths.slice(-2).join('/')
-  const injectVal = injects[injectKey]
-  if (injectVal) {
-    config.body = Object.assign(
-      {}, 
-      config.body, 
-      { $inject: injectVal }
-    )
+function convertObjtoUrlSearch(data) {
+  var _result = []
+  for (var key in data) {
+    var value = data[key]
+    if (value.constructor == Array) {
+      value.forEach(function(_value) {
+        _result.push(key + "=" + _value)
+      })
+    } else {
+      _result.push(key + '=' + value)
+    }
   }
-  return config
-})
+  return _result.join('&')
+}
+
 
 const responseInterceptor = async(res) => {
   if (res.status >= 300) {
@@ -37,7 +31,6 @@ const responseInterceptor = async(res) => {
   }
   const result = await res.json()
   if (result.status === SSO_ERR_STATUS) { // 这是 SSO 的拦截处理
-
     throw new Error('认证失败，请刷新页面！')
   }
   if (result.code === AUTH_ERR_CODE) { // 这是鉴权的拦截处理
@@ -47,10 +40,7 @@ const responseInterceptor = async(res) => {
   return result
 }
 
-thriftlessInstance.interceptors.response.use(responseInterceptor)
-
-const getInstance = (...args) => fetch(...args).then(responseInterceptor)
-
+const getInstance = (url, params) => fetch(`${url}?${convertObjtoUrlSearch(params)}`).then(responseInterceptor)
 const postInstance = (url, body = {}) =>
   fetch(url,
     Object.assign(
@@ -63,20 +53,5 @@ const postInstance = (url, body = {}) =>
         body: JSON.stringify(body)
       }
     )).then(responseInterceptor)
-
-export const thriftless = thriftlessInstance
-
 export const get = getInstance
-
 export const post = postInstance
-
-export const workFlow = (url, body) => {
-  const requestBody = mapTheVerison(body, thriftVersion)
-  return fetch(url, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify(requestBody)
-  }).then(responseInterceptor)
-}

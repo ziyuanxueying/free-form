@@ -1,7 +1,9 @@
 # vue3-template
 
-# delete git
+# delete git, add git
+```
 rm -rf .git
+```
 ## Project setup
 ```
 yarn install

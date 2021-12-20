@@ -22,8 +22,9 @@ export default {
     // or using an action instead
     // counter.increment()
 
-    function addCount () {
-      counter.increment()
+    async function addCount () {
+      // counter.increment()
+      await counter.getData({name: 123, age: 12})
     }
     return {
       counter,
