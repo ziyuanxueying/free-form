@@ -1,12 +1,13 @@
 {
-  "name": "vue3-template",
+  "name": "hello-world",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lint:eslint": "eslint '**/*.{js,vue}' --fix"
+    "lint:eslint": "eslint '**/*.{js,vue}' --fix",
+    "commit": "git-cz"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -26,11 +27,25 @@
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "7.31.0",
-    "eslint-plugin-vue": "^7.0.0"
+    "eslint-plugin-vue": "^7.0.0",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "commitizen": "^4.2.4",
+    "conventional-changelog-cli": "^2.1.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "cz-customizable": "^6.3.0"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "gitHooks": {
+    "commit-msg": "commitlint -e -V "
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    }
+  }
 }
