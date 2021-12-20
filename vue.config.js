@@ -19,12 +19,10 @@ module.exports = {
     https: false, // https:{type:Boolean}
     open: false, // 编译后默认打开浏览器
     hotOnly: true, // 热更新
-    // proxy: 'http://localhost:8080'   // 配置跨域处理,只有一个代理
-    proxy: { //配置多个跨域
+    proxy: { 
       "/api": {
         target: "http://localhost:8081",
         changeOrigin: true,
-        ws: true, //websocket支持
         secure: false,
         pathRewrite: {
           "^/api": "/api"
