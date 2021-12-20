@@ -12,8 +12,7 @@
 import { useCounterStore } from './store'
 export default {
   name: 'HelloWorld',
-  setup() {
-
+  setup () { 
     const counter = useCounterStore()
 
     // counter.count++
@@ -24,7 +23,7 @@ export default {
 
     async function addCount () {
       // counter.increment()
-      await counter.getData({name: 123, age: 12})
+      await counter.getData({ name: 123, age: 12 })
     }
     return {
       counter,

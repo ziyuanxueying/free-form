@@ -3,13 +3,13 @@ const SSO_ERR_STATUS = 401
 const AUTH_ERR_CODE = 403
 
 
-function convertObjtoUrlSearch(data) {
-  var _result = []
-  for (var key in data) {
-    var value = data[key]
-    if (value.constructor == Array) {
-      value.forEach(function(_value) {
-        _result.push(key + "=" + _value)
+function convertObjtoUrlSearch (data) {
+  let _result = []
+  for (let key in data) {
+    let value = data[key]
+    if (value.constructor === Array) {
+      value.forEach(function (_value) {
+        _result.push(key + '=' + _value)
       })
     } else {
       _result.push(key + '=' + value)
@@ -19,7 +19,7 @@ function convertObjtoUrlSearch(data) {
 }
 
 
-const responseInterceptor = async(res) => {
+const responseInterceptor = async (res) => {
   if (res.status >= 300) {
     throw new Error(`${res.status} Error happens`)
   }

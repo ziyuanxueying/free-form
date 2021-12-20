@@ -48,10 +48,10 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 export default {
   name: 'app',
-  setup() {
+  setup () {
     let collapsed = ref(false)
     const router = useRouter()
-    let menus =reactive([{
+    let menus = reactive([{
       path: '',
       title: 'demo',
       icon: '',
@@ -68,7 +68,7 @@ export default {
         title: 'example',
       }]
     }])
-    function toPath(path){
+    function toPath (path) {
       router.push(path)
     }
     return {

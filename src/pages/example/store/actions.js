@@ -1,10 +1,13 @@
-import { get } from '@request'
+import{ get } from '@request'
 
 export default {
-  increment() {
+  increment () {
     this.count++
   },
-  getData(params) {
+
+  
+  getData (params) {
+
     return get('/api/getHello', params)
   }
 }
