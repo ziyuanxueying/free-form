@@ -3,16 +3,24 @@
     <a-space>
       <a-button @click="addCount" type="primary">
         Primary
+        {{ counter }} 
       </a-button>
     </a-space> 
     <div>
-      <div>
-        aadwwwdw
-      </div>
+      <tr>
+        <td
+          a="1"
+          b="c"
+          c="d"
+          d="d"
+        >
+          adaw
+          dawdw
+        </td>
+      </tr>
     </div>
-    <a-textarea placeholder="Please enter something" :model-value='`${counter.count}`' allow-clear/>
+    <a-textarea placeholder="Please enter something" :model-value="`${counter.count}`" allow-clear/>
   </div>
-
 </template>
 <script>
 // Composition Api
