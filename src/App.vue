@@ -1,6 +1,6 @@
 <template>
-  <a-layout class='root-layout' style="height: 400px;">
-    <a-layout-header class='header'>    
+  <a-layout class="root-layout" style="height: 400px;">
+    <a-layout-header class="header">    
       <a-menu mode="horizontal" :default-selected-keys="['1']">
         <a-menu-item key="0" :style="{ padding: 0, marginRight: '38px' }" disabled>
           <div
@@ -13,41 +13,50 @@
             }"
           />
         </a-menu-item>
-        <a-menu-item key="1">Home</a-menu-item>
-        <a-menu-item key="2">Solution</a-menu-item>
-        <a-menu-item key="3">Cloud Service</a-menu-item>
-        <a-menu-item key="4">Cooperation</a-menu-item>
+        <a-menu-item key="1">
+          Home
+        </a-menu-item>
+        <a-menu-item key="2">
+          Solution
+        </a-menu-item>
+        <a-menu-item key="3">
+          Cloud Service
+        </a-menu-item>
+        <a-menu-item key="4">
+          Cooperation
+        </a-menu-item>
       </a-menu>
     </a-layout-header>
     <a-layout>
-      <a-layout-sider  class='sider-menu' :style='{width: `${siderWidth}px`}'> 
+      <a-layout-sider class="sider-menu" :style="{width: `${siderWidth}px`}"> 
         <a-menu
           :style="{ width: '200px', height: '100%' }"
           :default-open-keys="['0']"
           :default-selected-keys="['0_1']"
           show-collapse-button
         >
-          <a-sub-menu :key="firstItem.title" v-for="(firstItem, index) in menus" >
+          <a-sub-menu :key="firstItem.title" v-for="(firstItem, index) in menus">
             <template #title>
-              <icon-apps></icon-apps> {{firstItem.title}}
+              <icon-apps/> {{ firstItem.title }}
             </template>
-            <a-menu-item v-for='(oneItem, i) in firstItem.children ' @click="toPath(oneItem.path)" :key="`${index}_${i}`" > {{oneItem.title}}</a-menu-item>
+            <a-menu-item v-for="(oneItem, i) in firstItem.children " @click="toPath(oneItem.path)" :key="`${index}_${i}`">
+              {{ oneItem.title }}
+            </a-menu-item>
           </a-sub-menu>
         </a-menu>    
       </a-layout-sider>
-      <a-layout-content class='root-content'><router-view/>
+      <a-layout-content class="root-content">
+        <router-view/>
       </a-layout-content>
     </a-layout>
-    <a-layout-footer></a-layout-footer>
+    <a-layout-footer/>
   </a-layout>
-  
-  
 </template>
 <script>
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 export default {
-  name: 'app',
+  name: 'App',
   setup () {
     let collapsed = ref(false)
     const router = useRouter()

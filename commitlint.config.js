@@ -15,7 +15,7 @@ module.exports = {
         'ci',
         'WIP',
         'docs',
-        `feat`,
+        'feat',
         'fix',
         'improvement',
         'perf',
@@ -26,4 +26,4 @@ module.exports = {
       ]
     ]
   }
-};
+}
