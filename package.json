@@ -20,20 +20,23 @@
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.11.0",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
+    "stylelint": "^14.2.0",
+    "stylelint-config-standard": "^24.0.0",
+    "stylelint-order": "^5.0.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "7.31.0",
-    "eslint-plugin-vue": "^7.0.0",
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
     "commitizen": "^4.2.4",
     "conventional-changelog-cli": "^2.1.1",
     "cz-conventional-changelog": "^3.3.0",
-    "cz-customizable": "^6.3.0"
+    "cz-customizable": "^6.3.0",
+    "eslint": "7.31.0",
+    "eslint-plugin-vue": "^7.0.0"
   },
   "browserslist": [
     "> 1%",
