@@ -1,17 +1,66 @@
-.root-layout {
-  .header {
-    border-bottom: 1px #e1e1e1 solid;
-  }
-  .sider-menu {
-    width: auto;
-    display: block;
-    overflow: hidden;
-    background-color: var(--color-neutral-2);
-    height: calc(100vh - 58px)
-  }
-  .root-content {
-    padding: 15px;
-  }
+@borderColor:#ccc;
+@h1Color:#666;
+.nxf-layout{
+    display: flex;
+    min-height: 100vh;
+    .nxf-layout-left{
+        width:300px;
+        border:1px solid @borderColor;
+        .nxf-h1{
+            line-height: 50px;
+            border-bottom:1px solid @borderColor;
+            font-size: 20px;
+            padding:0px 7px;
+            color:@h1Color;
+        }
+        .nxf-layout-item{
+            border-bottom:1px solid @borderColor;
+            .nxf-layout-item-title{
+                line-height: 30px;
+                background-color: #eee;
+                padding:0px 7px;
+            }
+            .nxf-layout-item-content{
+                .nxf-layout-item-content-draggable{
+                    display: flex;
+                    .nxf-component-card{
+                        width: 100px;
+                        height:30px;
+                        line-height: 30px;
+                        border:1px solid @borderColor;
+                        box-sizing: border-box;
+                        text-align: center;
+                        cursor:move;
+                    }
+                }
+            }
+        }
+    }
+    .nxf-layout-center{
+        flex:1;
+        border:1px solid @borderColor;
+        padding:30px;
+        .nxf-layout-content{
+            height:100%;
+            width:100%;
+            .nxf-layout-content-form{
+                height:100%;
+            }
+            .nxf-layout-content-draggable{
+                height:100%;
+                .nxf-layout-content-form-item{
+                    cursor:move;
+                    width:100%;
+                }
+                .nxf-layout-content-form-item-active{
+                    border:2px solid #1890ff;
+                }
+            }
+        }
+    }
+    .nxf-layout-right{
+        width:300px;
+        border:1px solid @borderColor;
+    }
 }
-
 

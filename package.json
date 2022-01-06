@@ -13,10 +13,13 @@
     "core-js": "^3.6.5",
     "less": "4",
     "less-loader": "7.3.0",
+    "lodash": "^4.17.21",
     "pinia": "^2.0.6",
+    "sass-loader": "^12.4.0",
     "url": "^0.11.0",
     "vue": "^3.2.26",
-    "vue-router": "4.0.12"
+    "vue-router": "4.0.12",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.11.0",

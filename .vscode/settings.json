@@ -19,9 +19,10 @@
       "source.fixAll.eslint": true
     },
     "[javascript]": {
-      "editor.defaultFormatter": "dbaeumer.vscode-eslint" // 格式规范由prettier改为eslint
+      "editor.defaultFormatter": "vscode.typescript-language-features" // 格式规范由prettier改为eslint
     },
     "[vue]": {
       "editor.defaultFormatter": "dbaeumer.vscode-eslint" // 格式规范由prettier改为eslint
-    }
+    },
+    "vetur.format.options.tabSize": 2,
   }
