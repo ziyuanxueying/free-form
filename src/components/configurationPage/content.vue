@@ -29,6 +29,7 @@ export default {
   setup () {
     const formConfig = useFormConfigStore()
     const checkElement = (element)=>{
+    //存放当前选中的组件的fieldId
       formConfig.fieldId = element.fieldId
     }
     let form = ref({})
