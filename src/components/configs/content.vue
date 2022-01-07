@@ -42,7 +42,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-    .arco-form-item{
-        margin:10px 0px;
-    }
+.arco-form-item {
+  margin: 10px 0;
+}
 </style>
