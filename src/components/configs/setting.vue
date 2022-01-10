@@ -3,9 +3,9 @@
     <a-form :model="form" :label-col-props="{ span: 8 }" :wrapper-col-props="{span: 16}">
       <FormItem
         :element="item"
-        v-for="(item,index) in setting"
-        :key="index"
         :form="form"
+        v-for="(item) in setting"
+        :key="item.id"
       />
     </a-form>
   </div>
@@ -22,19 +22,39 @@ export default {
     const formConfig = useFormConfigStore()
     let setting = ref([])
     let form = ref({})
+    const getFomeSeting = (arr,fieldId) =>{
+      arr.forEach(item=>{
+        if(item.fieldId === fieldId) {
+          formConfig.element = item
+          //组件属性值
+          if(item.configList.layout) {
+            form.value = item.configList.layout
+          }else{
+            form.value = item.configList
+          }
+          let _s = settingObj[item.type] || []
+          _s.forEach(item=>{
+            item.id = Math.random()
+          })
+          //组件配置
+          setting.value = _s
+          return 
+        }
+        else{
+          if(item.configList.layout) {
+            item.configList.layout.colContent.forEach(childItem=>{
+              getFomeSeting(childItem,fieldId)
+            })  
+          }
+        }
+      })
+    }
     watch(()=>formConfig.fieldId,()=>{
     //获取当前选中组件的唯一id
       const fieldId = formConfig.fieldId
       const formItemList = formConfig.formItemList
       //通过id获取组件配置及属性值
-      formItemList.forEach(item=>{
-        if(item.fieldId === fieldId) {
-          //组件属性值
-          form.value = item.configList
-          //组件配置
-          setting.value = settingObj[item.type] || []
-        }
-      })
+      getFomeSeting(formItemList,fieldId)
     })
     return {
       setting,
