@@ -20,7 +20,7 @@
   </a-form-item>
 </template>
 <script>
-export { default as setting } from './defaults'
+export { default as setting } from './setting'
 export default {
   name: 'NxSelect',
   nameCN: '下拉框',

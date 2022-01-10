@@ -1,5 +1,5 @@
 
-export const settingName = 'NxText'
+export const settingName = 'NxTextarea'
 
 export const setting = [
   {
@@ -34,9 +34,8 @@ export const setting = [
   },{
     type: 'NxInput',
     configList:{
-      defaultValue: 'left',
-      label:'文本位置',
-      fileId:'position',
+      label:'最大长度',
+      fileId:'maxLength',
     }
-  }
+  },
 ]
