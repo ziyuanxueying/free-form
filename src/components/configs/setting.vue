@@ -3,9 +3,9 @@
     <a-form :model="form" :label-col-props="{ span: 8 }" :wrapper-col-props="{span: 16}">
       <FormItem
         :element="item"
-        v-for="(item,index) in setting"
-        :key="index"
         :form="form"
+        v-for="(item) in setting"
+        :key="item.id"
       />
     </a-form>
   </div>
@@ -27,14 +27,19 @@ export default {
     const getFomeSeting = (arr,fieldId) =>{
       arr.forEach(item=>{
         if(item.fieldId === fieldId) {
+          formConfig.element = item
           //组件属性值
           if(item.configList.layout) {
             form.value = item.configList.layout
           }else{
             form.value = item.configList
           }
+          let _s = settingObj[item.type] || []
+          _s.forEach(item=>{
+            item.id = Math.random()
+          })
           //组件配置
-          setting.value = settingObj[item.type] || []
+          setting.value = _s
           return 
         }
         else{

@@ -22,11 +22,18 @@ export function getModulesFiles (modulesFiles) {
 }
 
 export function getAllComponents () {
-  const modulesFiles = require.context('@/components/ItemComponents', true, /index\.vue$/)
-  const modules = modulesFiles.keys().reduce((modules, modulePath) => {
-    const value = modulesFiles(modulePath)
+  const formModulesFiles = require.context('@/components/ItemComponents', true, /index\.vue$/)
+  const settingModulesFiles = require.context('@/components/FormItem', true, /index\.vue$/)
+  const formModules = formModulesFiles.keys().reduce((modules, modulePath) => {
+    const value = formModulesFiles(modulePath)
     modules[value.default.name] = value.default
     return modules
   },{})
-  return modules
+  const allModules = settingModulesFiles.keys().reduce((modules, modulePath) => {
+    const value = settingModulesFiles(modulePath)
+    modules[value.default.name] = value.default
+    return modules
+  },formModules)
+
+  return allModules
 }

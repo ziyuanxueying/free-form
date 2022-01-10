@@ -4,7 +4,6 @@
     :label="label"
   >
     <a-input
-      :style="{width:'320px'}"
       :placeholder="placeholder"
       allow-clear
       v-model="form[fileId]"

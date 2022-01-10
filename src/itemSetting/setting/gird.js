@@ -10,6 +10,5 @@ export const setting = [
       fileId:'colCount',
       placeholder:'请输入1-24'
     }
-    
   }
 ]

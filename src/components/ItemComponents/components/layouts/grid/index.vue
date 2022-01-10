@@ -1,5 +1,4 @@
 <template>
-  {{ layout }}
   <a-row class="nxf-grid-row">
     <a-col :span="24 / layout.colCount" v-for="(item,index ) in layout.colContent" :key="index">
       <div class="nxf-grid-col">
@@ -11,7 +10,6 @@
         >
           <template #item="{element}">
             <div :class="{'nxf-layout-content-form-item':true,'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId}" @click.stop="checkElement(element)">
-              {{ element.fieldId }}{{ formConfig.fieldId }}
               <FormItem :element="element"/>
             </div>
           </template>
@@ -23,7 +21,7 @@
 <script>
 export { default as setting } from './setting'
 import { watch } from '@vue/runtime-core'
-import { useFormConfigStore } from '@/components/configurationPage/store'
+import { useFormConfigStore } from '@/components/configs/store'
 import FormItem from '@/components/FormItem'
 import draggable from 'vuedraggable'
 export default {
@@ -41,7 +39,6 @@ export default {
   setup (props) {
     const formConfig = useFormConfigStore()
     const checkElement = (element)=>{
-      console.log(element,111111111111111111)
       //存放当前选中的组件的fieldId
       formConfig.fieldId = element.fieldId
     }
