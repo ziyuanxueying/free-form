@@ -12,9 +12,9 @@
   </div>
 </template>
 <script>
-import Items from '@/components/configurationPage/items.vue'
-import Content from '@/components/configurationPage/content.vue'
-import Setting from '@/components/configurationPage/setting.vue'
+import Items from '@/components/configs/items.vue'
+import Content from '@/components/configs/content.vue'
+import Setting from '@/components/configs/setting.vue'
 export default {
   components:{
     Items,
