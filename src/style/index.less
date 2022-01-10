@@ -4,6 +4,7 @@
 
 .nxf-layout {
   display: flex;
+  padding: 0 20px;
   min-height: 100vh;
 
   .nxf-layout-left {
@@ -46,9 +47,9 @@
   }
 
   .nxf-layout-center {
-    flex: 1;
     border: 1px solid @border-color;
     padding: 30px;
+    flex: 1;
 
     .nxf-layout-content {
       width: 100%;
@@ -62,8 +63,8 @@
         height: 100%;
 
         .nxf-layout-content-form-item {
-          cursor: move;
           width: 100%;
+          cursor: move;
         }
 
         .nxf-layout-content-form-item-active {
@@ -75,6 +76,7 @@
 
   .nxf-layout-right {
     border: 1px solid @border-color;
+    padding-right: 20px;
     width: 300px;
   }
 }

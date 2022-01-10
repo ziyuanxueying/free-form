@@ -17,9 +17,7 @@ import { watch } from '@vue/runtime-core'
 import FormItem from '../FormItem'
 import settingObj from '@/itemSetting'
 export default {
-  components: {
-    FormItem
-  },
+  components: { FormItem },
   setup () {
     const formConfig = useFormConfigStore()
     let setting = ref([])

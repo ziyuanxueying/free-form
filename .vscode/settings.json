@@ -1,28 +1,28 @@
 {
-    "workbench.iconTheme": "material-icon-theme",
-    "explorer.confirmDragAndDrop": false,
-    "explorer.confirmDelete": false,
-    //配置eslint
-    "eslint.autoFixOnSave": true,  //  启用保存时自动修复,默认只支持.js文件
-    "eslint.validate": [
-       "javascript",  //  用eslint的规则检测js文件
-       {
-         "language": "vue",   // 检测vue文件
-         "autoFix": true   //  为vue文件开启保存自动修复的功能
-       },
-       {
-         "language": "html",
-         "autoFix": true
-       },
-    ],
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+  "workbench.iconTheme": "material-icon-theme",
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  //配置eslint
+  "eslint.autoFixOnSave": true, //  启用保存时自动修复,默认只支持.js文件
+  "eslint.validate": [
+    "javascript", //  用eslint的规则检测js文件
+    {
+      "language": "vue", // 检测vue文件
+      "autoFix": true //  为vue文件开启保存自动修复的功能
     },
-    "[javascript]": {
-      "editor.defaultFormatter": "vscode.typescript-language-features" // 格式规范由prettier改为eslint
-    },
-    "[vue]": {
-      "editor.defaultFormatter": "dbaeumer.vscode-eslint" // 格式规范由prettier改为eslint
-    },
-    "vetur.format.options.tabSize": 2,
-  }
+    {
+      "language": "html",
+      "autoFix": true
+    }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features" // 格式规范由prettier改为eslint
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint" // 格式规范由prettier改为eslint
+  },
+  "vetur.format.options.tabSize": 2
+}
