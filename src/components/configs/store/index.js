@@ -19,4 +19,13 @@ export const useFormConfigStore = defineStore('formConfig', {
       }
     }
   },
+  getters: {
+    toJSON () {
+      return {
+        fieldId: this.fieldId,
+        formItemList: this.formItemList,
+        formStyle: this.formStyle,
+      }
+    }, 
+  },
 })

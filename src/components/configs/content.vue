@@ -1,5 +1,8 @@
 <template>
   <div class="nxf-layout-content">
+    <a-button @click="visible = true">
+      查看JSON
+    </a-button>
     <a-form :model="form" class="nxf-layout-content-form">
       <draggable
         v-model="formConfig.formItemList"
@@ -15,19 +18,40 @@
       </draggable>
     </a-form>
   </div>
+  <a-modal
+    :width="600"
+    v-model:visible="visible"
+    title="查看当前JSON"
+  >
+    <a-typography>
+      <a-typography-paragraph copyable>
+        <vue-json-pretty :data="formConfig.toJSON" :showSelectController="true" :deep="1"/>
+        <span class="copy"/>
+      </a-typography-paragraph>
+    </a-typography>
+  </a-modal>
 </template>
 <script>
 import { ref } from '@vue/reactivity'
 import { useFormConfigStore } from './store'
 import draggable from 'vuedraggable'
 import FormItem from '../FormItem'
+import VueJsonPretty from 'vue-json-pretty'
+import 'vue-json-pretty/lib/styles.css'
+
 export default {
   components: {
+    VueJsonPretty,
     draggable,
     FormItem
   },
+  data () {
+    return {
+      visible: false
+    }
+  },
   setup () {
-    const formConfig = useFormConfigStore()
+    const  formConfig  = useFormConfigStore()
     const checkElement = (element)=>{
     //存放当前选中的组件的fieldId
       formConfig.fieldId = element.fieldId
@@ -44,5 +68,11 @@ export default {
 <style lang="less" scoped>
 .arco-form-item {
   margin: 10px 0;
+}
+
+.copy {
+  &::before {
+    content: 'JSON 复制';
+  }
 }
 </style>
