@@ -3,7 +3,9 @@
     :field="key"
     :label="label"
   >
-    <a-typography-paragraph :style="`width: 100%; text-align:${position};`"/>
+    <a-typography-paragraph :style="`width: 100%; text-align:${position};`">
+      {{ defaultContent }}
+    </a-typography-paragraph>
   </a-form-item>
 </template>
 <script>

@@ -25,7 +25,7 @@
   >
     <a-typography>
       <a-typography-paragraph copyable>
-        <vue-json-pretty :data="formConfig.toJSON" :showSelectController="true" :deep="1"/>
+        <vue-json-pretty :data="formConfig.toJSON" :showSelectController="true"/>
         <span class="copy"/>
       </a-typography-paragraph>
     </a-typography>

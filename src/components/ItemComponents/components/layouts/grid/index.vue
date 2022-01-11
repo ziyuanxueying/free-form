@@ -66,17 +66,19 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.nxf-grid-row{
-    border:1px dashed #ccc;
-    padding:5px;
-    min-height:100px;
-    .nxf-grid-col{
-        border:1px dashed #ccc;
-        box-sizing: border-box;
-        .nxf-grid-col-draggable{
-            width:100%;
-            min-height:100px;
-        }
+.nxf-grid-row {
+  border: 1px dashed #ccc;
+  padding: 5px;
+  min-height: 100px;
+
+  .nxf-grid-col {
+    border: 1px dashed #ccc;
+    box-sizing: border-box;
+
+    .nxf-grid-col-draggable {
+      width: 100%;
+      min-height: 100px;
     }
+  }
 }
 </style>

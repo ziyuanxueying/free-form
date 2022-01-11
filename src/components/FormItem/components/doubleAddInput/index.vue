@@ -17,7 +17,7 @@
         v-model="item.value"
       />
     </a-form-item>
-    <a-button type="outline" style="width:100%" @click="()=>add(form[fileId])">
+    <a-button type="outline" style="width: 100%;" @click="()=>add(form[fileId])">
       添加
     </a-button>
   </div>

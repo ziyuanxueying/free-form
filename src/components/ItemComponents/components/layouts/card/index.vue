@@ -12,7 +12,7 @@
         </div>
       </template>
     </draggable>
-    <a-button type="outline" v-if="layout.ifAdd=='true'" style="width:100%">
+    <a-button type="outline" v-if="layout.ifAdd=='true'" style="width: 100%;">
       添加
     </a-button>
   </div>
@@ -48,11 +48,12 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.nxf-card{
-    border:1px dashed #ccc;
-    padding:5px;
-    .nxf-card-draggable{
-        min-height: 100px;
-    }
+.nxf-card {
+  border: 1px dashed #ccc;
+  padding: 5px;
+
+  .nxf-card-draggable {
+    min-height: 100px;
+  }
 }
 </style>

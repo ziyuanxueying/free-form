@@ -22,7 +22,7 @@ export default {
     const formConfig = useFormConfigStore()
     let setting = ref([])
     let form = ref({})
-    const getFomeSeting = (arr,fieldId) =>{
+    const getFormSeting = (arr,fieldId) =>{
       arr.forEach(item=>{
         if(item.fieldId === fieldId) {
           formConfig.element = item
@@ -43,7 +43,7 @@ export default {
         else{
           if(item.configList.layout) {
             item.configList.layout.colContent.forEach(childItem=>{
-              getFomeSeting(childItem,fieldId)
+              getFormSeting(childItem,fieldId)
             })  
           }
         }
@@ -54,7 +54,7 @@ export default {
       const fieldId = formConfig.fieldId
       const formItemList = formConfig.formItemList
       //通过id获取组件配置及属性值
-      getFomeSeting(formItemList,fieldId)
+      getFormSeting(formItemList,fieldId)
     })
     return {
       setting,
