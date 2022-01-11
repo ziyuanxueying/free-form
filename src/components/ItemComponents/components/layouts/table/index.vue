@@ -84,14 +84,16 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.nxf-table{
-    padding:5px;
-    .nxf-table-td{
-        border:1px dashed #ccc;
-        padding:5px;
-        .nxf-table-td-draggable{
-            min-height: 100px;
-        }
+.nxf-table {
+  padding: 5px;
+
+  .nxf-table-td {
+    border: 1px dashed #ccc;
+    padding: 5px;
+
+    .nxf-table-td-draggable {
+      min-height: 100px;
     }
+  }
 }
 </style>
