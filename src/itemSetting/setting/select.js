@@ -31,5 +31,16 @@ export const setting = [
       label:'必填',
       fileId:'required',
     }
+  },
+  {
+    type: 'NxDoubleInput',
+    configList:{
+      columns:[{
+        value: '',
+        key: '',
+      }],
+      label:'选项',
+      fileId:'columns'
+    }
   }
 ]

@@ -72,8 +72,7 @@ export default {
       }
     },{
       deep:true
-    }
-    )
+    })
     let formData = ref([{}])
     return {
       checkElement,

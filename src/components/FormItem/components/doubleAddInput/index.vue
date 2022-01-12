@@ -17,6 +17,7 @@
         v-model="item.value"
       />
     </a-form-item>
+    {{ form }}
     <a-button type="outline" style="width: 100%;" @click="()=>add(form[fileId])">
       添加
     </a-button>
@@ -53,6 +54,7 @@ export default {
   },
   setup () {
     const add = (arr)=>{
+      console.log('arr: ', arr)
       arr.push({
         value: 'Name',
         key: 'name',

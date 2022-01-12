@@ -2,8 +2,8 @@
   <a-form-item
     :field="key"
     :label="label"
+    :required="false"
   >
-    {{ maxLength }}
     <a-textarea
       placeholder="Please enter something"
       allow-clear
@@ -15,7 +15,7 @@
 export { default as setting } from './setting'
 export default {
   name: 'NxTextarea',
-  nameCN: '文本域',
+  nameCN: '多行输入框',
   props: {
     key: {
       type: null,

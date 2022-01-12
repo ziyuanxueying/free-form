@@ -4,23 +4,16 @@
     :label="label"
   >
     <a-select v-model="form[fileId]" :placeholder="placeholder">
-      <a-option>
-        Beijing
-      </a-option>
-      <a-option>
-        Shanghai
-      </a-option>
-      <a-option>
-        Guangzhou
-      </a-option>
-      <a-option disabled>
-        Disabled
+      <a-option v-for="(item,index) in columns" :key="index">
+        {{ index }}
       </a-option>
     </a-select>
+    {{ columns }}
   </a-form-item>
 </template>
 <script>
 export { default as setting } from './setting'
+import { watch } from '@vue/runtime-core'
 export default {
   name: 'NxSelect',
   nameCN: '下拉框',
@@ -41,6 +34,9 @@ export default {
       type: String,
       default: 'false'
     },
+    columns:{
+      type: Object
+    },
     form:{
       type:Object,
       default () {
@@ -48,5 +44,15 @@ export default {
       }
     }
   },
+  setup (props) {
+    console.log('props: ', props)
+    watch(()=>props.columns,()=>{
+      console.log(props)
+      let colCount = props.columns.length
+      console.log('colCount: ', colCount)
+    },{
+      deep:true
+    })
+  }
 }
 </script>

@@ -23,6 +23,7 @@ export const setting = [
       defaultValue: '请输入内容',
       label:'文本内容',
       fileId:'defaultContent',
+      maxLength: 500
     }
   },{
     type: 'NxInput',

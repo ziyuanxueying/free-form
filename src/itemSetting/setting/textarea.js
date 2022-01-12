@@ -20,14 +20,6 @@ export const setting = [
   },{
     type: 'NxInput',
     configList:{
-      defaultValue: '请输入内容',
-      label:'文本内容',
-      fileId:'defaultContent',
-    }
-  },{
-    type: 'NxInput',
-    configList:{
-      defaultValue: 'false',
       label:'必填',
       fileId:'required',
     }
