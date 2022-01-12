@@ -20,6 +20,7 @@ function convertObjtoUrlSearch (data) {
 
 
 const responseInterceptor = async (res) => {
+  console.log('res: ', res)
   if (res.status >= 300) {
     throw new Error(`${res.status} Error happens`)
   }

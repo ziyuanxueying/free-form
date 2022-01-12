@@ -3,11 +3,9 @@ let selectSetting = {
   label:'下拉框',
   placeholder: '请输入内容',
   required: 'false',
+  remote: 'true',
   columns: [
-    {
-      value: 'Name',
-      key: 'name',
-    }
+    { value: '', key: '', }
   ],
 }
 export default selectSetting

@@ -1,5 +1,6 @@
 <template>
   <div class="nxf-table">
+    {{ layout.columns }}
     <a-table
       :data="formData"
       :bordered="{wrapper: true, cell: true}"
@@ -46,13 +47,14 @@ export default {
   props:{
     layout:{
       type:Object,
-    } 
+    },
   },
   components: {
     draggable,
     FormItem
   },
   setup (props) {
+    console.log('props: ', props)
     const formConfig = useFormConfigStore()
     const checkElement = (element)=>{
       //存放当前选中的组件的fieldId

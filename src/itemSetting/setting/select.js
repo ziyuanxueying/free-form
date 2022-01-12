@@ -31,6 +31,12 @@ export const setting = [
       label:'必填',
       fileId:'required',
     }
+  },{
+    type: 'NxInput',
+    configList:{
+      label:'是否远程',
+      fileId:'remote',
+    }
   },
   {
     type: 'NxDoubleInput',
@@ -42,5 +48,16 @@ export const setting = [
       label:'选项',
       fileId:'columns'
     }
-  }
+  },
+  {
+    type: 'NxRemoteData',
+    configList:{
+      columns:[{
+        value: '',
+        key: '',
+      }],
+      label:'对应字段',
+      fileId:'columns'
+    }
+  },
 ]

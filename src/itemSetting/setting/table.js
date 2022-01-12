@@ -3,6 +3,13 @@ export const settingName = 'NxTable'
 
 export const setting = [
   {
+    type: 'NxInput',
+    configList:{
+      label:'是否远程',
+      fileId:'remote',
+    }
+  },
+  {
     type: 'NxDoubleInput',
     configList:{
       columns:[{
@@ -12,5 +19,6 @@ export const setting = [
       label:'表格头',
       fileId:'columns'
     }
-  }
+  },
+  
 ]

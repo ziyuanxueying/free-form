@@ -1,5 +1,5 @@
 <template>
-  <div v-if="form.remote === 'true' ">
+  <div v-if="form.remote !== 'true' ">
     <a-form-item
       :field="fileId+index"
       :label="label+index"
@@ -17,15 +17,19 @@
         v-model="item.value"
       />
     </a-form-item>
-    <a-button type="outline" style="width: 100%;" @click="()=>add(form[fileId])">
-      添加
+    <!-- <a-button type="outline" style="width: 100%;" @click="()=>add(form[fileId])">
+      添加222
+    </a-button> -->
+    <a-button type="outline" style="width: 100%;" @click="getData">
+      获取数据
     </a-button>
   </div>
 </template>
 <script>
+import{ get } from '@request'
 export default {
-  name: 'NxDoubleInput',
-  nameCN: '自增输入框',
+  name: 'NxRemoteData',
+  nameCN: '远程数据',
   props:{
     fileId: {
       type: null,
@@ -36,7 +40,7 @@ export default {
       default: '输入框'
     },
     form:{
-      type:Object,
+      type:Object, 
       default () {
         return null
       }
@@ -55,13 +59,18 @@ export default {
     },
   },
   setup () {
+    const getData = async ()=>{
+      let data =  await get('https://api.apiopen.top/videoHomeTab')
+      console.log('data: ', data)
+    }
     const add = (arr)=>{
       arr.push({
         value: '',
         key: '',
       })
     }
-    return {
+    return { 
+      getData,
       add
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <a-form-item
-    :field="key"
+    :field="fileId"
     :label="label"
   >
     <a-typography-paragraph :style="`width: 100%; text-align:${position};`">

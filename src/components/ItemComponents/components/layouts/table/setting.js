@@ -6,7 +6,8 @@ let tableSetting = {
         key: 'name',
       }
     ],
-    colContent:[[]] 
-  }
+    colContent:[[]],
+    remote: 'true',
+  },
 }
 export default tableSetting

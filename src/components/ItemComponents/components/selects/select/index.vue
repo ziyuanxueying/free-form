@@ -5,10 +5,9 @@
   >
     <a-select v-model="form[fileId]" :placeholder="placeholder">
       <a-option v-for="(item,index) in columns" :key="index">
-        {{ index }}
+        {{ item.value }}
       </a-option>
     </a-select>
-    {{ columns }}
   </a-form-item>
 </template>
 <script>
@@ -36,6 +35,9 @@ export default {
     },
     columns:{
       type: Object
+    },
+    remote:{
+      type: String
     },
     form:{
       type:Object,
