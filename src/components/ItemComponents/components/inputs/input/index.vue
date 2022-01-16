@@ -8,6 +8,7 @@
       allow-clear
       v-model="model"
       @input="inputChange"
+      @clear="inputClear"
     />
   </a-form-item>
 </template>
@@ -46,25 +47,20 @@ export default {
   },
   setup (props) {
     const model = ref(props.form[props.fileId])
-    console.log('input---props: ', props)
-    // eslint-disable-next-line vue/no-setup-props-destructure
-    // model.value = props.form[props.fileId]
     watch(()=>props.defaultVal,()=>{
-      console.log('defaultVal',props.defaultVal)
       model.value = props.defaultVal
-    })
-    watch(()=>props.form[props.fileId],()=>{
-      //获取当前选中组件的唯一id
-      model.value = props.form[props.fileId]
-      console.log('form',props.form[props.fileId])
     })
 
     const inputChange = (res)=>{
       props.form[props.fileId] = res
     }
+    const inputClear = ()=>{
+      props.form[props.fileId] = ''
+    }
     return {
       model,
-      inputChange
+      inputChange,
+      inputClear,
     }
   }
 }

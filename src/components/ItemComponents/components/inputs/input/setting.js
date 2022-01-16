@@ -3,7 +3,6 @@ let inputSetting = {
   label:'输入框',
   placeholder: '请输入内容',
   required: 'false',
-  defaultVal:111,
-  fileId2:'defaultVal'
+  defaultVal:'',
 }
 export default inputSetting
