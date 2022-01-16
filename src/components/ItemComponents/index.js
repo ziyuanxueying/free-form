@@ -6,5 +6,4 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   modules.push(value.default)
   return modules
 }, [])
-console.log(modules)
 export default modules

@@ -1,5 +1,5 @@
 
-export const settingName = 'NxInput'
+export const settingName = 'NxSwitch'
 
 export const setting = [
   {
@@ -7,7 +7,7 @@ export const setting = [
     configList:{
       defaultValue: 'input',
       label:'字段标识',
-      fileId:'fileId',
+      fileId:'fileId'
     }
     
   },{
@@ -17,19 +17,13 @@ export const setting = [
       label:'字段标题',
       fileId:'label',
     }
-  },{
-    type: 'NxInput',
-    configList:{
-      defaultValue: '请输入内容',
-      label:'占位符',
-      fileId:'placeholder',
-    }
   },
   {
     type: 'NxInput',
     configList:{
-      label:'默认值',
-      fileId:'defaultVal',
+      defaultValue: 'false',
+      label:'必填',
+      fileId:'required',
     }
-  },
+  }
 ]

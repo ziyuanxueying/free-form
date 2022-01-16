@@ -5,7 +5,6 @@ export const setting = [
   {
     type: 'NxInput',
     configList:{
-      label:'是否远程',
       fileId:'remote',
     }
   },

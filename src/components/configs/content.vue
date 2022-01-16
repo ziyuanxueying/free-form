@@ -11,7 +11,11 @@
         item-key="fieldId"
       >
         <template #item="{element}">
-          <div :class="{'nxf-layout-content-form-item':true,'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId}" @click="checkElement(element)">
+          <div
+            :class="{ 'nxf-layout-content-form-item':true,
+                      'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId }" 
+            @click="checkElement(element)"
+          >
             <FormItem :element="element"/>
           </div>
         </template>

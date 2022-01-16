@@ -1,6 +1,5 @@
 <template>
   <div class="nxf-table">
-    {{ layout.columns }}
     <a-table
       :data="formData"
       :bordered="{wrapper: true, cell: true}"
