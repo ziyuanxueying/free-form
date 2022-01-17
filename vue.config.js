@@ -16,17 +16,17 @@ module.exports = {
       errors: true
     },
     host: 'localhost',
-    port: 8080, // 端口号
+    port: 8086, // 端口号
     https: false, // https:{type:Boolean}
     open: false, // 编译后默认打开浏览器
     hotOnly: true, // 热更新
     proxy: { 
       '/api': {
-        target: 'http://localhost:8081',
+        target: 'https://test-platform.naxions.com',
         changeOrigin: true,
         secure: false,
         pathRewrite: {
-          '^/api': '/api'
+          '^/api': '/'
         }
       }
     }

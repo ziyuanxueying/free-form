@@ -5,16 +5,14 @@
   >
     <a-input
       :placeholder="placeholder"
+      v-model="modelVal[fileId]"
       allow-clear
-      v-model="model"
-      @input="inputChange"
-      @clear="inputClear"
     />
   </a-form-item>
 </template>
 <script>
 export { default as setting } from './setting'
-import { ref,watch } from 'vue'
+import { reactive,watch } from 'vue'
 export default {
   name: 'NxInput',
   nameCN: '输入框',
@@ -46,21 +44,13 @@ export default {
     }
   },
   setup (props) {
-    const model = ref(props.form[props.fileId])
+    const modelVal = reactive(props.form)
     watch(()=>props.defaultVal,()=>{
-      model.value = props.defaultVal
+      modelVal[props.fileId] = props.defaultVal
     })
 
-    const inputChange = (res)=>{
-      props.form[props.fileId] = res
-    }
-    const inputClear = ()=>{
-      props.form[props.fileId] = ''
-    }
     return {
-      model,
-      inputChange,
-      inputClear,
+      modelVal,
     }
   }
 }

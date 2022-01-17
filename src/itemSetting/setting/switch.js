@@ -25,5 +25,12 @@ export const setting = [
       label:'必填',
       fileId:'required',
     }
-  }
+  },
+  {
+    type: 'NxSwitch',
+    configList:{
+      label:'默认值',
+      fileId:'defaultVal',
+    }
+  },
 ]

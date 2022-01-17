@@ -33,13 +33,11 @@ export default {
             form.value = item.configList
           }
           let _s = settingObj[item.type] || []
-          console.log('settingObj: ', settingObj)
           _s.forEach(item=>{
             item.id = Math.random()
           })
           //组件配置
           setting.value = _s
-          console.log('settingObj: ', setting)
           return 
         }
         else{

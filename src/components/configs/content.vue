@@ -1,5 +1,6 @@
 <template>
   <div class="nxf-layout-content">
+    <!-- <a-button @click="test"> -->
     <a-button @click="visible = true">
       查看JSON
     </a-button>
@@ -42,6 +43,7 @@ import draggable from 'vuedraggable'
 import FormItem from '../FormItem'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
+import{ post } from '@request'
 
 export default {
   components: {
@@ -60,9 +62,15 @@ export default {
     //存放当前选中的组件的fieldId
       formConfig.fieldId = element.fieldId
     }
+    const test = async ()=>{
+    //   await post('/company/list')
+      let aaa = await post('/formDef/create',{ projectName:'test1',title:'title1',formDefJson:'formDefJson' })
+      console.log('aaa: ', aaa)
+    }
     let form = ref({})
     return {
       checkElement,
+      test,
       formConfig,
       form
     }
