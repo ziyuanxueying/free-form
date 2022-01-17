@@ -5,8 +5,8 @@ export const setting = [
   {
     type: 'NxInput',
     configList:{
-      defaultValue: 'text',
       label:'字段标识',
+      required: true,
       fileId:'fileId'
     }
   },
@@ -18,13 +18,13 @@ export const setting = [
       fileId:'label',
     }
   },{
-    type: 'NxInput',
+    type: 'NxSwitch',
     configList:{
       label:'必填',
       fileId:'required',
     }
   },{
-    type: 'NxInput',
+    type: 'NxInputNum',
     configList:{
       label:'最大长度',
       fileId:'maxLength',

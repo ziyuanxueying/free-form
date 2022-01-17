@@ -1,7 +1,7 @@
 <template>
   <div class="nxf-layout-content">
-    <!-- <a-button @click="test"> -->
-    <a-button @click="visible = true">
+    <a-button @click="test">
+      <!-- <a-button @click="visible = true"> -->
       查看JSON
     </a-button>
     <a-form :model="form" class="nxf-layout-content-form">
@@ -64,7 +64,8 @@ export default {
     }
     const test = async ()=>{
     //   await post('/company/list')
-      let aaa = await post('/formDef/create',{ projectName:'test1',title:'title1',formDefJson:'formDefJson' })
+    //   let aaa = await post('/formDef/query',{ projectName:'test1',title:'title1',formDefJson:'{}' })
+      let aaa = await post('/formDef/query')
       console.log('aaa: ', aaa)
     }
     let form = ref({})

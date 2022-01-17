@@ -3,8 +3,9 @@
     :field="fileId"
     :label="label"
     :required="required"
+    :disabled="disabled"
   >
-    <a-input
+    <a-input-number
       :placeholder="placeholder"
       v-model="modelVal[fileId]"
       allow-clear
@@ -15,8 +16,8 @@
 export { default as setting } from './setting'
 import { reactive,watch } from 'vue'
 export default {
-  name: 'NxInput',
-  nameCN: '输入框',
+  name: 'NxInputNum',
+  nameCN: '数字输入框',
   props: {
     fileId: {
       type: null,
@@ -32,10 +33,12 @@ export default {
     },
     required:{
       type: Boolean,
-      default: false
     },
     defaultVal:{
-      type: String,
+      type: Number,
+    },
+    disabled:{
+      type: Boolean,
     },
     form:{
       type:Object,
@@ -47,9 +50,9 @@ export default {
   setup (props) {
     const modelVal = reactive(props.form)
     watch(()=>props.defaultVal,()=>{
+      console.log('props.defaultVal: ', props.defaultVal)
       modelVal[props.fileId] = props.defaultVal
     })
-
     return {
       modelVal,
     }
