@@ -20,7 +20,9 @@ export function getModulesFiles (modulesFiles) {
   }, [])
   return modules
 }
-
+/**
+ * 获取全部组件
+ */
 export function getAllComponents () {
   const formModulesFiles = require.context('@/components/ItemComponents', true, /index\.vue$/)
   const settingModulesFiles = require.context('@/components/FormItem', true, /index\.vue$/)
@@ -36,4 +38,33 @@ export function getAllComponents () {
   },formModules)
 
   return allModules
+}
+/**
+ * 获取数组中的指定对象
+ * @param {*} arr 数组
+ * @param {*} fieldId id
+ * @returns 
+ */
+export function getComponentsObj (arr,fieldId) {
+  for(let i = 0; i < arr.length; i++) {
+    let item = arr[i]
+    if(item.fieldId === fieldId) {
+      return  {
+        obj:item,
+        parentArr:arr,
+        index:i
+      }
+    }else{
+      if(item.configList.layout) {
+        let colContent = item.configList.layout.colContent
+        for(let i = 0; i < colContent.length; i++) {
+          let res = getComponentsObj(colContent[i],fieldId)
+          if(res) {
+            return res
+          }
+        }
+      }
+    }
+  }
+  return false
 }
