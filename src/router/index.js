@@ -10,7 +10,12 @@ export const routes = [
     path: '/configPage',
     name: 'configPage',
     component: () => import('../pages/configPage.vue')
-  }
+  },
+  {
+    path: '/formList',
+    name: 'formList',
+    component: () => import('../pages/formList.vue')
+  },
 ]
 
 const router = createRouter({

@@ -20,7 +20,6 @@ function convertObjtoUrlSearch (data) {
 
 
 const responseInterceptor = async (res) => {
-  console.log('res: ', res)
   if (res.status === 401) {
     localStorage.removeItem('user')
     return toFeishu()
@@ -52,7 +51,6 @@ const baseUrl = process.env.VUE_APP_BASE_URL
 const getInstance = (url, params) => fetch(`${url}?${convertObjtoUrlSearch(params)}`).then(responseInterceptor)
 const postInstance = (url, body = {},header = {}) =>{ 
   const Url = url.indexOf('login') === -1 ? `${baseUrl}${process.env.VUE_APP_BASE_API}${url}` : `${baseUrl}${url}`
-  console.log('Url: ', Url)
   //   console.log('url: ',localStorage.getItem('user'), url)
   //   if(!localStorage.getItem('user')) { if(url !== '/login')return } 
   // eslint-disable-next-line consistent-return

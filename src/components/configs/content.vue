@@ -1,9 +1,23 @@
 <template>
   <div class="nxf-layout-content">
-    <a-button @click="test">
-      <!-- <a-button @click="visible = true"> -->
-      查看JSON
-    </a-button>
+    <div class="flex-row">
+      <span>
+        表单标题：
+      </span>
+      <a-input
+        :style="{width:'200px'}"
+        placeholder="请输入表单标题"
+        v-model="formTitle"
+        allow-clear
+      />
+      <a-button @click="visible = true">
+        查看JSON
+      </a-button>
+      <a-button @click="saveAsDeaft">
+        存为草稿
+      </a-button>
+    </div>
+
     <a-form :model="form" class="nxf-layout-content-form">
       <draggable
         v-model="formConfig.formItemList"
@@ -37,7 +51,7 @@
   </a-modal>
 </template>
 <script>
-import { ref } from '@vue/reactivity'
+import { reactive, ref, toRefs } from '@vue/reactivity'
 import { useFormConfigStore } from './store'
 import draggable from 'vuedraggable'
 import FormItem from '../FormItem'
@@ -57,28 +71,43 @@ export default {
     }
   },
   setup () {
-    const  formConfig  = useFormConfigStore()
+    const formConfig  = useFormConfigStore()
+    const state = reactive({
+      formTitle:undefined
+    })
     const checkElement = (element)=>{
     //存放当前选中的组件的fieldId
       formConfig.fieldId = element.fieldId
     }
-    const test = async ()=>{
-    //   await post('/company/list')
-    //   let aaa = await post('/formDef/query',{ projectName:'test1',title:'title1',formDefJson:'{}' })
-      let aaa = await post('/formDef/query')
+    let form = ref({})
+    const initJson = async ()=>{
+    //   formConfig.initJson('91a82210-1379-4e03-9f3c-81f71a0bd07b')
+      let res = await post('/formDef/get/91a82210-1379-4e03-9f3c-81f71a0bd07b')
+      formConfig.initJson(res.formDefJson)
+    //   console.log('aaa: ', aaa.formDefJson)
+    //   formConfig = JSON.parse(aaa.formDefJson)
+    }
+    initJson()
+    const saveAsDeaft = async ()=>{
+      let aaa = await post('/formDef/create',{ projectName:'oa',title: state.formTitle,formDefJson: JSON.stringify(formConfig.toJSON)  })
       console.log('aaa: ', aaa)
     }
-    let form = ref({})
     return {
       checkElement,
-      test,
+      initJson,
+      saveAsDeaft,
       formConfig,
-      form
+      form,
+      ...toRefs(state)
     }
   },
 }
 </script>
 <style lang="less" scoped>
+.arco-btn {
+  margin-left: 10px;
+}
+
 .arco-form-item {
   margin: 10px 0;
 }

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+// import{ post } from '@request'
 
 export const useFormConfigStore = defineStore('formConfig', {
   state: () => {
@@ -28,4 +29,12 @@ export const useFormConfigStore = defineStore('formConfig', {
       }
     }, 
   },
+  actions: {
+    async initJson (res) {
+      res = JSON.parse(res)
+      this.fieldId = res.fieldId
+      this.formItemList = res.formItemList
+      this.formStyle = res.formStyle
+    } ,
+  }
 })

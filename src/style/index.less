@@ -87,3 +87,38 @@
     width: 320px;
   }
 }
+
+.flex-base {
+  display: flex;
+  align-items: center;
+}
+
+.flex-row {
+  &:extend(.flex-base);
+
+  flex-direction: row;
+}
+
+.flex-row-center {
+  &:extend(.flex-row);
+
+  justify-content: center;
+}
+
+.flex-column {
+  &:extend(.flex-base);
+
+  flex-direction: column;
+}
+
+.flex-column-center {
+  &:extend(.flex-column);
+
+  justify-content: center;
+}
+
+.flex-between {
+  &:extend(.flex-base);
+
+  justify-content: space-between;
+}

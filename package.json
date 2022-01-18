@@ -20,7 +20,8 @@
     "vue": "^3.2.26",
     "vue-json-pretty": "^2.0.6",
     "vue-router": "4.0.12",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^4.1.0",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.12.0",
