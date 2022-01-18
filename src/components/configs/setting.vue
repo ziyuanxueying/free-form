@@ -6,6 +6,7 @@
         :form="form"
         v-for="(item) in setting"
         :key="item.id"
+        pageFrom="setting"
       />
     </a-form>
   </div>

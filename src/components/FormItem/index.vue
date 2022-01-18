@@ -1,9 +1,15 @@
 <template>
-  <component :is="item" v-bind="element.configList" :form="form"/>
+  <component
+    :is="item"
+    v-bind="element.configList"
+    :form="componentSetting"
+    :proto="proto"
+  />
 </template>
 <script>
 import { getAllComponents } from '@utils'
-// import { computed } from 'vue-demi'
+import { reactive,ref } from '@vue/reactivity'
+// import { watch } from '@vue/runtime-core'
 export default {
   props:{
     element:{
@@ -17,13 +23,30 @@ export default {
       default () {
         return {}
       }
+    },
+    pageFrom:{
+      type:String,
+      default:'content'
     }
   },
   setup (props) {
+    let componentSetting = reactive({})
+    const reactiveProps = reactive(props) 
+    let proto = ref('')
+    if(props.pageFrom === 'setting') {
+      componentSetting = reactiveProps.form
+      proto.value = reactiveProps.element.configList.fileId
+    }
+    else if(props.pageFrom === 'content') {
+      componentSetting = reactiveProps.element.configList
+      proto.value = 'defaultVal'
+    }
     let components = getAllComponents()
     let item = components[props.element.type] || null
     return {
-      item
+      item,
+      componentSetting,
+      proto
     }
   },
 }

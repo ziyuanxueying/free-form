@@ -31,7 +31,7 @@
                       'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId }" 
             @click="checkElement(element)"
           >
-            <FormItem :element="element"/>
+            <FormItem :element="element" pageFrom="content"/>
           </div>
         </template>
       </draggable>
