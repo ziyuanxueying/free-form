@@ -6,14 +6,14 @@
   >
     <a-input
       :placeholder="placeholder"
-      v-model="modelVal[fileId]"
+      v-model="form[proto]"
       allow-clear
     />
   </a-form-item>
 </template>
 <script>
 export { default as setting } from './setting'
-import { reactive,watch } from 'vue'
+// import { reactive,watch } from 'vue'
 export default {
   name: 'NxInput',
   nameCN: '输入框',
@@ -42,17 +42,10 @@ export default {
       default () {
         return null
       }
+    },
+    proto:{  //绑定的key
+      type: String,
     }
   },
-  setup (props) {
-    const modelVal = reactive(props.form)
-    watch(()=>props.defaultVal,()=>{
-      modelVal[props.fileId] = props.defaultVal
-    })
-
-    return {
-      modelVal,
-    }
-  }
 }
 </script>

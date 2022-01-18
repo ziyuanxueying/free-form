@@ -26,13 +26,15 @@
         item-key="fieldId"
       >
         <template #item="{element}">
-          <div
-            :class="{ 'nxf-layout-content-form-item':true,
-                      'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId }" 
-            @click="checkElement(element)"
-          >
-            <FormItem :element="element"/>
-          </div>
+          <span>
+            <div
+              :class="{ 'nxf-layout-content-form-item':true,
+                        'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId }" 
+              @click="checkElement(element)"
+            >
+              <FormItem :element="element" pageFrom="content"/>
+            </div>
+          </span>
         </template>
       </draggable>
     </a-form>
