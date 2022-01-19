@@ -1,15 +1,6 @@
 <template>
   <div class="nxf-layout-content">
     <div class="flex-row">
-      <span>
-        表单标题：
-      </span>
-      <a-input
-        :style="{width:'200px'}"
-        placeholder="请输入表单标题"
-        v-model="formTitle"
-        allow-clear
-      />
       <a-button @click="visible = true">
         查看JSON
       </a-button>

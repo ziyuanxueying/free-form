@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form :model="formConfig.formStyle" class="nxf-layout-content-form">
+    <a-form :model="formConfig.formSet" class="nxf-layout-content-form">
       <FormItem
         v-for="(element,index) in formConfig.formItemList "
         :element="element"

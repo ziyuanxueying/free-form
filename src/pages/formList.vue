@@ -4,13 +4,15 @@
       草稿表单
     </div>
     <a-table
-      row-key="name"
+      row-key="formId"
       :columns="columns"
       :data="data"
+      :row-selection="rowSelection"
       :pagination="data.length ? pagination: false"
       @pageChange="pageChange"
       :loading="tableLoad"
       :bordered="{wrapper: true, cell: true}"
+      @selectionChange="(vals)=>{selectList = vals}"
     >
       <template #columns>
         <a-table-column
@@ -54,12 +56,15 @@
         </a-table-column>
       </template>
     </a-table>
+    <a-button class="del-some" @click="itemDel">
+      批量删除
+    </a-button>
     <div class="list-title">
       发布表单
     </div>
     <a-table
       row-key="name"
-      :columns="columns"
+      :columns="columnDeploy"
       :data="dataDeploy"
       :pagination="dataDeploy.length ? pageDeploy: false"
       @pageChange="pageChange"
@@ -68,7 +73,7 @@
     >
       <template #columns>
         <a-table-column
-          v-for="(column,index) in columns"
+          v-for="(column,index) in columnDeploy"
           :key="index"
           :title="column.title"
           :data-index="column.dataIndex"
@@ -77,9 +82,9 @@
           ellipsis
           align="center"
         >
-          <template v-if="column.dataIndex === 'fileName'" #cell="{ record }">
-            <div style="color: red;">
-              {{ record.fileName }}
+          <template v-if="column.dataIndex === 'online'" #cell="{ record }">
+            <div>
+              {{ record.online ? '是':'否' }}
             </div>
           </template>
           <template v-else-if="column.dataIndex === 'operate'" #cell="{ record }">
@@ -89,6 +94,13 @@
               @click="itemEdit(record)"
             >
               编辑
+            </a-button>
+            <a-button
+              class="operate-btn back"
+              type="text"
+              @click="itemRollback(record)"
+            >
+              回滚
             </a-button>
           </template>
         </a-table-column>
@@ -110,12 +122,26 @@ export default {
         { title: '项目名', dataIndex: 'projectName', width: 150, },
         { title: '操作人', dataIndex: 'updateUserName', width: 150, },
         { title: '操作', dataIndex: 'operate', width: 150, },
+      ],
+      rowSelection: {
+        type: 'checkbox',
+        showCheckedAll: true
+      },
+      columnDeploy: [
+        { title: '表单ID', dataIndex: 'formId', width: 150, },
+        { title: '表单名称', dataIndex: 'title', width: 150, },
+        { title: '项目名', dataIndex: 'projectName', width: 150, },
+        { title: '操作人', dataIndex: 'deployUserName', width: 150, },
+        { title: '版本号', dataIndex: 'version', width: 150, },
+        { title: '是否是线上版本', dataIndex: 'online', width: 150, },
+        { title: '操作', dataIndex: 'operate', width: 150, },
       ]
     }
   },
   setup () { 
     const state = reactive({ 
       data:[],
+      selectList:[],
       pagination:{ current: 1,totla: 0 },
       dataDeploy:[],
       pageDeploy:{ current: 1,totla: 0 },
@@ -126,7 +152,7 @@ export default {
       let data = await post('/formDef/query')
       state.tableLoad = false
       state.data = data.content
-      state.pagination.current = data.number 
+      state.pagination.current = data.number - 1
       state.pagination.total = data.totalElements
     }
     // 获取发布表单列表
@@ -134,19 +160,18 @@ export default {
       let data = await post('/formDefDeploy/query')
       state.tableLoad = false
       state.dataDeploy = data.content
-      state.pageDeploy.current = data.number 
+      state.pageDeploy.current = data.number - 1
       state.pageDeploy.total = data.totalElements
     }
     getListDraft()
+    getListDeploy()
     const router = useRouter()
     const itemEdit = async (item,path)=>{
-      console.log('item: ', item)
+      console.log('item: ', state.selectList)
       router.push({
         path: `/${path}`,
         query: { id: item.formId },
       })
-    //   let data = await post(`/formDef/get/${item.formId}`)
-    //   console.log('data: ', data.formDefJson)
     }
 
     const formChange = ()=>{
@@ -173,6 +198,25 @@ export default {
         done()
       }
     }
+    // 批量删除
+    const itemDel = async ()=>{
+      try {
+        await post('/formDef/delete',{ formIds:state.selectList })
+        getListDraft()
+      } catch (error) {
+        console.log('error: ', error)
+      }
+    }
+    // 表单回滚
+    const itemRollback = async (item)=> {
+      try {
+        let data = await post('/formDefDeploy/rollback',{ formId:item.formId })
+        console.log('data: ', data)
+        getListDeploy()
+      } catch (error) {
+        console.log('error: ', error)
+      }
+    }
     return {
       ...toRefs(state),
       getListDraft,
@@ -182,6 +226,8 @@ export default {
       pageChange,
       onOpen,
       formDeploy,
+      itemDel,
+      itemRollback,
     }
   },
   mounted () {
@@ -202,6 +248,13 @@ export default {
     font-weight: bolder;
   }
 
+  .del-some {
+    position: relative;
+    top: -30px;
+    color: white;
+    background-color: #f53f3f;
+  }
+
   .operate-btn {
     padding: 0 8px;
     color: #0089ff;
@@ -212,6 +265,10 @@ export default {
 
     &.deploy {
       color: #690;
+    }
+
+    &.back {
+      color: #fb8c00;
     }
   }
 }
