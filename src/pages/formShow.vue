@@ -29,7 +29,6 @@ export default {
   setup () { 
     const state = reactive({ })
     const formConfig  = useFormConfigStore()
-    console.log('formConfig: ', formConfig)
     const route = useRoute()
     console.log(route.query)
     const initJson = async ()=>{

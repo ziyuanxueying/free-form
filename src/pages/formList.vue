@@ -46,7 +46,7 @@
             <a-button
               class="operate-btn deploy"
               type="text"
-              @click="itemEdit(record)"
+              @click="$modal.info({ title:`点击确认发布 ${record.title} 表单`, onOpen:onOpen(record), onBeforeOk: formDeploy})"
             >
               发布
             </a-button>
@@ -119,7 +119,8 @@ export default {
       pagination:{ current: 1,totla: 0 },
       dataDeploy:[],
       pageDeploy:{ current: 1,totla: 0 },
-      tableLoad: false
+      tableLoad: false,
+      selectItem: undefined
     })
     const getListDraft = async ()=>{
       let data = await post('/formDef/query')
@@ -128,6 +129,7 @@ export default {
       state.pagination.current = data.number 
       state.pagination.total = data.totalElements
     }
+    // 获取发布表单列表
     const getListDeploy = async ()=>{
       let data = await post('/formDefDeploy/query')
       state.tableLoad = false
@@ -156,6 +158,21 @@ export default {
       state.pagination.current = page
       getListDraft()
     }
+   
+    const onOpen = (item)=> {
+      state.selectItem = item
+    }
+    // 部署表单
+    const formDeploy = async (done)=> {
+      try {
+        let data = await post(`/formDefDeploy/deploy/${state.selectItem.formId}`)
+        console.log('data: ', data)
+        getListDeploy()
+        done()
+      } catch (error) {
+        done()
+      }
+    }
     return {
       ...toRefs(state),
       getListDraft,
@@ -163,6 +180,8 @@ export default {
       itemEdit,
       formChange,
       pageChange,
+      onOpen,
+      formDeploy,
     }
   },
   mounted () {
