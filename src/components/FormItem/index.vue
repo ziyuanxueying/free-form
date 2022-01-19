@@ -37,10 +37,8 @@ export default {
     }
   },
   setup (props) {
-    console.log('props: ', props)
     const components = getAllComponents()
     const item = components[props.element.type] || null
-    console.log('item: ',props.pageFrom, item)
     
     let settings = reactive({})
     const propsVal = reactive(props) 
@@ -57,11 +55,7 @@ export default {
     }
 
     const delectItem = (element)=>{
-      console.log(element,11111111111111111111)
-      const fieldId = element.fieldId
-      const formItemList = formConfig.formItemList
-      let res = getComponentsObj(formItemList,fieldId)
-      console.log('res: ', res)
+      let res = getComponentsObj(formConfig.formItemList,element.fieldId)
       if(res) {
         res.parentArr.splice(res.index,1)
       }

@@ -46,6 +46,7 @@ export function getAllComponents () {
  * @returns 
  */
 export function getComponentsObj (arr,fieldId) {
+  console.log('getComponentsObj arr,fieldId: ', arr,fieldId)
   for(let i = 0; i < arr.length; i++) {
     let item = arr[i]
     if(item.fieldId === fieldId) {

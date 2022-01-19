@@ -16,6 +16,11 @@ export const routes = [
     name: 'formList',
     component: () => import('../pages/formList.vue')
   },
+  {
+    path: '/formShow',
+    name: 'formShow',
+    component: () => import('../pages/formShow.vue')
+  },
 ]
 
 const router = createRouter({

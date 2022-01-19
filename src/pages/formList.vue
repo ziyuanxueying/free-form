@@ -32,9 +32,16 @@
             <a-button
               class="operate-btn"
               type="text"
-              @click="itemEdit(record)"
+              @click="itemEdit(record,'configPage')"
             >
               编辑
+            </a-button>
+            <a-button
+              class="operate-btn preview"
+              type="text"
+              @click="itemEdit(record,'formShow')"
+            >
+              预览
             </a-button>
             <a-button
               class="operate-btn deploy"
@@ -130,10 +137,10 @@ export default {
     }
     getListDraft()
     const router = useRouter()
-    const itemEdit = async (item)=>{
+    const itemEdit = async (item,path)=>{
       console.log('item: ', item)
       router.push({
-        path: '/configPage',
+        path: `/${path}`,
         query: { id: item.formId },
       })
     //   let data = await post(`/formDef/get/${item.formId}`)
@@ -179,6 +186,10 @@ export default {
   .operate-btn {
     padding: 0 8px;
     color: #0089ff;
+
+    &.preview {
+      color: #80cbc4;
+    }
 
     &.deploy {
       color: #690;

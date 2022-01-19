@@ -7,14 +7,13 @@
   >
     <a-input-number
       :placeholder="placeholder"
-      v-model="modelVal[fileId]"
+      v-model="form[proto]"
       allow-clear
     />
   </a-form-item>
 </template>
 <script>
 export { default as setting } from './setting'
-import { reactive,watch } from 'vue'
 export default {
   name: 'NxInputNum',
   nameCN: '数字输入框',
@@ -40,6 +39,9 @@ export default {
     disabled:{
       type: Boolean,
     },
+    proto:{  //绑定的key
+      type: String,
+    },
     form:{
       type:Object,
       default () {
@@ -47,15 +49,5 @@ export default {
       }
     }
   },
-  setup (props) {
-    const modelVal = reactive(props.form)
-    watch(()=>props.defaultVal,()=>{
-      console.log('props.defaultVal: ', props.defaultVal)
-      modelVal[props.fileId] = props.defaultVal
-    })
-    return {
-      modelVal,
-    }
-  }
 }
 </script>

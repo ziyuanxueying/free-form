@@ -17,7 +17,6 @@
         存为草稿
       </a-button>
     </div>
-
     <a-form :model="form" class="nxf-layout-content-form">
       <draggable
         v-model="formConfig.formItemList"
