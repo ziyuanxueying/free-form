@@ -37,6 +37,7 @@ export default {
     }
   },
   setup (props) {
+    console.log('props: ',props.pageFrom, props)
     const components = getAllComponents()
     const item = components[props.element.type] || null
     
@@ -48,6 +49,11 @@ export default {
     if(props.pageFrom === 'setting') {
       settings = propsVal.form
       proto.value = propsVal.element.configList.fileId
+    }
+    else if(props.pageFrom === 'setform') {
+      settings = formConfig.formSet
+      proto.value = propsVal.element.configList.fileId
+      console.log('fileId: ', propsVal.element.configList.fileId)
     }
     else if(props.pageFrom === 'content') {
       settings = propsVal.element.configList

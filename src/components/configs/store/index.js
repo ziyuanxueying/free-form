@@ -18,6 +18,7 @@ export const useFormConfigStore = defineStore('formConfig', {
         size: 'medium',
         labelSuffix: ':',
         formTitle: undefined,
+        formId: undefined,
       }
     }
   },

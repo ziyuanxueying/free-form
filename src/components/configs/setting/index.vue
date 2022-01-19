@@ -7,6 +7,7 @@
       表单设置
     </a-radio>
   </a-radio-group>
+  {{ settingType==='form' }}
   <Setting v-show="settingType==='item'"/>
   <SetForm v-show="settingType==='form'"/>
 </template>
