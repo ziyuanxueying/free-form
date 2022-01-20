@@ -6,5 +6,12 @@ export default [
       required: true,
       fileId:'formTitle',
     }
+  },
+  {
+    type: 'NxInput',
+    configList:{
+      label:'表单标题',
+      fileId:'formTitle',
+    }
   }
 ]

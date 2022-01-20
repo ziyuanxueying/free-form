@@ -1,13 +1,15 @@
 <template>
   <a-form-item
-    :field="key"
+    :field="proto"
     :label="label"
-    :required="false"
+    :required="required"
+    :disabled="disabled"
   >
     <a-textarea
-      placeholder="Please enter something"
+      :placeholder="placeholder"
       allow-clear
       :max-length="maxLength"
+      v-model="form[proto]"
     />
   </a-form-item>
 </template>
@@ -28,6 +30,29 @@ export default {
     maxLength: {
       type: Number,
       default: 0
+    },
+    required:{
+      type: Boolean,
+      default: false
+    },
+    placeholder:{
+      type: String,
+      default: '请输入内容'
+    },
+    disabled:{
+      type: Boolean,
+    },
+    defaultVal:{
+      type: String,
+    },
+    proto:{  //绑定的key
+      type: String,
+    },
+    form:{
+      type:Object,
+      default () {
+        return null
+      }
     }
   },
 }

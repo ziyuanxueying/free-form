@@ -7,7 +7,7 @@ let tableSetting = {
       }
     ],
     colContent:[[]],
-    remote: 'true',
+    remote: false,
   },
 }
 export default tableSetting

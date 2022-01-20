@@ -32,7 +32,7 @@ export const setting = [
       fileId:'required',
     }
   },{
-    type: 'NxInput',
+    type: 'NxSwitch',
     configList:{
       label:'是否远程',
       fileId:'remote',
