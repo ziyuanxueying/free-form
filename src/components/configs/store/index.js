@@ -9,14 +9,16 @@ export const useFormConfigStore = defineStore('formConfig', {
       //用于存放表单结构及组件样式
       formItemList: [],
       //用于存放表单全局样式
-      formStyle:{
+      formSet:{
         hideLabel: false,
         labelWidth: '85px',
         labelPosition: 'right',
         showRequiredAsterisk: true,
         showVerificationMessage: true,
         size: 'medium',
-        labelSuffix: ':'
+        labelSuffix: ':',
+        formTitle: undefined,
+        formId: undefined,
       }
     }
   },
@@ -25,7 +27,7 @@ export const useFormConfigStore = defineStore('formConfig', {
       return {
         fieldId: this.fieldId,
         formItemList: this.formItemList,
-        formStyle: this.formStyle,
+        formSet: this.formSet,
       }
     }, 
   },
@@ -34,7 +36,7 @@ export const useFormConfigStore = defineStore('formConfig', {
       res = JSON.parse(res)
       this.fieldId = res.fieldId
       this.formItemList = res.formItemList
-      this.formStyle = res.formStyle
+      this.formSet = res.formSet || this.formSet
     } ,
   }
 })

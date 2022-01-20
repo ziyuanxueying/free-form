@@ -37,7 +37,7 @@ export default {
       type: Object
     },
     remote:{
-      type: String
+      type: Boolean
     },
     form:{
       type:Object,

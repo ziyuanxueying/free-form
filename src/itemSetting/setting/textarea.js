@@ -23,11 +23,26 @@ export const setting = [
       label:'必填',
       fileId:'required',
     }
-  },{
+  },
+  {
     type: 'NxInputNum',
     configList:{
       label:'最大长度',
       fileId:'maxLength',
+    }
+  },
+  {
+    type: 'NxInput',
+    configList:{
+      label:'占位符',
+      fileId:'placeholder',
+    }
+  },
+  {
+    type: 'NxInput',
+    configList:{
+      label:'默认值',
+      fileId:'defaultVal',
     }
   },
 ]

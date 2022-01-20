@@ -3,9 +3,10 @@ export const settingName = 'NxTable'
 
 export const setting = [
   {
-    type: 'NxInput',
+    type: 'NxSwitch',
     configList:{
       fileId:'remote',
+      label:'是否远程'
     }
   },
   {

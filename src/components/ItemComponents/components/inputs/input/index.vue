@@ -1,8 +1,10 @@
 <template>
   <a-form-item
-    :field="fileId"
+    :field="proto"
     :label="label"
     :required="required"
+    :disabled="disabled"
+    :validate-trigger="['change','input']"
   >
     <a-input
       :placeholder="placeholder"
@@ -42,6 +44,9 @@ export default {
       default () {
         return null
       }
+    },
+    disabled:{
+      type: Boolean,
     },
     proto:{  //绑定的key
       type: String,

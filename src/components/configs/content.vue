@@ -1,15 +1,6 @@
 <template>
   <div class="nxf-layout-content">
     <div class="flex-row">
-      <span>
-        表单标题：
-      </span>
-      <a-input
-        :style="{width:'200px'}"
-        placeholder="请输入表单标题"
-        v-model="formTitle"
-        allow-clear
-      />
       <a-button @click="visible = true">
         查看JSON
       </a-button>
@@ -17,7 +8,6 @@
         存为草稿
       </a-button>
     </div>
-
     <a-form :model="form" class="nxf-layout-content-form">
       <draggable
         v-model="formConfig.formItemList"
@@ -60,7 +50,7 @@ import FormItem from '../FormItem'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import{ post } from '@request'
-
+import { useRoute } from 'vue-router'
 export default {
   components: {
     VueJsonPretty,
@@ -82,14 +72,15 @@ export default {
       formConfig.fieldId = element.fieldId
     }
     let form = ref({})
+    const route = useRoute()
+    console.log(route.query)
     const initJson = async ()=>{
-    //   formConfig.initJson('91a82210-1379-4e03-9f3c-81f71a0bd07b')
-      let res = await post('/formDef/get/91a82210-1379-4e03-9f3c-81f71a0bd07b')
+      let res = await post(`/formDef/get/${route.query.id}`)
       formConfig.initJson(res.formDefJson)
-    //   console.log('aaa: ', aaa.formDefJson)
-    //   formConfig = JSON.parse(aaa.formDefJson)
     }
-    initJson()
+    if(route.query.id) {
+      initJson()
+    }
     const saveAsDeaft = async ()=>{
       let aaa = await post('/formDef/create',{ projectName:'oa',title: state.formTitle,formDefJson: JSON.stringify(formConfig.toJSON)  })
       console.log('aaa: ', aaa)

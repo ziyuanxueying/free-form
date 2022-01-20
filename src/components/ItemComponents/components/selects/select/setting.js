@@ -3,7 +3,7 @@ let selectSetting = {
   label:'下拉框',
   placeholder: '请输入内容',
   required: 'false',
-  remote: 'true',
+  remote: true ,
   columns: [
     { value: '', key: '', }
   ],
