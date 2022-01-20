@@ -1,10 +1,12 @@
 {
-  "name": "hello-world",
+  "name": "nx-free-form",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "main": "src/main.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "lib": "vue-cli-service build --target lib --name nx-free-from --dest lib ./src/pages/index.js",
     "lint": "vue-cli-service lint",
     "lint:eslint": "eslint '**/*.{js,vue}' --fix",
     "commit": "git-cz"

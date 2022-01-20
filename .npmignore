@@ -1,0 +1,11 @@
+// 排除哪些文件不上传
+.git
+.vscode
+node_modules
+
+//无法被排除的文件
+//package.json
+//README
+//CHANGES / CHANGELOG / HISTORY
+//LICENSE / LICENCE
+//NOTICE
