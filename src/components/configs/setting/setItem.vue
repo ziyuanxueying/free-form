@@ -17,7 +17,7 @@ import { ref } from '@vue/reactivity'
 import { watch } from '@vue/runtime-core'
 import FormItem from '../../FormItem'
 import settingObj from '@/itemSetting'
-import { getComponentsObj } from '@utils'
+import { getComponentsObj } from '../../../utils'
 export default {
   components: { FormItem },
   setup () {

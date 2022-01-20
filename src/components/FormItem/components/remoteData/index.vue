@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-import{ get } from '@request'
+import{ get } from '../../../../tools/request'
 export default {
   name: 'NxRemoteData',
   nameCN: '远程数据',

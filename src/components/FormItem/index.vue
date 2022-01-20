@@ -12,9 +12,8 @@
   </span>
 </template>
 <script>
-import { getAllComponents } from '@utils'
+import { getAllComponents ,getComponentsObj } from '../../utils'
 import { reactive,ref } from '@vue/reactivity'
-import { getComponentsObj } from '@utils'
 import { useFormConfigStore } from '../configs/store'
 // import { watch } from '@vue/runtime-core'
 export default {

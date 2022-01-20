@@ -111,7 +111,7 @@
 
 <script>
 import { reactive, toRefs, } from 'vue'
-import{ post } from '@request'
+import{ post } from '../tools/request'
 import { useRouter } from 'vue-router'
 export default {
   data () { 

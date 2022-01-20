@@ -49,7 +49,7 @@ import draggable from 'vuedraggable'
 import FormItem from '../FormItem'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
-import{ post } from '@request'
+import{ post } from '../../tools/request'
 import { useRoute } from 'vue-router'
 export default {
   components: {

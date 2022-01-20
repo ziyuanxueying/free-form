@@ -4,7 +4,7 @@
 <script>
 import { toRefs, reactive } from 'vue'
 import { getQueryString, toFeishu } from './tools/common'
-import{ post } from '@request'
+import{ post } from './tools/request'
 import { useRouter } from 'vue-router'
 export default {
   setup () {

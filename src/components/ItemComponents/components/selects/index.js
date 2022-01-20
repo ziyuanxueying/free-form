@@ -1,4 +1,4 @@
-import { getModulesFiles } from '@utils'
+import { getModulesFiles } from '../../../../utils'
 
 const modulesFiles = require.context('../selects', true, /index\.vue$/)
 const modules = getModulesFiles(modulesFiles)
