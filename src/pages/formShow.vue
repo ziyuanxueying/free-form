@@ -15,7 +15,7 @@
 import { reactive, toRefs, } from 'vue'
 import { useRoute } from 'vue-router'
 import FormItem from '../components/FormItem'
-import { useFormConfigStore } from '../components/configs/store'
+import { useFormConfigStore } from '@store'
 import{ post } from '@request'
 export default {
   components: {
