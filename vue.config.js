@@ -8,6 +8,7 @@ module.exports = {
       .set('@', resolve('src'))
       .set('@utils', resolve('src/utils/index.js'))
       .set('@request', resolve('src/tools/request.js'))
+      .set('@store', resolve('src/store'))
   },
   // 配置 webpack-dev-server 行为
   devServer: {

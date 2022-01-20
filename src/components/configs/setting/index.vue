@@ -13,8 +13,8 @@
 
 <script>
 import { reactive, toRefs } from 'vue'
-import Setting from './setItem.vue'
-import SetForm from './setForm.vue'
+import Setting from './setItem'
+import SetForm from './setForm'
 export default {
   components:{
     Setting,

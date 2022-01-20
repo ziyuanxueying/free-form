@@ -14,7 +14,7 @@
 <script>
 import Items from '@/components/configs/items.vue'
 import Content from '@/components/configs/content.vue'
-import Setting from '@/components/configs/setting'
+import Setting from '@/components/configs/setting/index.vue'
 export default {
   components:{
     Items,

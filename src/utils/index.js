@@ -69,3 +69,40 @@ export function getComponentsObj (arr,fieldId) {
   }
   return false
 }
+/**
+ * 根据组件列表获取树状结构
+ * @param {*} formItemList 组件列表
+ * @returns 
+ */
+// import { toRaw } from '@vue/reactivity'
+export function getTree (formItemList) {
+  let treeData = []
+  formItemList.forEach(item=>{
+    // console.log(1111,toRaw(item.configList))
+    let obj = null
+    if(item.configList.layout) {
+      obj =  {
+        title: item.moduleName,
+        key: item.moduleName + Math.random(),
+        children:[],
+        disabled: true,
+      }
+      item.configList.layout.colContent.forEach((citem,index)=>{
+        obj.children.push({
+          title: `容器${index + 1}`,
+          key: Math.random(),
+          children:getTree(citem),
+          disabled: true,
+        })
+      })
+    }else{
+      obj =  {
+        title: item.configList?.label,
+        key: item.configList?.fileId,
+      }
+    }
+    treeData.push(obj)
+  })
+  console.log('treeData',treeData)
+  return treeData
+}

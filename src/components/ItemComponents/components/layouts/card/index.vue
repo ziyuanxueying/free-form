@@ -19,7 +19,7 @@
 </template>
 <script>
 export { default as setting } from './setting'
-import { useFormConfigStore } from '@/components/configs/store'
+import { useFormConfigStore } from '@store'
 import FormItem from '@/components/FormItem'
 import draggable from 'vuedraggable'
 export default {

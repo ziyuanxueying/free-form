@@ -4,7 +4,8 @@ import {
   IconApps,
   IconBug,
   IconBulb,
-  IconUpload
+  IconUpload,
+  IconDelete
 } from '@arco-design/web-vue/es/icon'
 
 const iconComponents = {
@@ -13,7 +14,8 @@ const iconComponents = {
   IconApps,
   IconBug,
   IconBulb,
-  IconUpload
+  IconUpload,
+  IconDelete
 }
 
 export default{
