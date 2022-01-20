@@ -16,8 +16,8 @@ import { useFormConfigStore } from '@store'
 import { ref } from '@vue/reactivity'
 import { watch } from '@vue/runtime-core'
 import FormItem from '../../../FormItem'
-import settingObj from '@/itemSetting'
-import { getComponentsObj } from '../../../utils'
+import settingObj from '../../../../itemSetting'
+import { getComponentsObj } from '../../../../utils'
 export default {
   components: { FormItem },
   setup () {
@@ -31,12 +31,12 @@ export default {
       }else{
         form.value = item.configList
       }
-      let _s = settingObj[item.type] || []
-      _s.forEach(item=>{
+      let set = settingObj[item.type] || []
+      set.forEach(item=>{
         item.id = Math.random()
       })
       //组件配置
-      setting.value = _s
+      setting.value = set
     }
     watch(()=>formConfig.fieldId,()=>{
     //获取当前选中组件的唯一id
