@@ -98,7 +98,7 @@ export function getTree (formItemList,disabled) {
     }else{
       obj =  {
         title: item.configList ? item.configList.label : undefined,
-        key: item.configList ? item.configList.fileId : undefined,
+        key: item.configList ? item.fieldId : undefined,
       }
     }
     treeData.push(obj)

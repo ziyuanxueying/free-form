@@ -30,6 +30,7 @@ export const useFormConfigStore = defineStore('formConfig', {
         fieldId: this.fieldId,
         formItemList: this.formItemList,
         formSet: this.formSet,
+        pathSet: this.pathSet,
       }
     }, 
   },
