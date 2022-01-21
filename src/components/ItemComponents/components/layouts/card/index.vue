@@ -12,7 +12,7 @@
         </div>
       </template>
     </draggable>
-    <a-button type="outline" v-if="layout.ifAdd=='true'" style="width: 100%;">
+    <a-button type="outline" v-if="layout.ifAdd" style="width: 100%;">
       添加
     </a-button>
   </div>

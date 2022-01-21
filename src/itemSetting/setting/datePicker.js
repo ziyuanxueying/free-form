@@ -30,6 +30,13 @@ export const setting = [
     }
   },
   {
+    type: 'NxInput',
+    configList:{
+      label:'日期格式',
+      fileId:'format',
+    }
+  },
+  {
     type: 'NxSwitch',
     configList:{
       label:'是否必填',
@@ -41,13 +48,6 @@ export const setting = [
     configList:{
       label:'是否禁用',
       fileId:'disabled',
-    }
-  },
-  {
-    type: 'NxInput',
-    configList:{
-      label:'日期格式',
-      fileId:'format',
     }
   },
 ]

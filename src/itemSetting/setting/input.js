@@ -43,4 +43,18 @@ export const setting = [
       fileId:'disabled',
     }
   },
+  {
+    type: 'NxInput',
+    configList:{
+      label:'正则匹配',
+      fileId:'match',
+    }
+  },
+  {
+    type: 'NxInput',
+    configList:{
+      label:'正则错误提示',
+      fileId:'matchMsg',
+    }
+  },
 ]

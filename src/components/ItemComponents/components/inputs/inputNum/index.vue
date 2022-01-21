@@ -9,6 +9,8 @@
       :placeholder="placeholder"
       v-model="form[proto]"
       allow-clear
+      :min="min" 
+      :max="max"
     />
   </a-form-item>
 </template>
@@ -38,6 +40,12 @@ export default {
     },
     disabled:{
       type: Boolean,
+    },
+    min:{
+      type: Number, 
+    },
+    max:{
+      type: Number, 
     },
     proto:{  //绑定的key
       type: String,

@@ -2,7 +2,7 @@ export const settingName = 'NxCard'
 
 export const setting = [
   {
-    type: 'NxInput',
+    type: 'NxSwitch',
     configList:{
       defaultValue: false,
       label:'是否可添加',

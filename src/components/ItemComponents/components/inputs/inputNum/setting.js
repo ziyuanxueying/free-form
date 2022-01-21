@@ -5,5 +5,7 @@ let inputSetting = {
   defaultVal: undefined,
   required: false,
   disabled: false,
+  min:-Infinity,
+  max:Infinity
 }
 export default inputSetting

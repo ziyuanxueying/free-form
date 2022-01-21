@@ -51,6 +51,6 @@ export default {
     proto:{  //绑定的key
       type: String,
     }
-  },
+  }
 }
 </script>

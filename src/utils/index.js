@@ -75,7 +75,7 @@ export function getComponentsObj (arr,fieldId) {
  * @returns 
  */
 // import { toRaw } from '@vue/reactivity'
-export function getTree (formItemList) {
+export function getTree (formItemList,disabled) {
   let treeData = []
   formItemList.forEach(item=>{
     // console.log(1111,toRaw(item.configList))
@@ -83,16 +83,16 @@ export function getTree (formItemList) {
     if(item.configList.layout) {
       obj =  {
         title: item.moduleName,
-        key: item.moduleName + Math.random(),
+        key: item.fieldId,
         children:[],
-        disabled: true,
+        disabled: disabled,
       }
       item.configList.layout.colContent.forEach((citem,index)=>{
         obj.children.push({
           title: `容器${index + 1}`,
-          key: Math.random(),
+          key: `${item.fieldId}-${index}`,
           children:getTree(citem),
-          disabled: true,
+          disabled: disabled,
         })
       })
     }else{

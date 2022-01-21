@@ -19,18 +19,24 @@ export const setting = [
     }
   },
   {
-    type: 'NxInput',
+    type: 'NxSwitch',
     configList:{
-      defaultValue: 'false',
-      label:'必填',
+      label:'默认值',
+      fileId:'defaultVal',
+    }
+  },
+  {
+    type: 'NxSwitch',
+    configList:{
+      label:'是否必填',
       fileId:'required',
     }
   },
   {
     type: 'NxSwitch',
     configList:{
-      label:'默认值',
-      fileId:'defaultVal',
+      label:'是否禁用',
+      fileId:'disabled',
     }
   },
 ]

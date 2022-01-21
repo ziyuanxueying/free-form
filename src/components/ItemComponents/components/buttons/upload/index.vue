@@ -4,7 +4,7 @@
     :label="label"
     :required="required"
   >
-    <a-upload action="/">
+    <a-upload action="/" :limit="maxCount">
       <template #upload-button>
         <a-button type="primary">
           <template #icon>
@@ -40,6 +40,12 @@ export default {
     text:{
       type: String,
       default: '点击上传'
+    },
+    maxCount:{
+      type: Number,
+      default () {
+        return 0
+      }
     }
   },
 }
