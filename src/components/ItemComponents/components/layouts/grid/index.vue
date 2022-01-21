@@ -67,8 +67,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .nxf-grid-row {
+  margin-bottom: 14px;
   border: 1px dashed #ccc;
-  padding: 5px;
+  padding: 4px;
   min-height: 100px;
 
   .nxf-grid-col {

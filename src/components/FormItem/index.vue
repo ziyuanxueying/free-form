@@ -6,9 +6,7 @@
       :form="settings"
       :proto="proto"
     />
-    <span @click="delectItem(element)" v-if="pageFrom==='content'">
-      删除
-    </span>
+    <icon-delete v-show="pageFrom==='content'" class="del-item" @click="delectItem(element)"/>
   </span>
 </template>
 <script>
@@ -74,3 +72,16 @@ export default {
   },
 }
 </script>
+<style lang="less" scoped>
+.del-item {
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  font-size: 20px;
+  cursor: pointer;
+
+  &:hover {
+    color: #0089ff;
+  }
+}
+</style>

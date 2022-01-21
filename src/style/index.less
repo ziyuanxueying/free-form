@@ -1,4 +1,4 @@
-@border-color: #ccc;
+@border-color: #F0F0F0;
 
 @h1-color: #666;
 
@@ -6,26 +6,28 @@
   display: flex;
   padding: 0 20px;
   min-height: 100vh;
+  background-color: #f7f8fa;
 
   .nxf-layout-left {
-    border: 1px solid @border-color;
     width: 300px;
+    background-color: #f5f6f6;
 
     .nxf-h1 {
       border-bottom: 1px solid @border-color;
       padding: 0 7px;
-      font-size: 20px;
-      color: @h1-color;
-      line-height: 50px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      color: #1d2129;
+      background-color: white;
+      line-height: 40px;
     }
 
     .nxf-layout-item {
-      border-bottom: 1px solid @border-color;
-
       .nxf-layout-item-title {
-        padding: 0 7px;
-        background-color: #eee;
-        line-height: 30px;
+        padding: 0 20px;
+        font-weight: bold;
+        line-height: 40px;
       }
 
       .nxf-layout-item-content {
@@ -34,11 +36,13 @@
           flex-wrap: wrap;
 
           .nxf-component-card {
+            margin: 4px;
             border: 1px solid @border-color;
-            width: 100px;
-            height: 30px;
+            border-radius: 2px;
+            width: 140px;
             text-align: center;
-            line-height: 30px;
+            background-color: white;
+            line-height: 34px;
             box-sizing: border-box;
             cursor: move;
           }
@@ -48,9 +52,10 @@
   }
 
   .nxf-layout-center {
-    border: 1px solid @border-color;
+    margin: 0 14px;
     padding: 30px;
     flex: 1;
+    background-color: white;
 
     .nxf-layout-content {
       width: 100%;
@@ -64,43 +69,51 @@
         height: 100%;
 
         .nxf-layout-content-form-item {
+          position: relative;
+          margin-bottom: 4px;
+          border: 1px solid transparent;
+          padding: 10px;
           width: 100%;
+          box-sizing: border-box;
           cursor: move;
 
-        //   .arco-form-item-content-wrapper {
-        //     > * {
-        //       pointer-events: none;
-        //     }
-        //   }
+          &:hover {
+            border: 1px solid #e6a23c;
+          }
         }
 
         .nxf-layout-content-form-item-active {
-          border: 2px solid #1890ff;
+          border: 1px solid #1890ff;
         }
       }
     }
   }
 
   .nxf-layout-right {
-    border: 1px solid @border-color;
-    padding-right: 20px;
+    padding: 10px;
     width: 320px;
-    .nx-form-setting-title{
-        font-size: 18px;
-        margin:0px 0px 10px 10px;
+    background-color: white;
+
+    .nx-form-setting-title {
+      margin: 0 0 10px 10px;
+      font-size: 18px;
     }
   }
 }
-.nx-form-setting-modal-item{
-    margin-bottom: 10px;
+
+.nx-form-setting-modal-item {
+  margin-bottom: 10px;
 }
-.delIcon{
-    cursor: pointer;
-    font-size: 16px;
-    &:hover{
-        color:red
-    }
+
+.delIcon {
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    color: red;
+  }
 }
+
 .flex-base {
   display: flex;
   align-items: center;

@@ -2,7 +2,6 @@
   <div class="nxf-layout">
     <div class="nxf-layout-left">
       <Items/>
-      23
     </div>
     <div class="nxf-layout-center">
       <Content/>

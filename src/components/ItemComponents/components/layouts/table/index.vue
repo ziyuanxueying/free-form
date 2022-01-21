@@ -85,7 +85,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .nxf-table {
-  padding: 5px;
+  margin-bottom: 14px;
+  padding: 4px;
 
   .nxf-table-td {
     border: 1px dashed #ccc;

@@ -49,8 +49,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .nxf-card {
+  margin-bottom: 14px;
   border: 1px dashed #ccc;
-  padding: 5px;
+  padding: 4px;
 
   .nxf-card-draggable {
     min-height: 100px;
