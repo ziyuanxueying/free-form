@@ -4,13 +4,12 @@
 
 .nxf-layout {
   display: flex;
-  padding: 0 20px;
   min-height: 100vh;
   background-color: #f7f8fa;
 
   .nxf-layout-left {
     width: 300px;
-    background-color: #f5f6f6;
+    background-color: white;
 
     .nxf-h1 {
       border-bottom: 1px solid @border-color;
@@ -24,6 +23,8 @@
     }
 
     .nxf-layout-item {
+      padding: 0 20px;
+
       .nxf-layout-item-title {
         padding: 0 20px;
         font-weight: bold;
@@ -39,7 +40,7 @@
             margin: 4px;
             border: 1px solid @border-color;
             border-radius: 2px;
-            width: 140px;
+            width: 120px;
             text-align: center;
             background-color: white;
             line-height: 34px;
@@ -78,7 +79,7 @@
           cursor: move;
 
           &:hover {
-            border: 1px solid #e6a23c;
+            border: 1px solid #64b4fe;
           }
         }
 
@@ -96,7 +97,7 @@
 
     .nx-form-setting-title {
       margin: 0 0 10px 10px;
-      font-size: 18px;
+      font-size: 16px;
     }
   }
 }

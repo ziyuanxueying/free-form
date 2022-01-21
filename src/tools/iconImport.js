@@ -1,21 +1,13 @@
 import {
-  IconMenuFold,
-  IconMenuUnfold,
-  IconApps,
-  IconBug,
-  IconBulb,
   IconUpload,
-  IconDelete
+  IconDelete,
+  IconCopy,
 } from '@arco-design/web-vue/es/icon'
 
 const iconComponents = {
-  IconMenuFold,
-  IconMenuUnfold,
-  IconApps,
-  IconBug,
-  IconBulb,
   IconUpload,
-  IconDelete
+  IconDelete,
+  IconCopy,
 }
 
 export default{

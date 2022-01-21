@@ -6,13 +6,15 @@
       :form="settings"
       :proto="proto"
     />
-    <icon-delete v-show="pageFrom==='content'" class="del-item" @click="delectItem(element)"/>
+    <icon-copy v-show="pageFrom==='content'" class="item-btn copy" @click="EditItem(element,1)"/>
+    <icon-delete v-show="pageFrom==='content'" class="item-btn del" @click="EditItem(element,0)"/>
   </span>
 </template>
 <script>
 import { getAllComponents ,getComponentsObj } from '../../utils'
 import { reactive,ref } from '@vue/reactivity'
 import { useFormConfigStore } from '../../store'
+import _ from 'lodash'
 // import { watch } from '@vue/runtime-core'
 export default {
   props:{
@@ -57,28 +59,38 @@ export default {
       proto.value = 'defaultVal'
     }
 
-    const delectItem = (element)=>{
+    const EditItem = (element,type)=>{
       let res = getComponentsObj(formConfig.formItemList,element.fieldId)
       if(res) {
-        res.parentArr.splice(res.index,1)
+        let obj = _.cloneDeep(res.obj)
+        obj.fieldId = `${obj.name}_${new Date().getTime()}`
+        type ? res.parentArr.splice(res.index,0,obj) : res.parentArr.splice(res.index,1)
       }
     }
     return {
       item,
       settings,
       proto,
-      delectItem
+      EditItem
     }
   },
 }
 </script>
 <style lang="less" scoped>
-.del-item {
+.item-btn {
   position: absolute;
-  right: 10px;
   bottom: 0;
   font-size: 20px;
   cursor: pointer;
+  color: #666;
+
+  &.copy {
+    right: 40px;
+  }
+
+  &.del {
+    right: 10px;
+  }
 
   &:hover {
     color: #0089ff;
