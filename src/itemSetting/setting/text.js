@@ -20,10 +20,10 @@ export const setting = [
   },{
     type: 'NxInput',
     configList:{
-      defaultValue: '请输入内容',
+      defaultValue: '请输入内容,不超过50字',
       label:'文本内容',
       fileId:'defaultContent',
-      maxLength: 500
+      maxLength: 50
     }
   },{
     type: 'NxInput',

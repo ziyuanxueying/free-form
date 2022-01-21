@@ -2,6 +2,8 @@
   <a-form-item
     :field="fileId"
     :label="label"
+    :required="required"
+    :disabled="disabled"
   >
     <a-switch v-model="form[proto]"/>
   </a-form-item>
@@ -19,14 +21,16 @@ export default {
       type: String,
     },
     required:{
-      type: String,
-      default: 'false'
+      type: Boolean,
     },
     defaultVal:{
       type: Boolean,
     },
     proto:{  //绑定的key
       type: String,
+    },
+    disabled:{
+      type: Boolean,
     },
     form:{
       type:Object,

@@ -4,5 +4,8 @@ let inputSetting = {
   placeholder: '请输入内容',
   required: false,
   defaultVal:'',
+  disabled:false,
+  match:'',
+  matchMsg:''
 }
 export default inputSetting

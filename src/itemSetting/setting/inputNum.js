@@ -31,6 +31,20 @@ export const setting = [
     }
   },
   {
+    type: 'NxInputNum',
+    configList:{
+      label:'最小值',
+      fileId:'min',
+    }
+  },
+  {
+    type: 'NxInputNum',
+    configList:{
+      label:'最大值',
+      fileId:'max',
+    }
+  },
+  {
     type: 'NxSwitch',
     configList:{
       label:'是否必填',

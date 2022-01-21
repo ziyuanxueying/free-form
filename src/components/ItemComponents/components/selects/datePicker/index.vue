@@ -3,6 +3,7 @@
     :field="fileId"
     :label="label"
     :required="required"
+    :disabled="disabled"
   >
     <a-date-picker
       :placeholder="placeholder"
@@ -36,6 +37,9 @@ export default {
     },
     defaultVal:{
       type: String,
+    },
+    disabled:{
+      type: Boolean,
     },
     format:{
       type: String,

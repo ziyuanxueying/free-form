@@ -19,7 +19,9 @@ export const useFormConfigStore = defineStore('formConfig', {
         labelSuffix: ':',
         formTitle: undefined,
         formId: undefined,
-      }
+      },
+      //流程控制
+      pathSet:[]
     }
   },
   getters: {
