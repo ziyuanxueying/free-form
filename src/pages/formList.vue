@@ -110,10 +110,10 @@
 </template>
 
 <script>
-import { reactive, toRefs, } from 'vue'
+import { defineComponent, reactive, toRefs, } from 'vue'
 import{ post } from '../tools/request'
 import { useRouter } from 'vue-router'
-export default {
+export default defineComponent({
   data () { 
     return {
       columns: [
@@ -163,8 +163,8 @@ export default {
       state.pageDeploy.current = data.number - 1
       state.pageDeploy.total = data.totalElements
     }
-    getListDraft()
-    getListDeploy()
+    // getListDraft()
+    // getListDeploy()
     const router = useRouter()
     const itemEdit = async (item,path)=>{
       console.log('item: ', state.selectList)
@@ -235,7 +235,7 @@ export default {
   methods:{
 
   },
-}
+})
 </script>
 
 <style lang="less" scoped>

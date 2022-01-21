@@ -24,8 +24,8 @@ export function getModulesFiles (modulesFiles) {
  * 获取全部组件
  */
 export function getAllComponents () {
-  const formModulesFiles = require.context('@/components/ItemComponents', true, /index\.vue$/)
-  const settingModulesFiles = require.context('@/components/FormItem', true, /index\.vue$/)
+  const formModulesFiles = require.context('../components/ItemComponents', true, /index\.vue$/)
+  const settingModulesFiles = require.context('../components/FormItem', true, /index\.vue$/)
   const formModules = formModulesFiles.keys().reduce((modules, modulePath) => {
     const value = formModulesFiles(modulePath)
     modules[value.default.name] = value.default
@@ -97,8 +97,8 @@ export function getTree (formItemList) {
       })
     }else{
       obj =  {
-        title: item.configList?.label,
-        key: item.configList?.fileId,
+        title: item.configList ? item.configList.label : undefined,
+        key: item.configList ? item.configList.fileId : undefined,
       }
     }
     treeData.push(obj)

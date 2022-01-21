@@ -14,7 +14,7 @@
 <script>
 import { getAllComponents ,getComponentsObj } from '../../utils'
 import { reactive,ref } from '@vue/reactivity'
-import { useFormConfigStore } from '@store'
+import { useFormConfigStore } from '../../store'
 // import { watch } from '@vue/runtime-core'
 export default {
   props:{

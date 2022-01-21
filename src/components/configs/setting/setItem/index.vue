@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import { useFormConfigStore } from '@store'
+import { useFormConfigStore } from '../../../../store'
 import { ref } from '@vue/reactivity'
 import { watch } from '@vue/runtime-core'
 import FormItem from '../../../FormItem'

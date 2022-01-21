@@ -44,7 +44,7 @@
 </template>
 <script>
 import { reactive, ref, toRefs } from '@vue/reactivity'
-import { useFormConfigStore } from '@store'
+import { useFormConfigStore } from '../../store'
 import draggable from 'vuedraggable'
 import FormItem from '../FormItem'
 import VueJsonPretty from 'vue-json-pretty'

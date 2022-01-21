@@ -19,8 +19,8 @@
 </template>
 <script>
 export { default as setting } from './setting'
-import { useFormConfigStore } from '@store'
-import FormItem from '@/components/FormItem'
+import { useFormConfigStore } from '../../../../../store'
+import FormItem from '../../../../FormItem'
 import draggable from 'vuedraggable'
 export default {
   name:'NxCard',

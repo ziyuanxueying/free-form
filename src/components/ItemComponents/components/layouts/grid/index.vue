@@ -21,8 +21,8 @@
 <script>
 export { default as setting } from './setting'
 import { watch } from '@vue/runtime-core'
-import { useFormConfigStore } from '@store'
-import FormItem from '@/components/FormItem'
+import { useFormConfigStore } from '../../../../../store'
+import FormItem from '../../../../FormItem'
 import draggable from 'vuedraggable'
 export default {
   name:'NxGrid',
