@@ -53,7 +53,6 @@ export default {
     FormItem
   },
   setup (props) {
-    console.log('props: ', props)
     const formConfig = useFormConfigStore()
     const checkElement = (element)=>{
       //存放当前选中的组件的fieldId

@@ -50,7 +50,7 @@ import FormItem from '../FormItem'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import{ post } from '../../tools/request'
-import { useRoute } from 'vue-router'
+// import { useRoute } from 'vue-router'
 export default {
   components: {
     VueJsonPretty,
@@ -72,22 +72,22 @@ export default {
       formConfig.fieldId = element.fieldId
     }
     let form = ref({})
-    const route = useRoute()
-    console.log(route.query)
-    const initJson = async ()=>{
-      let res = await post(`/formDef/get/${route.query.id}`)
-      formConfig.initJson(res.formDefJson)
-    }
-    if(route.query.id) {
-      initJson()
-    }
+    // const route = useRoute()
+    // console.log(route.query)
+    // const initJson = async ()=>{
+    //   let res = await post(`/formDef/get/${route.query.id}`)
+    //   formConfig.initJson(res.formDefJson)
+    // }
+    // if(route.query.id) {
+    //   initJson()
+    // }
     const saveAsDeaft = async ()=>{
       let aaa = await post('/formDef/create',{ projectName:'oa',title: state.formTitle,formDefJson: JSON.stringify(formConfig.toJSON)  })
       console.log('aaa: ', aaa)
     }
     return {
       checkElement,
-      initJson,
+      //   initJson,
       saveAsDeaft,
       formConfig,
       form,

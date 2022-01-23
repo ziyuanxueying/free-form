@@ -17,9 +17,16 @@
         v-model="item.value"
       />
     </a-form-item>
-    <!-- <a-button type="outline" style="width: 100%;" @click="()=>add(form[fileId])">
-      添加222
-    </a-button> -->
+    <a-form-item
+      field="remoteUrl"
+      label="地址"
+    >
+      <a-input
+        :placeholder="placeholder"
+        v-model="form[proto]"
+        allow-clear
+      />
+    </a-form-item>
     <a-button type="outline" style="width: 100%;" @click="getData">
       获取数据
     </a-button>

@@ -13,12 +13,12 @@
 </template>
 <script>
 import { useFormConfigStore } from '../../../../store'
-import { ref } from '@vue/reactivity'
-import { watch } from '@vue/runtime-core'
+import { ref,watch } from 'vue'
 import FormItem from '../../../FormItem'
 import settingObj from '../../../../itemSetting'
 import { getComponentsObj } from '../../../../utils'
-export default {
+import { defineComponent, } from 'vue'
+export default defineComponent({
   components: { FormItem },
   setup () {
     const formConfig = useFormConfigStore()
@@ -53,5 +53,5 @@ export default {
       form
     }
   },
-}
+})
 </script>

@@ -36,7 +36,6 @@ export default {
     }
   },
   setup (props) {
-    console.log('props: ',props.pageFrom, props)
     const components = getAllComponents()
     const item = components[props.element.type] || null
     
@@ -52,13 +51,11 @@ export default {
     else if(props.pageFrom === 'setform') {
       settings = formConfig.formSet
       proto.value = propsVal.element.configList.fileId
-      console.log('fileId: ', propsVal.element.configList.fileId)
     }
     else if(props.pageFrom === 'content') {
       settings = propsVal.element.configList
       proto.value = 'defaultVal'
     }
-
     const EditItem = (element,type)=>{
       let res = getComponentsObj(formConfig.formItemList,element.fieldId)
       if(res) {
