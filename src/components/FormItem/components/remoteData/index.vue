@@ -20,7 +20,7 @@
       label="地址"
     >
       <a-input
-        :placeholder="placeholder"
+        placeholder="请输入远程URL地址"
         v-model="form.remoteUrl"
         allow-clear
       />
@@ -35,11 +35,9 @@ export default {
   props:{
     fileId: {
       type: null,
-      default: 'doubleInput'
     },
     label: {
       type: String,
-      default: '输入框'
     },
     form:{
       type:Object, 

@@ -7,6 +7,9 @@
       <a-button @click="saveAsDeaft">
         存为草稿
       </a-button>
+      <a-button @click="itemShow">
+        预览
+      </a-button>
     </div>
     <a-form :model="form" class="nxf-layout-content-form">
       <draggable
@@ -50,7 +53,7 @@ import FormItem from '../FormItem'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import{ post } from '../../tools/request'
-// import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 export default {
   components: {
     VueJsonPretty,
@@ -72,7 +75,7 @@ export default {
       formConfig.fieldId = element.fieldId
     }
     let form = ref({})
-    // const route = useRoute()
+    const router = useRouter()
     // console.log(route.query)
     // const initJson = async ()=>{
     //   let res = await post(`/formDef/get/${route.query.id}`)
@@ -85,12 +88,19 @@ export default {
       let aaa = await post('/formDef/create',{ projectName:'oa',title: state.formTitle,formDefJson: JSON.stringify(formConfig.toJSON)  })
       console.log('aaa: ', aaa)
     }
+    const itemShow =  ()=>{
+      router.push({
+        path: '/formShow',
+      })
+    }
+
     return {
       checkElement,
       //   initJson,
       saveAsDeaft,
       formConfig,
       form,
+      itemShow,
       ...toRefs(state)
     }
   },

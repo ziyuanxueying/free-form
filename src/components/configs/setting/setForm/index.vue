@@ -36,7 +36,6 @@ export default {
   setup () {
     let setting = ref([])
     let form = ref({})
-    console.log(setForm)
     const init = ()=>{
       setForm.forEach(item=>{ item.id = Math.random() })
       setting.value = setForm
