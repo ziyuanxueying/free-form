@@ -1,20 +1,18 @@
 <template>
   <div v-if="form.remote">
     <a-form-item
-      :field="fileId+index"
-      :label="label+index"
-      v-for="(item,index) in form[fileId]"
-      :key="index"
+      :field="fileId"
+      :label="label"
     >
       <a-input
         placeholder="请输入key"
         allow-clear
-        v-model="item.key"
+        v-model="form.keys.key"
       />
       <a-input
         placeholder="请输入value"
         allow-clear
-        v-model="item.value"
+        v-model="form.keys.value"
       />
     </a-form-item>
     <a-form-item
@@ -23,13 +21,10 @@
     >
       <a-input
         :placeholder="placeholder"
-        v-model="form[proto]"
+        v-model="form.remoteUrl"
         allow-clear
       />
     </a-form-item>
-    <a-button type="outline" style="width: 100%;" @click="getData">
-      获取数据
-    </a-button>
   </div>
 </template>
 <script>

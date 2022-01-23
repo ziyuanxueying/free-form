@@ -7,5 +7,10 @@ let selectSetting = {
   columns: [
     { value: '', key: '', }
   ],
+  remoteUrl:'',
+  keys: {
+    key:'',
+    value:''
+  }
 }
 export default selectSetting

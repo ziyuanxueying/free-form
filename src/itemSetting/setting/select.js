@@ -52,12 +52,8 @@ export const setting = [
   {
     type: 'NxRemoteData',
     configList:{
-      columns:[{
-        value: '',
-        key: '',
-      }],
       label:'对应字段',
-      fileId:'columns'
+      fileId:'remoteUrl'
     }
   },
 ]
