@@ -17,11 +17,21 @@
     </a-form-item>
     <a-form-item
       field="remoteUrl"
-      label="地址"
+      label="请求地址"
     >
       <a-input
         placeholder="请输入远程URL地址"
         v-model="form.remoteUrl"
+        allow-clear
+      />
+    </a-form-item>
+    <a-form-item
+      field="remotePath"
+      label="数据路径"
+    >
+      <a-input
+        placeholder="请输入数据路径"
+        v-model="form.remotePath"
         allow-clear
       />
     </a-form-item>

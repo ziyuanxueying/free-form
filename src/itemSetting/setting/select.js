@@ -25,9 +25,8 @@ export const setting = [
       fileId:'placeholder',
     }
   },{
-    type: 'NxInput',
+    type: 'NxSwitch',
     configList:{
-      defaultValue: 'false',
       label:'必填',
       fileId:'required',
     }

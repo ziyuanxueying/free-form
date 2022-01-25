@@ -10,6 +10,14 @@ export const setting = [
 //     }
 //   },
   {
+    type: 'NxInput',
+    configList:{
+      label:'字段标识',
+      fileId:'fileId',
+    }
+    
+  },
+  {
     type: 'NxDoubleInput',
     configList:{
       columns:[{

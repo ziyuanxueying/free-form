@@ -1,7 +1,8 @@
 let cardSetting = {
   layout:{ 
     colContent:[[]],
-    ifAdd:false
+    fileId: 'card',
+    ifAdd:false,
   }
 }
 export default cardSetting

@@ -35,8 +35,7 @@
 </template>
 <script>
 export { default as setting } from './setting'
-import { ref } from '@vue/reactivity'
-import { watch } from '@vue/runtime-core'
+import { ref ,watch } from 'vue'
 import { useFormConfigStore } from '../../../../../store'
 import FormItem from '../../../../FormItem'
 import draggable from 'vuedraggable'

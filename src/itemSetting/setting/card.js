@@ -2,6 +2,14 @@ export const settingName = 'NxCard'
 
 export const setting = [
   {
+    type: 'NxInput',
+    configList:{
+      label:'字段标识',
+      fileId:'fileId',
+    }
+    
+  },
+  {
     type: 'NxSwitch',
     configList:{
       defaultValue: false,

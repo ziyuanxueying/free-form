@@ -26,9 +26,9 @@ export const setting = [
       maxLength: 50
     }
   },{
-    type: 'NxInput',
+    type: 'NxSwitch',
     configList:{
-      defaultValue: 'false',
+      defaultValue: false,
       label:'必填',
       fileId:'required',
     }

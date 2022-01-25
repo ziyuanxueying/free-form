@@ -20,7 +20,7 @@
 </template> 
 <script>
 export { default as setting } from './setting'
-import { watch } from '@vue/runtime-core'
+import { watch } from 'vue'
 import { useFormConfigStore } from '../../../../../store'
 import FormItem from '../../../../FormItem'
 import draggable from 'vuedraggable'

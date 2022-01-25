@@ -8,6 +8,7 @@ let tableSetting = {
     ],
     colContent:[[]],
     remote: false,
+    fileId: 'table',
   },
 }
 export default tableSetting

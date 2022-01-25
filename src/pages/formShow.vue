@@ -1,23 +1,7 @@
 <template>
   <div class="show-view">
     {{ formConfig.toJSON }}
-    <a-form :model="form" class="nxf-layout-content-form">
-      <a-form-item
-        v-for="(item,index) in setList"
-        :key="index"
-        :field="item.fileId"
-        :label="item.label"
-        :required="item.required"
-        :disabled="item.disabled"
-        :validate-trigger="['change','input']"
-      >
-        <a-input
-          :placeholder="item.placeholder"
-          v-model="form[item.fileId]"
-          allow-clear
-        />
-      </a-form-item>
-    </a-form>
+    <Preview :formTag="form" :configList="setList"/>
     {{ form }}
   </div>
 </template>
@@ -27,11 +11,13 @@ import { reactive, toRefs, } from 'vue'
 // import { useRoute } from 'vue-router'
 import FormItem from '../components/FormItem'
 import { useFormConfigStore } from '../store'
+import Preview from './componemts/preview.vue'
 // import{ post } from '../tools/request'
 import _ from 'lodash'
 export default {
   components: {
-    FormItem
+    FormItem,
+    Preview
   },
   data () { 
     return {
@@ -42,18 +28,26 @@ export default {
     const formConfig  = useFormConfigStore()
     const state = reactive({ 
       form:{},
-      setList : _.cloneDeep(formConfig.formItemList)
+      setList : _.cloneDeep(formConfig.formItemList),
+      layout:['NxTable','NxCard','NxGrid'],
     })
-    state.setList.map(item=>{
-      _.merge(item, item.configList)
-      console.log('item: ', item)
-      delete item.configList
-      if(item.defaultVal) {
-        console.log(item.defaultVal)
-        state.form[item.fileId] = item.defaultVal
-      }
-      return item
-    })
+    // state.setList.map(item=>{
+    //   _.merge(item, item.configList)
+    //   delete item.configList
+    //   if(state.layout.includes(item.name)) {
+    //     _.merge(item, item.layout)
+    //     delete item.layout
+    //     state.form[item.fileId] = {}
+    //   } 
+    //   console.log('form: ', state.form)
+    //   if(item.defaultVal) {
+    //     console.log(item.defaultVal)
+    //     state.form[item.fileId] = item.defaultVal
+    //   }
+      
+    //   return item
+    // })
+    
     // const route = useRoute()
     // console.log(route.query)
     // const initJson = async ()=>{
