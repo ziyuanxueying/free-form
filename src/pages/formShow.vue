@@ -1,6 +1,5 @@
 <template>
   <div class="show-view">
-    {{ formConfig.toJSON }}
     <Preview :formTag="form" :configList="setList"/>
     {{ form }}
   </div>
@@ -47,7 +46,7 @@ export default {
       
     //   return item
     // })
-    
+
     // const route = useRoute()
     // console.log(route.query)
     // const initJson = async ()=>{
