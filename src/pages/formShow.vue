@@ -1,63 +1,67 @@
 <template>
-  <div class="show-view">
-    <Preview :formTag="form" :configList="setList"/>
-    {{ form }}
+  <div>
+    <a-form :model="formConfig.formSet" class="nxf-layout-content-form preview-form">
+      <FormItem
+        v-for="(element,index) in formConfig.formItemList "
+        :element="element"
+        :key="index"
+        pageFrom="show"
+      />
+      <div class="flex-between">
+        <a-button type="outline">
+          保存
+        </a-button>   
+        <a-button type="outline" @click="visible = true">
+          查看格式
+        </a-button>
+      </div>
+    </a-form>
+
+    <a-modal
+      :width="600"
+      v-model:visible="visible"
+      title="查看格式"
+    >
+      <a-typography>
+        {{ jsonForm }}
+      </a-typography>
+    </a-modal>
   </div>
 </template>
 
 <script>
 import { reactive, toRefs, } from 'vue'
-// import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import FormItem from '../components/FormItem'
 import { useFormConfigStore } from '../store'
-import Preview from './componemts/preview.vue'
-// import{ post } from '../tools/request'
-import _ from 'lodash'
+import{ post } from '../tools/request'
+import{ getForm } from '../utils'
 export default {
   components: {
-    FormItem,
-    Preview
+    FormItem
   },
   data () { 
     return {
-
+      visible: false
     }
   },
   setup () { 
+    const state = reactive({ })
     const formConfig  = useFormConfigStore()
-    const state = reactive({ 
-      form:{},
-      setList : _.cloneDeep(formConfig.formItemList),
-      layout:['NxTable','NxCard','NxGrid'],
-    })
-    // state.setList.map(item=>{
-    //   _.merge(item, item.configList)
-    //   delete item.configList
-    //   if(state.layout.includes(item.name)) {
-    //     _.merge(item, item.layout)
-    //     delete item.layout
-    //     state.form[item.fileId] = {}
-    //   } 
-    //   console.log('form: ', state.form)
-    //   if(item.defaultVal) {
-    //     console.log(item.defaultVal)
-    //     state.form[item.fileId] = item.defaultVal
-    //   }
-      
-    //   return item
-    // })
-
-    // const route = useRoute()
-    // console.log(route.query)
-    // const initJson = async ()=>{
-    //   let res = await post(`/formDef/get/${route.query.id}`)
-    //   formConfig.initJson(res.formDefJson)
-    // }
-    // if(route.query.id) {
-    //   initJson()
-    // }
+    const route = useRoute()
+    console.log(route.query)
+    const initJson = async ()=>{
+      let res = await post(`/formDef/get/${route.query.id}`)
+      formConfig.initJson(res.formDefJson)
+    }
+    if(route.query.id) {
+      initJson()
+    }
+    const jsonForm = getForm(formConfig.formItemList)
+    console.log('getForm', jsonForm)
     return {
       formConfig,
+      jsonForm,
       ...toRefs(state),
     }
   },
@@ -70,7 +74,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.show-view {
+.preview-form {
   margin: 20px auto;
   width: 600px;
 }

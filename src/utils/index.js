@@ -105,3 +105,32 @@ export function getTree (formItemList,disabled) {
   console.log('treeData',treeData)
   return treeData
 }
+
+/**
+ * 根据组件列表获取form结构
+ * @param {*} formItemList 组件列表
+ * @returns 
+ */
+// import { toRaw } from '@vue/reactivity'
+export function getForm (formItemList) {
+  let form = {}
+  formItemList.forEach(item=>{
+    let configList = item.configList
+    //布局组件
+    if(configList.layout) {
+      let obj = {}
+      configList.layout.colContent.forEach((citem)=>{
+        let cForm = getForm(citem)
+        Object.assign(obj,cForm)
+      })
+      if(configList.layout.ifAdd) {
+        form[configList.layout.fileId] = [obj]
+      }else{
+        Object.assign(form,obj)
+      }
+    }else{
+      form[configList.fileId] = configList.defaultVal || null
+    }
+  })
+  return form
+}
