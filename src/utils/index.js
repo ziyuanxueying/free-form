@@ -73,7 +73,6 @@ export function getComponentsObj (arr,fieldId) {
  * @param {*} formItemList 组件列表
  * @returns 
  */
-// import { toRaw } from '@vue/reactivity'
 export function getTree (formItemList,disabled) {
   let treeData = []
   formItemList.forEach(item=>{
@@ -105,7 +104,6 @@ export function getTree (formItemList,disabled) {
   console.log('treeData',treeData)
   return treeData
 }
-
 /**
  * 根据组件列表获取form结构
  * @param {*} formItemList 组件列表

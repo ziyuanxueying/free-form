@@ -3,10 +3,12 @@
     :field="fileId"
     :label="label"
   >
-    <a-select v-model="form[fileId]" :placeholder="placeholder">
-      <a-option v-for="(item,index) in columns" :key="index">
-        {{ item.value }}
-      </a-option>
+    <a-select v-model="form[proto]" :placeholder="placeholder">
+      <span v-if="!remote">
+        <a-option v-for="(item,index) in columns" :key="index">
+          {{ item.value }}
+        </a-option>
+      </span>
     </a-select>
   </a-form-item>
 </template>
@@ -30,8 +32,8 @@ export default {
       default: '请选择'
     },
     required:{
-      type: String,
-      default: 'false'
+      type: Boolean,
+      default: false
     },
     columns:{
       type: Object
@@ -44,6 +46,9 @@ export default {
       default () {
         return null
       }
+    },
+    proto:{  //绑定的key
+      type: String,
     }
   },
   setup (props) {
