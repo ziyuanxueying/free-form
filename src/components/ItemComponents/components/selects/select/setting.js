@@ -2,11 +2,11 @@ let selectSetting = {
   fileId: 'select',
   label:'下拉框',
   placeholder: '请输入内容',
-  defaultVal:'',
+  defaultVal:null,
   required: false,
   remote: true ,
   columns: [
-    { value: '', key: '', }
+    { value: 'value', key: 'key', }
   ],
   remoteUrl:'/',
   keys: {

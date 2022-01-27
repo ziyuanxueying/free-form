@@ -4,9 +4,11 @@
     :label="label"
   >
     <a-select v-model="form[proto]" :placeholder="placeholder">
-      <a-option v-for="(item,index) in columns" :key="index">
-        {{ item.value }}
-      </a-option>
+      <span v-if="!remote">
+        <a-option v-for="(item,index) in columns" :key="index">
+          {{ item.value }}
+        </a-option>
+      </span>
     </a-select>
   </a-form-item>
 </template>
