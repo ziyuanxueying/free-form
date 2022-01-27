@@ -2,7 +2,7 @@
   <span>
     <component
       :is="item"
-      v-bind="element.configList"
+      v-bind="{...element.configList,pageFrom}"
       :form="settings"
       :proto="proto"
     />

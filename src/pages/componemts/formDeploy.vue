@@ -81,11 +81,11 @@ export default {
     getListDeploy()
 
     const router = useRouter()
-    const itemEdit = async (item,path)=>{
+    const itemEdit =  (item,path)=>{
       console.log('item: ', state.selectList)
       router.push({
         path: `/${path}`,
-        query: { id: item.formId },
+        query: { id: item.formId, version:item.version },
       })
     }
 

@@ -22,7 +22,7 @@
               >
                 <template #item="{element}">
                   <div :class="{'nxf-layout-content-form-item':true,'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId}" @click.stop="checkElement(element)">
-                    <FormItem :element="element"/>
+                    <FormItem :element="element" :pageFrom="pageFrom"/>
                   </div>
                 </template>
               </draggable>
@@ -46,6 +46,9 @@ export default {
     layout:{
       type:Object,
     },
+    pageFrom:{
+      type:String
+    }
   },
   components: {
     draggable,

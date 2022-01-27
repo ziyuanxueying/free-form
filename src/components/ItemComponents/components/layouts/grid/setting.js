@@ -3,6 +3,7 @@ let gridSetting = {
     colCount: 1,
     colContent:[[]],
     fileId: 'grid', 
+    pageFrom: '',
   }
 }
 export default gridSetting

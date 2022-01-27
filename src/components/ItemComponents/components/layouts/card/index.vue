@@ -8,7 +8,7 @@
     >
       <template #item="{element}">
         <div :class="{'nxf-layout-content-form-item':true,'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId}" @click.stop="checkElement(element)">
-          <FormItem :element="element"/>
+          <FormItem :element="element" :pageFrom="pageFrom"/>
         </div>
       </template>
     </draggable>
@@ -28,13 +28,17 @@ export default {
   props:{
     layout:{
       type:Object,
-    } 
+    },
+    pageFrom:{
+      type:String
+    }
   },
   components: {
     draggable,
     FormItem
   },
-  setup () {
+  setup (props) {
+    console.log('card: ', props)
     const formConfig = useFormConfigStore()
     const checkElement = (element)=>{
       //存放当前选中的组件的fieldId

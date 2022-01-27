@@ -50,11 +50,14 @@
       </template>
     </a-table>
     <a-space>
-      <a-button class="del-some" @click="itemDel">
-        批量删除
+      <a-button class="del-some add" @click="itemEdit({},'configPage')">
+        <template #icon>
+          <icon-plus/>
+        </template>
+        新建
       </a-button>
       <a-button class="del-some" @click="itemDel">
-        新建
+        批量删除
       </a-button>
     </a-space>
     <div class="list-title">
@@ -104,8 +107,7 @@ export default defineComponent({
     }
     getListDraft()
     const router = useRouter()
-    const itemEdit = async (item,path)=>{
-      console.log('item: ', state.selectList)
+    const itemEdit = (item,path)=>{
       router.push({
         path: `/${path}`,
         query: { id: item.formId },
@@ -192,6 +194,10 @@ export default defineComponent({
     top: -30px;
     color: white;
     background-color: #f53f3f;
+
+    &.add {
+      background-color: #0089ff;
+    }
   }
 
   .operate-btn {

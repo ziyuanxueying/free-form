@@ -92,7 +92,8 @@ export default {
     let form = ref({})
     const route = useRoute()
     const initJson = async ()=>{
-      let res = await post(`/formDef/get/${route.query.id}`)
+      const url = route.query.version ? '/formDefDeploy/preview' : `/formDef/get/${route.query.id}`
+      let res = await post(url,{ formId:route.query.id, version:route.query.version })
       formConfig.initJson(res)
     }
     if(route.query.id) {
