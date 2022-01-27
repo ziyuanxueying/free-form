@@ -50,7 +50,7 @@ const responseInterceptor = async (res) => {
 const baseUrl = process.env.VUE_APP_BASE_URL
 const getInstance = (url, params) => fetch(`${url}?${convertObjtoUrlSearch(params)}`).then(responseInterceptor)
 const postInstance = (url, body = {},header = {}) =>{ 
-  const Url = url.indexOf('login') === -1 ? `${baseUrl}${process.env.VUE_APP_BASE_API}${url}` : `${baseUrl}${url}`
+  const Url = url.indexOf('login') === -1 ? `${baseUrl}${process.env.VUE_APP_FORM_API}${url}` : `${baseUrl}${url}`
   return fetch(Url,
     Object.assign(
       {},

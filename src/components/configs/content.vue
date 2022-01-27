@@ -4,9 +4,15 @@
       <a-button @click="visible = true">
         查看JSON
       </a-button>
-      <a-button @click="itemShow">
+      <a-button @click="FormModal = true">
         预览
       </a-button>
+      <a-button @click="saveAsDraft">
+        存为草稿
+      </a-button> 
+      <a-button @click="visible = true">
+        表单发布
+      </a-button> 
     </div>
     <a-form :model="form" class="nxf-layout-content-form">
       <draggable
@@ -41,6 +47,13 @@
       </a-typography-paragraph>
     </a-typography>
   </a-modal>
+  <a-modal
+    :width="700"
+    v-model:visible="FormModal"
+    title="表单预览"
+  >
+    <FormShow/>
+  </a-modal>
 </template>
 <script>
 import { reactive, ref, toRefs } from 'vue'
@@ -50,16 +63,21 @@ import FormItem from '../FormItem'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import{ post } from '../../tools/request'
-import { useRoute,useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
+import { Message } from '@arco-design/web-vue'
+import  FormShow from '../../pages/formShow'
+
 export default {
   components: {
     VueJsonPretty,
     draggable,
-    FormItem
+    FormItem,
+    FormShow
   },
   data () {
     return {
-      visible: false
+      visible: false,
+      FormModal: false,
     }
   },
   setup () {
@@ -72,9 +90,7 @@ export default {
       formConfig.fieldId = element.fieldId
     }
     let form = ref({})
-    const router = useRouter()
     const route = useRoute()
-    console.log('route: ', route)
     const initJson = async ()=>{
       let res = await post(`/formDef/get/${route.query.id}`)
       formConfig.initJson(res)
@@ -82,18 +98,29 @@ export default {
     if(route.query.id) {
       initJson()
     }
-    const itemShow =  ()=>{
-      router.push({
-        path: '/formShow',
-      })
+    const saveAsDraft = async ()=>{
+      console.log(formConfig.toJSON)
+      if(route.query.id) {
+        await post('/formDef/upsert',
+          { projectName: 'oa',
+            title: formConfig.formSet.formTitle,
+            formDefJson: JSON.stringify(formConfig.toJSON) ,
+            formId: formConfig.formSet.formId,
+          })
+        Message.success('已暂存为草稿')
+      } else {
+        let aaa = await post('/formDef/create',{ projectName:'oa',title:formConfig,formDefJson: JSON.stringify(formConfig.toJSON)  })
+        console.log('aaa: ', aaa)
+      }
+    //   router.push({
+    //     path: '/formShow',
+    //   })
     }
-
     return {
       checkElement,
-      //   initJson,
       formConfig,
       form,
-      itemShow,
+      saveAsDraft,
       ...toRefs(state)
     }
   },

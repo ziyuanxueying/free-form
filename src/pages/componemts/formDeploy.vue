@@ -23,7 +23,7 @@
           <a-button
             class="operate-btn"
             type="text"
-            @click="itemEdit(record)"
+            @click="itemEdit(record,'configPage')"
           >
             编辑
           </a-button>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { reactive, toRefs,  } from 'vue'
+import { reactive, toRefs, watch  } from 'vue'
 import{ post } from '../../tools/request'
 import { useRouter } from 'vue-router'
 export default {
@@ -57,7 +57,13 @@ export default {
       ]
     }
   },
-  setup () { 
+  props:{
+    reload:{
+      type:Number
+    },
+  },
+  setup (props) { 
+    console.log('props: ', props)
     const state = reactive({ 
       dataDeploy:[],
       pageDeploy:{ current: 1,totla: 0 }, 
@@ -88,6 +94,10 @@ export default {
       state.pagination.current = page
       getListDeploy()
     }
+
+    watch(()=>props.reload,()=>{
+      getListDeploy()
+    })
     return {
       ...toRefs(state),
       itemEdit,

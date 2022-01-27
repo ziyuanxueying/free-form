@@ -30,12 +30,13 @@ export const useFormConfigStore = defineStore('formConfig', {
   actions: {
     async initJson (res) {
       let json = JSON.parse(res.formDefJson) 
-      console.log('res: ', res)
+      console.log('json: ', json)
       this.fieldId = json.fieldId
       this.formItemList = json.formItemList
-      this.formSet = json.formSet || this.formSet
+      //   this.formSet = { ...json.formSet } || { ...this.formSet }
       this.formSet.formId = res.formId
       this.formSet.formTitle = res.title
+    //   console.log('res: ', JSON.stringify(this.formSet))
     } ,
   }
 })

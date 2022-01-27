@@ -11,7 +11,7 @@ export const setting = [
     
   },
   {
-    type: 'NxInput',
+    type: 'NxInputNum',
     configList:{
       defaultValue: 1,
       label:'列数量',

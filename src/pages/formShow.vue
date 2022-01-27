@@ -11,7 +11,7 @@
         <a-button type="outline">
           保存
         </a-button>   
-        <a-button type="outline" @click="visible = true">
+        <a-button type="outline" @click="checkJson ">
           查看格式
         </a-button>
       </div>
@@ -30,38 +30,37 @@
 </template>
 
 <script>
-import { reactive, toRefs, } from 'vue'
-import { useRoute } from 'vue-router'
+import { reactive, toRefs, defineComponent } from 'vue'
+// import { useRoute } from 'vue-router'
 import FormItem from '../components/FormItem'
 import { useFormConfigStore } from '../store'
-import{ post } from '../tools/request'
+// import{ post } from '../tools/request'
 import{ getForm } from '../utils'
-export default {
+export default defineComponent({
+  name:'FormShow',
   components: {
     FormItem
   },
-  data () { 
-    return {
-      visible: false
-    }
-  },
+  data () { return { } },
   setup () { 
-    const state = reactive({ })
+    const state = reactive({ visible: false, jsonForm:{} })
     const formConfig  = useFormConfigStore()
-    const route = useRoute()
-    console.log(route.query)
-    const initJson = async ()=>{
-      let res = await post(`/formDef/get/${route.query.id}`)
-      formConfig.initJson(res.formDefJson)
+    // const route = useRoute()
+    // console.log(route.query)
+    // const initJson = async ()=>{
+    //   let res = await post(`/formDef/get/${route.query.id}`)
+    //   formConfig.initJson(res)
+    // }
+    // if(route.query.id) {
+    //   initJson()
+    // }
+    function checkJson () {
+      state.visible = true
+      state.jsonForm = getForm(formConfig.formItemList)
     }
-    if(route.query.id) {
-      initJson()
-    }
-    const jsonForm = getForm(formConfig.formItemList)
-    console.log('getForm', jsonForm)
     return {
       formConfig,
-      jsonForm,
+      checkJson,
       ...toRefs(state),
     }
   },
@@ -70,7 +69,7 @@ export default {
   methods:{
 
   },
-}
+})
 </script>
 
 <style lang="less" scoped>

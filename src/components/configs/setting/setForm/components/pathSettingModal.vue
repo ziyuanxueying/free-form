@@ -9,7 +9,7 @@
       流程设置
     </template>
     <div class="nx-form-setting-modal">
-      <div style="margin-botton: 10px;">
+      <div style="margin-bottom: 10px;">
         <a-button type="primary" @click="addPathSetting">
           新建流程
         </a-button>
@@ -55,7 +55,7 @@
   </a-modal>
 </template>
 <script>
-import { reactive, ref } from '@vue/reactivity'
+import { reactive, ref } from 'vue'
 import { getTree } from '../../../../../utils'
 import { useFormConfigStore } from '../../../../../store'
 import _ from 'lodash'

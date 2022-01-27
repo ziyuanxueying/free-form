@@ -39,13 +39,6 @@
               编辑
             </a-button>
             <a-button
-              class="operate-btn preview"
-              type="text"
-              @click="itemEdit(record,'formShow')"
-            >
-              预览
-            </a-button>
-            <a-button
               class="operate-btn deploy"
               type="text"
               @click="$modal.info({ title:`点击确认发布 ${record.title} 表单`, onOpen:onOpen(record), onBeforeOk: formDeploy})"
@@ -56,13 +49,18 @@
         </a-table-column>
       </template>
     </a-table>
-    <a-button class="del-some" @click="itemDel">
-      批量删除
-    </a-button>
+    <a-space>
+      <a-button class="del-some" @click="itemDel">
+        批量删除
+      </a-button>
+      <a-button class="del-some" @click="itemDel">
+        新建
+      </a-button>
+    </a-space>
     <div class="list-title">
       发布表单
     </div>
-    <FormDeploy/>
+    <FormDeploy :reload="reload"/>
   </div>
 </template>
 
@@ -94,7 +92,8 @@ export default defineComponent({
       selectList:[],
       pagination:{ current: 1,totla: 0 },
       tableLoad: false,
-      selectItem: undefined
+      selectItem: undefined,
+      reload: 0
     })
     const getListDraft = async ()=>{
       let data = await post('/formDef/query')
@@ -131,6 +130,7 @@ export default defineComponent({
       try {
         let data = await post(`/formDefDeploy/deploy/${state.selectItem.formId}`)
         console.log('data: ', data)
+        state.reload++
         // getListDeploy()
         done()
       } catch (error) {
