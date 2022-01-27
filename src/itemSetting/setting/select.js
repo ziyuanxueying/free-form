@@ -21,7 +21,7 @@ export const setting = [
     type: 'NxInput',
     configList:{
       defaultValue: '请输入内容',
-      label:'默认值',
+      label:'占位符',
       fileId:'placeholder',
     }
   },{

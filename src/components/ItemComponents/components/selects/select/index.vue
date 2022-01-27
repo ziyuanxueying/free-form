@@ -3,7 +3,7 @@
     :field="fileId"
     :label="label"
   >
-    <a-select v-model="form[fileId]" :placeholder="placeholder">
+    <a-select v-model="form[proto]" :placeholder="placeholder">
       <a-option v-for="(item,index) in columns" :key="index">
         {{ item.value }}
       </a-option>
@@ -44,6 +44,9 @@ export default {
       default () {
         return null
       }
+    },
+    proto:{  //绑定的key
+      type: String,
     }
   },
   setup (props) {
