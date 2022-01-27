@@ -38,13 +38,18 @@
       </a-table-column>
     </template>
   </a-table>
+  <Child :backModal="backModal" :res="backData" @changeShow="changeShow"/>
 </template>
 
 <script>
 import { reactive, toRefs, watch  } from 'vue'
 import{ post } from '../../tools/request'
 import { useRouter } from 'vue-router'
+import Child from './childList.vue'
 export default {
+  components: { 
+    Child,
+  },
   data () { 
     return {
       columnDeploy: [
@@ -63,16 +68,17 @@ export default {
     },
   },
   setup (props) { 
-    console.log('props: ', props)
     const state = reactive({ 
       dataDeploy:[],
       pageDeploy:{ current: 1,totla: 0 }, 
       tableLoad: false,
+      backModal: false,
+      backData: {},
     })
 
     // 获取发布表单列表
     const getListDeploy = async ()=>{
-      let data = await post('/formDefDeploy/query',{ online:1 })
+      let data = await post('/formDefDeploy/query',{ online:1,page: state.pageDeploy.current })
       state.tableLoad = false
       state.dataDeploy = data.content
       state.pageDeploy.current = data.number - 1
@@ -82,7 +88,6 @@ export default {
 
     const router = useRouter()
     const itemEdit =  (item,path)=>{
-      console.log('item: ', state.selectList)
       router.push({
         path: `/${path}`,
         query: { id: item.formId, version:item.version },
@@ -91,10 +96,20 @@ export default {
 
     // 分页
     const pageChange = (page)=>{
-      state.pagination.current = page
+      state.pageDeploy.current = page
       getListDeploy()
     }
-
+    // 表单回滚
+    const itemRollback = async (item)=> {
+      state.backModal = true
+      state.backData = { projectName:'oa',title:item.title }
+    }
+    const changeShow = ()=> {
+      state.backModal = false
+      state.pageDeploy.current = 1
+      getListDeploy()
+    }
+    
     watch(()=>props.reload,()=>{
       getListDeploy()
     })
@@ -102,6 +117,8 @@ export default {
       ...toRefs(state),
       itemEdit,
       pageChange,
+      itemRollback,
+      changeShow,
     }
   },
   mounted () {

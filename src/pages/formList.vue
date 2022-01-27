@@ -148,16 +148,7 @@ export default defineComponent({
         console.log('error: ', error)
       }
     }
-    // 表单回滚
-    const itemRollback = async (item)=> {
-      try {
-        let data = await post('/formDefDeploy/rollback',{ formId:item.formId })
-        console.log('data: ', data)
-        // getListDeploy()
-      } catch (error) {
-        console.log('error: ', error)
-      }
-    }
+   
     return {
       ...toRefs(state),
       getListDraft,
@@ -168,7 +159,6 @@ export default defineComponent({
       onOpen,
       formDeploy,
       itemDel,
-      itemRollback,
     }
   },
   mounted () {
@@ -197,23 +187,6 @@ export default defineComponent({
 
     &.add {
       background-color: #0089ff;
-    }
-  }
-
-  .operate-btn {
-    padding: 0 8px;
-    color: #0089ff;
-
-    &.preview {
-      color: #80cbc4;
-    }
-
-    &.deploy {
-      color: #690;
-    }
-
-    &.back {
-      color: #fb8c00;
     }
   }
 }
