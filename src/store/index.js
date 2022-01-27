@@ -10,13 +10,6 @@ export const useFormConfigStore = defineStore('formConfig', {
       formItemList: [],
       //用于存放表单全局样式
       formSet:{
-        hideLabel: false,
-        labelWidth: '85px',
-        labelPosition: 'right',
-        showRequiredAsterisk: true,
-        showVerificationMessage: true,
-        size: 'medium',
-        labelSuffix: ':',
         formTitle: undefined,
         formId: undefined,
       },
@@ -36,10 +29,13 @@ export const useFormConfigStore = defineStore('formConfig', {
   },
   actions: {
     async initJson (res) {
-      res = JSON.parse(res)
-      this.fieldId = res.fieldId
-      this.formItemList = res.formItemList
-      this.formSet = res.formSet || this.formSet
+      let json = JSON.parse(res.formDefJson) 
+      console.log('res: ', res)
+      this.fieldId = json.fieldId
+      this.formItemList = json.formItemList
+      this.formSet = json.formSet || this.formSet
+      this.formSet.formId = res.formId
+      this.formSet.formTitle = res.title
     } ,
   }
 })

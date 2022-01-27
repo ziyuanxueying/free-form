@@ -25,17 +25,6 @@ export function toFeishu () {
   let devUrl =
     'https://open.feishu.cn/open-apis/authen/v1/index?redirect_uri=https%3A%2F%2Foa-dev.naxions.com%2F&app_id=cli_a12d85499366100e'
   let localUrl = process.env.VUE_APP_FEISHU
-  if(window.location.href.indexOf('/mapprove') !== -1) {
-    buildUrl =
-    `https://open.feishu.cn/open-apis/authen/v1/index?redirect_uri=https%3A%2F%2Foa.naxions.com%2Fmapprove%3Ftype%3D${getQueryString().type}%26id%3D${getQueryString().id}&app_id=${process.env.VUE_APP_APPID}`
-    preUrl =
-    `https://open.feishu.cn/open-apis/authen/v1/index?redirect_uri=https%3A%2F%2Fpre-bigdata.naxions.com%2Fmapprove%3Ftype%3D${getQueryString().type}%26id%3D${getQueryString().id}&app_id=cli_a140c2b81f39500d`
-    testUrl =
-    `https://open.feishu.cn/open-apis/authen/v1/index?redirect_uri=https%3A%2F%2Ftest-bigdata.naxions.com%2Fmapprove%3Ftype%3D${getQueryString().type}%26id%3D${getQueryString().id}&app_id=cli_a1064169f33b100d`
-    devUrl =
-    `https://open.feishu.cn/open-apis/authen/v1/index?redirect_uri=https%3A%2F%2Foa-dev.naxions.com%2Fmapprove%3Ftype%3D${getQueryString().type}%26id%3D${getQueryString().id}&app_id=cli_a12d85499366100e`
-    localUrl = `https://open.feishu.cn/open-apis/authen/v1/index?redirect_uri=http%3A%2F%2F127.0.0.1%3A8086%2Fmapprove%3Ftype%3D${getQueryString().type}%26id%3D${getQueryString().id}&app_id=cli_a12d85499366100e`
-  }
 
   let url
   switch (target) {
@@ -54,6 +43,7 @@ export function toFeishu () {
   default:
     url = localUrl
   }
+  console.log('url: ', url)
   location.href = url
 }
 

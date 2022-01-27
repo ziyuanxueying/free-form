@@ -4,9 +4,6 @@
       <a-button @click="visible = true">
         查看JSON
       </a-button>
-      <a-button @click="saveAsDeaft">
-        存为草稿
-      </a-button>
       <a-button @click="itemShow">
         预览
       </a-button>
@@ -46,14 +43,14 @@
   </a-modal>
 </template>
 <script>
-import { reactive, ref, toRefs } from '@vue/reactivity'
+import { reactive, ref, toRefs } from 'vue'
 import { useFormConfigStore } from '../../store'
 import draggable from 'vuedraggable'
 import FormItem from '../FormItem'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import{ post } from '../../tools/request'
-import { useRouter } from 'vue-router'
+import { useRoute,useRouter } from 'vue-router'
 export default {
   components: {
     VueJsonPretty,
@@ -76,17 +73,14 @@ export default {
     }
     let form = ref({})
     const router = useRouter()
-    // console.log(route.query)
-    // const initJson = async ()=>{
-    //   let res = await post(`/formDef/get/${route.query.id}`)
-    //   formConfig.initJson(res.formDefJson)
-    // }
-    // if(route.query.id) {
-    //   initJson()
-    // }
-    const saveAsDeaft = async ()=>{
-      let aaa = await post('/formDef/create',{ projectName:'oa',title: state.formTitle,formDefJson: JSON.stringify(formConfig.toJSON)  })
-      console.log('aaa: ', aaa)
+    const route = useRoute()
+    console.log('route: ', route)
+    const initJson = async ()=>{
+      let res = await post(`/formDef/get/${route.query.id}`)
+      formConfig.initJson(res)
+    }
+    if(route.query.id) {
+      initJson()
     }
     const itemShow =  ()=>{
       router.push({
@@ -97,7 +91,6 @@ export default {
     return {
       checkElement,
       //   initJson,
-      saveAsDeaft,
       formConfig,
       form,
       itemShow,
