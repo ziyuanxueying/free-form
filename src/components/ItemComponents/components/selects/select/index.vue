@@ -30,8 +30,8 @@ export default {
       default: '请选择'
     },
     required:{
-      type: String,
-      default: 'false'
+      type: Boolean,
+      default: false
     },
     columns:{
       type: Object

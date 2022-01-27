@@ -19,7 +19,7 @@ export const routes = [
   {
     path: '/formShow',
     name: 'formShow',
-    component: () => import('../pages/formShow.vue')
+    component: () => import('../obj2Form/index.vue')
   },
 ]
 

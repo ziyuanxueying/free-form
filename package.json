@@ -12,6 +12,7 @@
     "commit": "git-cz"
   },
   "dependencies": {
+    "axios": "^0.25.0",
     "core-js": "^3.6.5",
     "less": "4",
     "less-loader": "7.3.0",
