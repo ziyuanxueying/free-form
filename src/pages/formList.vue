@@ -99,7 +99,7 @@ export default defineComponent({
       reload: 0
     })
     const getListDraft = async ()=>{
-      let data = await post('/formDef/query')
+      let data = await post('/formDef/query',{ page: state.pagination.current })
       state.tableLoad = false
       state.data = data.content
       state.pagination.current = data.number - 1

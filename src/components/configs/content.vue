@@ -7,10 +7,10 @@
       <a-button @click="FormModal = true">
         预览
       </a-button>
-      <a-button @click="saveAsDraft">
+      <a-button @click="saveAsDraft('deaft')">
         存为草稿
       </a-button> 
-      <a-button @click="visible = true">
+      <a-button @click="saveAsDraft('release')">
         表单发布
       </a-button> 
     </div>
@@ -63,7 +63,7 @@ import FormItem from '../FormItem'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import{ post } from '../../tools/request'
-import { useRoute } from 'vue-router'
+import { useRoute,useRouter } from 'vue-router'
 import { Message } from '@arco-design/web-vue'
 import  FormShow from '../../pages/formShow'
 
@@ -96,32 +96,38 @@ export default {
       let res = await post(url,{ formId:route.query.id, version:route.query.version })
       formConfig.initJson(res)
     }
-    if(route.query.id) {
-      initJson()
+    route.query.id ? initJson() : formConfig.initJson({ formDefJson:'{}', })
+
+    const router = useRouter()
+    const saveAsRelease = async ()=>{
+      await post(`/formDefDeploy/deploy/${formConfig.formSet.formId}`)
+      Message.success('表单已发布') 
+      router.back(-1)
     }
-    const saveAsDraft = async ()=>{
-      console.log(formConfig.toJSON)
-      if(route.query.id) {
+
+    const saveAsDraft = async (type)=>{
+      if(formConfig.formSet.formId) {
         await post('/formDef/upsert',
           { projectName: 'oa',
             title: formConfig.formSet.formTitle,
             formDefJson: JSON.stringify(formConfig.toJSON) ,
             formId: formConfig.formSet.formId,
           })
-        Message.success('已暂存为草稿')
+        type === 'deaft' ? Message.success('已暂存为草稿') : saveAsRelease()
       } else {
-        let aaa = await post('/formDef/create',{ projectName:'oa',title:formConfig,formDefJson: JSON.stringify(formConfig.toJSON)  })
-        console.log('aaa: ', aaa)
+        if(!formConfig.formSet.formTitle) return Message.warning('请填写表单标题')
+        let id = await post('/formDef/create',{ projectName:'oa',title:formConfig.formSet.formTitle,formDefJson: JSON.stringify(formConfig.toJSON)  })
+        formConfig.formSet.formId = id
+        type === 'deaft' ? Message.success('已暂存为草稿') : saveAsRelease()
+        // type === 'deaft' && Message.success('已暂存为草稿')
       }
-    //   router.push({
-    //     path: '/formShow',
-    //   })
     }
     return {
       checkElement,
       formConfig,
       form,
       saveAsDraft,
+      saveAsRelease,
       ...toRefs(state)
     }
   },
