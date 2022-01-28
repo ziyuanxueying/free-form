@@ -1,6 +1,6 @@
 <template>
-  <a-row class="nxf-grid-row">
-    <a-col :span="24 / layout.colCount" v-for="(item,index ) in layout.colContent" :key="index">
+  <a-row :class="pageFrom==='content'?'nxf-grid-row':''">
+    <a-col :span="Math.floor(24 / layout.colCount)" v-for="(item,index ) in layout.colContent" :key="index">
       <div class="nxf-grid-col">
         <draggable
           v-model="layout.colContent[index]"

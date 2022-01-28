@@ -1,5 +1,5 @@
 <template>
-  <div class="nxf-card">
+  <div :class="pageFrom==='content'?'nxf-card':''">
     <draggable
       v-model="layout.colContent[0]"
       group="NXFormGroup"

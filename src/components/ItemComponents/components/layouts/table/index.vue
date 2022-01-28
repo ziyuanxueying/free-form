@@ -1,5 +1,5 @@
 <template>
-  <div class="nxf-table">
+  <div :class="pageFrom==='content'?'nxf-table':''">
     <a-table
       :data="formData"
       :bordered="{wrapper: true, cell: true}"

@@ -8,6 +8,7 @@
   background-color: #f7f8fa;
 
   .nxf-layout-left {
+    position: relative;
     width: 300px;
     background-color: white;
 
@@ -37,6 +38,8 @@
           flex-wrap: wrap;
 
           .nxf-component-card {
+            position: relative;
+            z-index: 1;
             margin: 4px;
             border: 1px solid @border-color;
             border-radius: 2px;
@@ -92,6 +95,7 @@
   }
 
   .nxf-layout-right {
+    position: relative;
     padding: 10px;
     width: 320px;
     background-color: white;
@@ -166,4 +170,16 @@
   &.back {
     color: #fb8c00;
   }
+}
+
+.stop-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-color: rgba(0, 0, 0, .5);
 }

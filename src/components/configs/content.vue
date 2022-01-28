@@ -1,10 +1,10 @@
 <template>
-  <div class="nxf-layout-content">
+  <div v-if="!formConfig.isPreview" class="nxf-layout-content">
     <div class="flex-row">
       <a-button @click="visible = true">
         查看JSON
       </a-button>
-      <a-button @click="FormModal = true">
+      <a-button @click="formConfig.setPreview(true)">
         预览
       </a-button>
       <a-button @click="saveAsDraft('deaft')">
@@ -35,6 +35,7 @@
       </draggable>
     </a-form>
   </div>
+  <FormShow v-else/>
   <a-modal
     :width="600"
     v-model:visible="visible"
@@ -46,13 +47,6 @@
         <span class="copy"/>
       </a-typography-paragraph>
     </a-typography>
-  </a-modal>
-  <a-modal
-    :width="700"
-    v-model:visible="FormModal"
-    title="表单预览"
-  >
-    <FormShow/>
   </a-modal>
 </template>
 <script>
@@ -97,7 +91,7 @@ export default {
       formConfig.initJson(res)
     }
     route.query.id ? initJson() : formConfig.initJson({ formDefJson:'{}', })
-
+    formConfig.setPreview(Boolean(route.query.history))
     const router = useRouter()
     const saveAsRelease = async ()=>{
       await post(`/formDefDeploy/deploy/${formConfig.formSet.formId}`)
@@ -119,7 +113,6 @@ export default {
         let id = await post('/formDef/create',{ projectName:'oa',title:formConfig.formSet.formTitle,formDefJson: JSON.stringify(formConfig.toJSON)  })
         formConfig.formSet.formId = id
         type === 'deaft' ? Message.success('已暂存为草稿') : saveAsRelease()
-        // type === 'deaft' && Message.success('已暂存为草稿')
       }
     }
     return {

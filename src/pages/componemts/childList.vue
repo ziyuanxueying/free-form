@@ -30,14 +30,7 @@
               type="text"
               @click="itemEdit(record,'configPage')"
             >
-              编辑
-            </a-button>
-            <a-button
-              class="operate-btn back"
-              type="text"
-              @click="itemRollback(record)"
-            >
-              回滚
+              查看版本
             </a-button>
           </template>
         </a-table-column>
@@ -91,7 +84,6 @@ export default {
         console.log('error: ', error)
       }
     }
-    rollbackList()
     // 分页
     const pageChange = (page)=>{
       console.log('page: ', page)
@@ -102,7 +94,7 @@ export default {
     const itemEdit =  (item,path)=>{
       router.push({
         path: `/${path}`,
-        query: { id: item.formId, version:item.version },
+        query: { id: item.formId, version:item.version, history:true },
       })
     }
     // 表单回滚
@@ -116,9 +108,9 @@ export default {
       }
     }
 
-    watch(()=>props.backModal,(val)=>{
-      console.log('val: ', val)
-    //   getListDeploy()
+    watch(()=>props.res,(val)=>{
+      state.res = val
+      rollbackList()
     })
     return {
       ...toRefs(state),

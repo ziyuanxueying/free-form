@@ -32,7 +32,7 @@
             type="text"
             @click="itemRollback(record)"
           >
-            回滚
+            历史
           </a-button>
         </template>
       </a-table-column>
@@ -102,7 +102,7 @@ export default {
     // 表单回滚
     const itemRollback = async (item)=> {
       state.backModal = true
-      state.backData = { projectName:'oa',title:item.title }
+      state.backData = { projectName:'oa',formId:item.formId	 }
     }
     const changeShow = ()=> {
       state.backModal = false

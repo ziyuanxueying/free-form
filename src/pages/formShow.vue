@@ -8,8 +8,11 @@
         pageFrom="show"
       />
       <div class="flex-between">
-        <a-button type="outline">
-          保存
+        <a-button v-show="!history" type="outline" @click="formConfig.setPreview(false)">
+          返回编辑
+        </a-button>   
+        <a-button v-show="history" type="outline" @click="saveAsRelease">
+          发布版本
         </a-button>   
         <a-button type="outline" @click="checkJson ">
           查看格式
@@ -31,11 +34,13 @@
 
 <script>
 import { reactive, toRefs, defineComponent } from 'vue'
-// import { useRoute } from 'vue-router'
+import { useRoute,useRouter } from 'vue-router'
 import FormItem from '../components/FormItem'
 import { useFormConfigStore } from '../store'
-// import{ post } from '../tools/request'
+import{ post } from '../tools/request'
 import{ getForm } from '../utils'
+import { Message } from '@arco-design/web-vue'
+
 export default defineComponent({
   name:'FormShow',
   components: {
@@ -43,24 +48,34 @@ export default defineComponent({
   },
   data () { return { } },
   setup () { 
-    const state = reactive({ visible: false, jsonForm:{} })
+    const state = reactive({ visible: false, jsonForm:{}, history:false })
     const formConfig  = useFormConfigStore()
-    // const route = useRoute()
-    // console.log(route.query)
-    // const initJson = async ()=>{
-    //   let res = await post(`/formDef/get/${route.query.id}`)
-    //   formConfig.initJson(res)
-    // }
-    // if(route.query.id) {
-    //   initJson()
-    // }
     function checkJson () {
       state.visible = true
       state.jsonForm = getForm(formConfig.formItemList)
     }
+    const route = useRoute()
+    const router = useRouter()
+    if(route.query.history) {
+      formConfig.setPreview(true)
+      state.history = route.query.history
+    }
+    const saveAsRelease = async ()=>{
+      await post('/formDef/upsert',
+        { projectName: 'oa',
+          title: formConfig.formSet.formTitle,
+          formDefJson: JSON.stringify(formConfig.toJSON) ,
+          formId: formConfig.formSet.formId,
+        })
+      await post(`/formDefDeploy/deploy/${formConfig.formSet.formId}`)
+      Message.success('表单已发布') 
+      router.back(-1)
+    }
+
     return {
       formConfig,
       checkJson,
+      saveAsRelease,
       ...toRefs(state),
     }
   },
@@ -75,6 +90,6 @@ export default defineComponent({
 <style lang="less" scoped>
 .preview-form {
   margin: 20px auto;
-  width: 600px;
+  //   width: 600px;
 }
 </style>
