@@ -11,6 +11,7 @@ export function getModulesFiles (modulesFiles) {
     const type = value.default.name
     let item = {
       name:type,
+      icon:value.default.icon,
       moduleName: moduleName,
       configList: setting,
       type

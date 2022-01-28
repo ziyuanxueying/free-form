@@ -42,6 +42,7 @@ import draggable from 'vuedraggable'
 export default {
   name:'NxTable',
   nameCN:'表格',
+  icon:'icon-interaction',
   props:{
     layout:{
       type:Object,

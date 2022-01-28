@@ -18,6 +18,7 @@ export { default as setting } from './setting'
 export default {
   name: 'NxTextarea',
   nameCN: '多行输入框',
+  icon:'icon-list',
   props: {
     key: {
       type: null,

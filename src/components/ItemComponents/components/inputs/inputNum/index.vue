@@ -19,6 +19,7 @@ export { default as setting } from './setting'
 export default {
   name: 'NxInputNum',
   nameCN: '数字输入框',
+  icon:'icon-original-size',
   props: {
     fileId: {
       type: null,

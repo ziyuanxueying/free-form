@@ -18,6 +18,10 @@
         >
           <template #item="{element}">
             <div class="nxf-component-card">
+              <component
+                class="menu-icon"
+                :is="element.icon"
+              /> 
               {{ element.moduleName }}
             </div>
           </template>

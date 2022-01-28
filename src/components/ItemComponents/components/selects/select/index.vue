@@ -18,6 +18,7 @@ import { watch } from '@vue/runtime-core'
 export default {
   name: 'NxSelect',
   nameCN: '下拉框',
+  icon:'icon-down-circle',
   props: {
     fileId: {
       type: null,

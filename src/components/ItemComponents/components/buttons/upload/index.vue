@@ -24,6 +24,7 @@ export { default as setting } from './setting'
 export default {
   name: 'NxUpload',
   nameCN: '上传',
+  icon: 'icon-upload',
   props: {
     fileId: {
       type: null,

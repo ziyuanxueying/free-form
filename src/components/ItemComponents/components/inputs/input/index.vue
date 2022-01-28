@@ -19,6 +19,7 @@ export { default as setting } from './setting'
 export default {
   name: 'NxInput',
   nameCN: '输入框',
+  icon: 'icon-edit',
   props: {
     fileId: {
       type: null,

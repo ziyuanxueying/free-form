@@ -13,6 +13,7 @@ export { default as setting } from './setting'
 export default {
   name: 'NxText',
   nameCN: '文本',
+  icon:'icon-message',
   props: {
     fileId: { type: null },
     label: { type: String, },

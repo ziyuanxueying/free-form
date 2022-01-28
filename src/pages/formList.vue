@@ -99,6 +99,7 @@ export default defineComponent({
       reload: 0
     })
     const getListDraft = async ()=>{
+      state.tableLoad = true 
       let data = await post('/formDef/query',{ page: state.pagination.current })
       state.tableLoad = false
       state.data = data.content
@@ -133,7 +134,7 @@ export default defineComponent({
         let data = await post(`/formDefDeploy/deploy/${state.selectItem.formId}`)
         console.log('data: ', data)
         state.reload++
-        // getListDeploy()
+        getListDraft()
         done()
       } catch (error) {
         done()

@@ -27,6 +27,7 @@ import draggable from 'vuedraggable'
 export default {
   name:'NxGrid',
   nameCN: '栅格',
+  icon:'icon-layout',
   props:{
     layout:{
       type:Object,

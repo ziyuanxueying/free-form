@@ -1,19 +1,5 @@
 <template>
-  <div v-if="!formConfig.isPreview" class="nxf-layout-content">
-    <div class="flex-row">
-      <a-button @click="visible = true">
-        查看JSON
-      </a-button>
-      <a-button @click="formConfig.setPreview(true)">
-        预览
-      </a-button>
-      <a-button @click="saveAsDraft('deaft')">
-        存为草稿
-      </a-button> 
-      <a-button @click="saveAsDraft('release')">
-        表单发布
-      </a-button> 
-    </div>
+  <div v-if="!formConfig.isPreview" class="nxf-layout-content flex-between">
     <a-form :model="form" class="nxf-layout-content-form">
       <draggable
         v-model="formConfig.formItemList"
@@ -34,6 +20,48 @@
         </template>
       </draggable>
     </a-form>
+    <div class="flex-column tabs-btn">
+      <a-popover title="存为草稿">
+        <a-button
+          class="circle-btn"
+          type="primary"
+          shape="circle"
+          @click="saveAsDraft('deaft')"
+        >
+          <icon-plus/>
+        </a-button>
+      </a-popover>
+      <a-popover title="表单发布">
+        <a-button
+          class="circle-btn"
+          type="primary"
+          shape="circle"
+          @click="saveAsDraft('release')"
+        >
+          <icon-subscribed/>
+        </a-button>
+      </a-popover>
+      <a-popover title="表单预览">
+        <a-button
+          class="circle-btn"
+          type="primary"
+          shape="circle"
+          @click="formConfig.setPreview(true)"
+        >
+          <icon-file-pdf/>
+        </a-button>
+      </a-popover>
+      <a-popover title="查看Json">
+        <a-button
+          class="circle-btn"
+          type="primary"
+          shape="circle"
+          @click="visible = true"
+        >
+          <icon-code-block/>
+        </a-button>
+      </a-popover>
+    </div>
   </div>
   <FormShow v-else/>
   <a-modal

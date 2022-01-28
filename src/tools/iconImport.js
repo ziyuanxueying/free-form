@@ -2,12 +2,14 @@ import {
   IconUpload,
   IconDelete,
   IconCopy,
+  IconLanguage,
 } from '@arco-design/web-vue/es/icon'
 
 const iconComponents = {
   IconUpload,
   IconDelete,
   IconCopy,
+  IconLanguage,
 }
 
 export default{

@@ -18,6 +18,7 @@ export { default as setting } from './setting'
 export default {
   name: 'NxDatePicker',
   nameCN: '日期选择器',
+  icon:'icon-calendar',
   props: {
     fileId: {
       type: null,

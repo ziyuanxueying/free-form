@@ -24,15 +24,18 @@
     }
 
     .nxf-layout-item {
-      padding: 0 20px;
-
       .nxf-layout-item-title {
-        padding: 0 20px;
+        margin-top: 10px;
+        padding: 0 30px;
+        font-size: 16px;
         font-weight: bold;
-        line-height: 40px;
+        background-color: #eaeaea;
+        line-height: 34px;
       }
 
       .nxf-layout-item-content {
+        padding: 0 20px;
+
         .nxf-layout-item-content-draggable {
           display: flex;
           flex-wrap: wrap;
@@ -46,7 +49,7 @@
             width: 120px;
             text-align: center;
             background-color: white;
-            line-height: 34px;
+            line-height: 30px;
             box-sizing: border-box;
             cursor: move;
           }
@@ -90,6 +93,18 @@
         .nxf-layout-content-form-item-active {
           border: 1px solid #1890ff;
         }
+      }
+    }
+
+    .tabs-btn {
+      position: relative;
+      top: -300px;
+      margin-left: 10px;
+
+      .circle-btn {
+        margin-bottom: 10px;
+        width: 26px;
+        height: 26px;
       }
     }
   }
@@ -181,5 +196,11 @@
   width: 100%;
   height: 100vh;
   background-size: cover;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(134, 144, 156, .5);
+}
+
+.menu-icon {
+  margin-right: 4px;
+  font-size: 16px;
+  color: #0d78dc;
 }

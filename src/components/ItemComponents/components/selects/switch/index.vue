@@ -13,6 +13,7 @@ export { default as setting } from './setting'
 export default {
   name: 'NxSwitch',
   nameCN: '开关',
+  icon:'icon-poweroff',
   props: {
     fileId: {
       type: null,

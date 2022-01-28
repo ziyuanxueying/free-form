@@ -78,6 +78,7 @@ export default {
 
     // 获取发布表单列表
     const getListDeploy = async ()=>{
+      state.tableLoad = true 
       let data = await post('/formDefDeploy/query',{ online:1,page: state.pageDeploy.current })
       state.tableLoad = false
       state.dataDeploy = data.content

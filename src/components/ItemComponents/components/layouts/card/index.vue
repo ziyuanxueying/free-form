@@ -25,6 +25,7 @@ import draggable from 'vuedraggable'
 export default {
   name:'NxCard',
   nameCN:'卡片',
+  icon:'icon-folder',
   props:{
     layout:{
       type:Object,
