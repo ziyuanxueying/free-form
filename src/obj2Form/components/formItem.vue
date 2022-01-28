@@ -1,8 +1,8 @@
 <template>
   <span>
     <a-form-item
-      :field="item.configList.fileId"
-      :label="item.configList.label"
+      :field="item.configList.fileId||item.fieldId"
+      :label="item.configList.label||item.moduleName"
       v-for="item in formObj"
       :key="item.configList.fileId"
       :required="item.configList.required||false"
@@ -40,14 +40,54 @@
           {{ citem.value }}
         </a-option>
       </a-select>
+      <a-row v-if="item.type=='NxGrid'" style="width:100%">
+        <a-col :span="24 / item.configList.layout.colCount" v-for="(citem,index ) in item.configList.layout.colContent" :key="index">
+          <FormItem :formObj="citem" :formData="formData"/>
+        </a-col>
+      </a-row>
+      <a-table
+        :data="tableData"
+        :bordered="{wrapper: true, cell: true}"
+        :pagination="false"
+        v-if="item.type=='NxTable'"
+        style="width:100%"
+      >
+        <template #columns>
+          <a-table-column
+            v-for="(citem,index) in item.configList.layout.columns"
+            :key="index"
+            :title="citem.value"
+            :data-index="citem.key"
+          >
+            <template #cell>
+              <div class="nxf-table-td" :key="ccindex">
+                <FormItem :formObj="item.configList.layout.colContent[index]" :formData="formData" :proxyOptions="proxyOptions"/>
+              </div>
+            </template>
+          </a-table-column>
+        </template>
+      </a-table>
     </a-form-item>
   </span>
 </template>
 <script>
 export default {
+  name:'FormItem',
+  data () {
+    console.log(this.formData)
+    return{
+      tableData:[{}]
+    }
+  },
   props:{
     formObj:{
       type:Array
+    },
+    formData:{
+      type:Object
+    },
+    proxyOptions:{
+      type:Object
     }
   }
 }
