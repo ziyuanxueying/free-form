@@ -4,6 +4,7 @@
     :label="label"
     :required="required"
     :disabled="disabled"
+    :hideLabel="hideLabel"
     :validate-trigger="['change','input']"
   >
     <a-input
@@ -37,6 +38,7 @@ export default {
       type: Boolean,
       default: false
     },
+    hideLabel:{ type: Boolean, },
     defaultVal:{
       type: String,
     },

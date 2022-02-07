@@ -2,6 +2,7 @@
   <a-form-item
     :field="fileId"
     :label="label"
+    :hideLabel="hideLabel"
   >
     <a-select v-model="form[proto]" :placeholder="placeholder">
       <span v-if="!remote">
@@ -36,6 +37,7 @@ export default {
       type: Boolean,
       default: false
     },
+    hideLabel:{ type: Boolean, },
     columns:{
       type: Object
     },

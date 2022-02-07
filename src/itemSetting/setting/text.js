@@ -14,7 +14,7 @@ export const setting = [
     type: 'NxInput',
     configList:{
       defaultValue: '输入框',
-      label:'字段标题',
+      label:'标签名称',
       fileId:'label',
     }
   },{
@@ -26,18 +26,26 @@ export const setting = [
       maxLength: 50
     }
   },{
-    type: 'NxSwitch',
-    configList:{
-      defaultValue: false,
-      label:'必填',
-      fileId:'required',
-    }
-  },{
     type: 'NxInput',
     configList:{
       defaultValue: 'left',
       label:'文本位置',
       fileId:'position',
     }
-  }
+  },
+  {
+    type: 'NxSwitch',
+    configList:{
+      defaultValue: false,
+      label:'必填',
+      fileId:'required',
+    }
+  },
+  {
+    type: 'NxSwitch',
+    configList:{
+      label:'隐藏标签',
+      fileId:'hideLabel',
+    }
+  },
 ]

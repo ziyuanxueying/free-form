@@ -4,6 +4,7 @@
     :label="label"
     :required="required"
     :disabled="disabled"
+    :hideLabel="hideLabel"
   >
     <a-input-number
       :placeholder="placeholder"
@@ -39,15 +40,10 @@ export default {
     defaultVal:{
       type: Number,
     },
-    disabled:{
-      type: Boolean,
-    },
-    min:{
-      type: Number, 
-    },
-    max:{
-      type: Number, 
-    },
+    disabled:{ type: Boolean, },
+    hideLabel:{ type: Boolean, },
+    min:{ type: Number, },
+    max:{ type: Number, },
     proto:{  //绑定的key
       type: String,
     },

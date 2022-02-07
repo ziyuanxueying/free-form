@@ -3,6 +3,7 @@
     :field="fileId"
     :label="label"
     :required="required"
+    :hideLabel="hideLabel"
   >
     <a-range-picker/>
   </a-form-item>
@@ -27,6 +28,7 @@ export default {
       type: Boolean,
       default: false
     },
+    hideLabel:{ type: Boolean, },
   },
 }
 </script>

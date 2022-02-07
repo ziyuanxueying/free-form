@@ -4,6 +4,7 @@
     :label="label"
     :required="required"
     :disabled="disabled"
+    :hideLabel="hideLabel"
   >
     <a-date-picker
       :placeholder="placeholder"
@@ -32,16 +33,12 @@ export default {
       type: String,
       default: '请选择日期'
     },
-    required:{
-      type: Boolean,
-      default: false
-    },
     defaultVal:{
       type: String,
     },
-    disabled:{
-      type: Boolean,
-    },
+    required:{ type: Boolean, },
+    hideLabel:{ type: Boolean, },
+    disabled:{ type: Boolean, },
     format:{
       type: String,
       default: 'YYYY-MM-DD'

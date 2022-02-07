@@ -14,14 +14,14 @@ export const setting = [
     type: 'NxInput',
     configList:{
       defaultValue: '输入框',
-      label:'字段标题',
+      label:'标签名称',
       fileId:'label',
     }
   },{
     type: 'NxInput',
     configList:{
       defaultValue: '请输入内容',
-      label:'占位符',
+      label:'提示文字',
       fileId:'placeholder',
     }
   },{
@@ -30,7 +30,15 @@ export const setting = [
       label:'必填',
       fileId:'required',
     }
-  },{
+  },
+  {
+    type: 'NxSwitch',
+    configList:{
+      label:'隐藏标签',
+      fileId:'hideLabel',
+    }
+  },
+  {
     type: 'NxSwitch',
     configList:{
       label:'是否远程',

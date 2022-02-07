@@ -13,5 +13,12 @@ export default [
       fileId:'formId',
       disabled: true 
     }
+  },
+  {
+    type: 'NxInput',
+    configList:{
+      label:'页面路径',
+      fileId:'formPath',
+    }
   }
 ]

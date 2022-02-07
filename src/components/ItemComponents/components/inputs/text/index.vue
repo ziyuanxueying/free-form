@@ -2,6 +2,7 @@
   <a-form-item
     :field="fileId"
     :label="label"
+    :hideLabel="hideLabel"
   >
     <a-typography-paragraph :style="`width: 100%; text-align:${position};`">
       {{ defaultContent }}
@@ -29,6 +30,7 @@ export default {
       type: String,
       default: 'left'
     },
+    hideLabel:{ type: Boolean, },
     form:{
       type:Object,
       default () {

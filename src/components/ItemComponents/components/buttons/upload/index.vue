@@ -3,6 +3,7 @@
     :field="fileId"
     :label="label"
     :required="required"
+    :hideLabel="hideLabel"
   >
     <a-upload action="/" :limit="maxCount">
       <template #upload-button>
@@ -38,6 +39,7 @@ export default {
       type: Boolean,
       default: false
     },
+    hideLabel:{ type: Boolean, },
     text:{
       type: String,
       default: '点击上传'

@@ -4,6 +4,7 @@
     :label="label"
     :required="required"
     :disabled="disabled"
+    :hideLabel="hideLabel"
   >
     <a-textarea
       :placeholder="placeholder"
@@ -36,6 +37,7 @@ export default {
       type: Boolean,
       default: false
     },
+    hideLabel:{ type: Boolean, },
     placeholder:{
       type: String,
       default: '请输入内容'

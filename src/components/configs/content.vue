@@ -21,7 +21,7 @@
       </draggable>
     </a-form>
     <div class="flex-column tabs-btn">
-      <a-popover title="存为草稿">
+      <a-tooltip content="存为草稿">
         <a-button
           class="circle-btn"
           type="primary"
@@ -30,8 +30,8 @@
         >
           <icon-plus/>
         </a-button>
-      </a-popover>
-      <a-popover title="表单发布">
+      </a-tooltip>
+      <a-tooltip content="表单发布">
         <a-button
           class="circle-btn"
           type="primary"
@@ -40,8 +40,8 @@
         >
           <icon-subscribed/>
         </a-button>
-      </a-popover>
-      <a-popover title="表单预览">
+      </a-tooltip>
+      <a-tooltip content="表单预览">
         <a-button
           class="circle-btn"
           type="primary"
@@ -50,8 +50,8 @@
         >
           <icon-file-pdf/>
         </a-button>
-      </a-popover>
-      <a-popover title="查看Json">
+      </a-tooltip>
+      <a-tooltip content="查看Json">
         <a-button
           class="circle-btn"
           type="primary"
@@ -60,7 +60,7 @@
         >
           <icon-code-block/>
         </a-button>
-      </a-popover>
+      </a-tooltip>
     </div>
   </div>
   <FormShow v-else/>
@@ -69,7 +69,7 @@
     v-model:visible="visible"
     title="查看当前JSON"
   >
-    <a-typography>
+    <a-typography class="json-view">
       <a-typography-paragraph copyable>
         <vue-json-pretty :data="formConfig.toJSON" :showSelectController="true"/>
         <span class="copy"/>
@@ -108,7 +108,7 @@ export default {
       formTitle:undefined
     })
     const checkElement = (element)=>{
-    //存放当前选中的组件的componentId
+      //存放当前选中的组件的componentId
       formConfig.componentId = element.componentId
     }
     let form = ref({})
@@ -161,6 +161,11 @@ export default {
 
 .arco-form-item {
   margin: 10px 0;
+}
+
+.json-view {
+  overflow: auto;
+  height: 800px;
 }
 
 .copy {

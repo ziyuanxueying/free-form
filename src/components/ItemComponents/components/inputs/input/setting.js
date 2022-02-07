@@ -2,9 +2,10 @@ let inputSetting = {
   fileId: 'input',
   label:'输入框',
   placeholder: '请输入内容',
-  required: false,
   defaultVal:'',
+  required: false,
   disabled:false,
+  hideLabel:false,
   match:'',
   matchMsg:''
 }

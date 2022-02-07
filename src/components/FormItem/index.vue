@@ -12,10 +12,9 @@
 </template>
 <script>
 import { getAllComponents ,getComponentsObj } from '../../utils'
-import { reactive,ref } from '@vue/reactivity'
+import { reactive,ref } from 'vue'
 import { useFormConfigStore } from '../../store'
 import _ from 'lodash'
-// import { watch } from '@vue/runtime-core'
 export default {
   props:{
     element:{
@@ -50,6 +49,7 @@ export default {
     }
     else if(props.pageFrom === 'setform') {
       settings = formConfig.formSet
+      console.log('formConfig: ', formConfig.formSet)
       proto.value = propsVal.element.configList.fileId
     }
     else if(props.pageFrom === 'content') {
@@ -64,13 +64,21 @@ export default {
         type ? res.parentArr.splice(res.index,0,obj) : res.parentArr.splice(res.index,1)
       }
     }
+
     return {
       item,
       settings,
+      formConfig,
       proto,
       EditItem
     }
   },
+  watch:{
+    'formConfig.formSet' (val) {
+      this.settings = val
+      this.$forceUpdate()
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

@@ -4,6 +4,8 @@ let selectSetting = {
   placeholder: '请输入内容',
   defaultVal:null,
   required: false,
+  disabled:false,
+  hideLabel:false,
   remote: true ,
   columns: [
     { value: 'value', key: 'key', }

@@ -4,7 +4,8 @@ let inputSetting = {
   placeholder: '请输入内容',
   defaultVal: undefined,
   required: false,
-  disabled: false,
+  disabled: false, 
+  hideLabel:false,
   min:-Infinity,
   max:Infinity
 }

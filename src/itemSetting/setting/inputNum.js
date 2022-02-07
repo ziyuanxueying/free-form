@@ -58,4 +58,11 @@ export const setting = [
       fileId:'disabled',
     }
   },
+  {
+    type: 'NxSwitch',
+    configList:{
+      label:'隐藏标签',
+      fileId:'hideLabel',
+    }
+  },
 ]
