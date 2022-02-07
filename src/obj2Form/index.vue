@@ -1,13 +1,18 @@
 <template>
   <div class="nx-form">
     <a-form :model="formData" class="nxf-layout-content-form">
-      <FormItem :formObj="formConfig.formItemList" :formData="formData" :proxyOptions="proxyOptions"/>
+      <FormItem
+        :formObj="formObj"
+        :formData="formData"
+        :proxyOptions="proxyOptions"
+        :pathSetObj="pathSetObj"
+      />
     </a-form>
   </div>
 </template>
 <script>
-import { reactive } from 'vue'
 import { useRoute } from 'vue-router'
+import { reactive, toRefs } from 'vue'
 import { useFormConfigStore } from './../store'
 // import { toRaw } from '@vue/reactivity'
 import { getForm } from './utils'
@@ -18,33 +23,42 @@ export default {
     FormItem,
   },
   setup () {
-    let proxyOptions = reactive({})
-    let formData,formOptions
+    //form相关配置
+    let formConfig = reactive({
+      formObj:[],  //表单结构
+      proxyOptions:{}, //转换格式后的下拉选项列表对象
+      formData:{},  //表单数据
+    })
     const route = useRoute()
-    const formConfig  = useFormConfigStore()
+    const formStore = useFormConfigStore()
+
     const initJson = async ()=>{
       const url = route.query.version ? '/formDefDeploy/preview' : `/formDef/get/${route.query.id}`
       let res = await post(url,{ formId:route.query.id, version:route.query.version })
-      formConfig.initJson(res)
+      formStore.initJson(res)
       getFormObj()
     }
-    route.query.id ? initJson() : formConfig.initJson({ formDefJson:'{}', })
+    route.query.id ? initJson() : formStore.initJson({ formDefJson:'{}', })
+
+    let componentId2fileId = {}
+    let pathSetObj = {}
     async function getFormObj () {
+      formConfig.formObj = useFormConfigStore().formItemList
       //获取表单解构及所有原始options对象
-      let form = getForm(formConfig.formItemList,{})
-      console.log('form: ', form)
+      let form = getForm(formConfig.formObj,{})
       //为表单数据添加响应
-      formData = reactive(form.form)
-      formOptions = form.options
+      formConfig.formData = form.form
+      componentId2fileId = form.componentId2fileId
       //解析原始options对象为可用options数组对象
-      for(let p in formOptions) {
+      for(let p in form.options) {
         try{
-          proxyOptions[p] = await getOptions(formOptions[p])
+          formConfig.proxyOptions[p] = await getOptions(form.options[p])
         }
         catch(e) {
-          proxyOptions[p] = []
+          formConfig. proxyOptions[p] = []
         }
       }
+      getPathObj()
     }
     async function getOptions (oldOptions) {
       if(!Array.isArray(oldOptions)) {
@@ -68,13 +82,24 @@ export default {
         return oldOptions
       }
     }
-    // getFormObj()
+    function getPathObj () {
+      useFormConfigStore().pathSet.forEach(item=>{
+        let prop = componentId2fileId[item.childProp]
+        if(!pathSetObj[prop]) {
+          pathSetObj[prop] = {}
+        }
+        pathSetObj[prop][item.action] = {
+          parentProp:componentId2fileId[item.parentProp],
+          equation:item.equation,
+          value:item.value
+        }
+      })
+
+      console.log(pathSetObj)
+    }
     return {
-      formData,
-      formOptions,
-      getOptions,
-      proxyOptions,
-      formConfig,
+      ...toRefs(formConfig),
+      pathSetObj
     }
   },
 }

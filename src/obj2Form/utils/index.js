@@ -8,6 +8,7 @@
 import { post } from './request'
 export function getForm (formItemList,options) {
   let form = {}
+  let componentId2fileId = {}
   formItemList.forEach(item=>{
     let configList = item.configList
     if(item.type === 'NxSelect') {
@@ -37,7 +38,8 @@ export function getForm (formItemList,options) {
       }
     }else{
       form[configList.fileId] = configList.defaultVal || null
+      componentId2fileId[item.componentId] = configList.fileId || item.componentId
     }
   })
-  return { form,options }
+  return { form,options,componentId2fileId }
 }

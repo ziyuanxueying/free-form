@@ -43,13 +43,13 @@ export function getAllComponents () {
 /**
  * 获取数组中的指定对象
  * @param {*} arr 数组
- * @param {*} fieldId id
+ * @param {*} componentId id
  * @returns 
  */
-export function getComponentsObj (arr,fieldId) {
+export function getComponentsObj (arr,componentId) {
   for(let i = 0; i < arr.length; i++) {
     let item = arr[i]
-    if(item.fieldId === fieldId) {
+    if(item.componentId === componentId) {
       return  {
         obj:item,
         parentArr:arr,
@@ -59,7 +59,7 @@ export function getComponentsObj (arr,fieldId) {
       if(item.configList.layout) {
         let colContent = item.configList.layout.colContent
         for(let i = 0; i < colContent.length; i++) {
-          let res = getComponentsObj(colContent[i],fieldId)
+          let res = getComponentsObj(colContent[i],componentId)
           if(res) {
             return res
           }
@@ -82,14 +82,14 @@ export function getTree (formItemList,disabled) {
     if(item.configList.layout) {
       obj =  {
         title: item.moduleName,
-        key: item.fieldId,
+        key: item.componentId,
         children:[],
         disabled: disabled,
       }
       item.configList.layout.colContent.forEach((citem,index)=>{
         obj.children.push({
           title: `容器${index + 1}`,
-          key: `${item.fieldId}-${index}`,
+          key: `${item.componentId}-${index}`,
           children:getTree(citem),
           disabled: disabled,
         })
@@ -97,7 +97,7 @@ export function getTree (formItemList,disabled) {
     }else{
       obj =  {
         title: item.configList ? item.configList.label : undefined,
-        key: item.configList ? item.fieldId : undefined,
+        key: item.configList ? item.componentId : undefined,
       }
     }
     treeData.push(obj)

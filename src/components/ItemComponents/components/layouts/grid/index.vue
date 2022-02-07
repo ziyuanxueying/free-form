@@ -6,7 +6,7 @@
           v-model="layout.colContent[index]"
           group="NXFormGroup"
           class="nxf-grid-col-draggable"
-          item-key="fieldId"
+          item-key="componentId"
         >
           <template #item="{element}">
             <div :class="{'nxf-layout-content-form-item':true,'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId}" @click.stop="checkElement(element)">
@@ -43,8 +43,8 @@ export default {
   setup (props) {
     const formConfig = useFormConfigStore()
     const checkElement = (element)=>{
-      //存放当前选中的组件的fieldId
-      formConfig.fieldId = element.fieldId
+      //存放当前选中的组件的componentId
+      formConfig.componentId = element.componentId
     }
     watch(()=>props.layout.colCount,()=>{
       let colCount = props.layout.colCount

@@ -5,13 +5,13 @@
         v-model="formConfig.formItemList"
         group="NXFormGroup"
         class="nxf-layout-content-draggable"
-        item-key="fieldId"
+        item-key="componentId"
       >
         <template #item="{element}">
           <span>
             <div
               :class="{ 'nxf-layout-content-form-item':true,
-                        'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId }" 
+                        'nxf-layout-content-form-item-active':element.componentId===formConfig.componentId }" 
               @click="checkElement(element)"
             >
               <FormItem :element="element" pageFrom="content"/>
@@ -108,8 +108,8 @@ export default {
       formTitle:undefined
     })
     const checkElement = (element)=>{
-    //存放当前选中的组件的fieldId
-      formConfig.fieldId = element.fieldId
+    //存放当前选中的组件的componentId
+      formConfig.componentId = element.componentId
     }
     let form = ref({})
     const route = useRoute()
