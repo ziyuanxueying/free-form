@@ -5,7 +5,7 @@ export const useFormConfigStore = defineStore('formConfig', {
   state: () => {
     return { 
       //当前选中的表单组件id
-      fieldId:null,
+      componentId:null,
       //用于存放表单结构及组件样式
       formItemList: [],
       //用于存放表单全局样式
@@ -27,7 +27,7 @@ export const useFormConfigStore = defineStore('formConfig', {
   getters: {
     toJSON () {
       return {
-        fieldId: this.fieldId,
+        componentId: this.componentId,
         formItemList: this.formItemList,
         formSet: this.formSet,
         pathSet: this.pathSet,
@@ -37,7 +37,7 @@ export const useFormConfigStore = defineStore('formConfig', {
   actions: {
     async initJson (res) {
       res = JSON.parse(res)
-      this.fieldId = res.fieldId
+      this.componentId = res.componentId
       this.formItemList = res.formItemList
       this.formSet = res.formSet || this.formSet
     } ,

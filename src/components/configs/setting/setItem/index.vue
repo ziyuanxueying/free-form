@@ -38,12 +38,12 @@ export default defineComponent({
       //组件配置
       setting.value = set
     }
-    watch(()=>formConfig.fieldId,()=>{
+    watch(()=>formConfig.componentId,()=>{
     //获取当前选中组件的唯一id
-      const fieldId = formConfig.fieldId
+      const componentId = formConfig.componentId
       const formItemList = formConfig.formItemList
       //通过id获取组件配置及属性值
-      let res = getComponentsObj(formItemList,fieldId)
+      let res = getComponentsObj(formItemList,componentId)
       if(res) {
         getFormSeting(res.obj)
       }

@@ -4,10 +4,10 @@
       v-model="layout.colContent[0]"
       group="NXFormGroup"
       class="nxf-card-draggable"
-      item-key="fieldId"
+      item-key="componentId"
     >
       <template #item="{element}">
-        <div :class="{'nxf-layout-content-form-item':true,'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId}" @click.stop="checkElement(element)">
+        <div :class="{'nxf-layout-content-form-item':true,'nxf-layout-content-form-item-active':element.componentId===formConfig.componentId}" @click.stop="checkElement(element)">
           <FormItem :element="element"/>
         </div>
       </template>
@@ -37,8 +37,8 @@ export default {
   setup () {
     const formConfig = useFormConfigStore()
     const checkElement = (element)=>{
-      //存放当前选中的组件的fieldId
-      formConfig.fieldId = element.fieldId
+      //存放当前选中的组件的componentId
+      formConfig.componentId = element.componentId
     }
     return {
       checkElement,

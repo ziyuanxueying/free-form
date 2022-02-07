@@ -1,12 +1,17 @@
 <template>
   <div class="nx-form">
     <a-form :model="formData" class="nxf-layout-content-form">
-      <FormItem :formObj="formObj" :formData="formData" :proxyOptions="proxyOptions"/>
+      <FormItem
+        :formObj="formObj"
+        :formData="formData"
+        :proxyOptions="proxyOptions"
+        :pathSetObj="pathSetObj"
+      />
     </a-form>
   </div>
 </template>
 <script>
-import { reactive } from 'vue-demi'
+import { reactive, toRefs } from 'vue-demi'
 import { useFormConfigStore } from './../store'
 // import { toRaw } from '@vue/reactivity'
 import { getForm } from './utils'
@@ -16,25 +21,31 @@ export default {
     FormItem,
   },
   setup () {
-    let formObj = reactive({})
-    let proxyOptions = reactive({})
-    let formData,formOptions
+    //form相关配置
+    let formConfig = reactive({
+      formObj:{},  //表单结构
+      proxyOptions:{}, //转换格式后的下拉选项列表对象
+      formData:{},  //表单数据
+    })
+    let componentId2fileId = {}
+    let pathSetObj = {}
     async function getFormObj () {
-      formObj = useFormConfigStore().formItemList
+      formConfig.formObj = useFormConfigStore().formItemList
       //获取表单解构及所有原始options对象
-      let form = getForm(formObj,{})
+      let form = getForm(formConfig.formObj,{})
       //为表单数据添加响应
-      formData = reactive(form.form)
-      formOptions = form.options
+      formConfig.formData = form.form
+      componentId2fileId = form.componentId2fileId
       //解析原始options对象为可用options数组对象
-      for(let p in formOptions) {
+      for(let p in form.options) {
         try{
-          proxyOptions[p] = await getOptions(formOptions[p])
+          formConfig.proxyOptions[p] = await getOptions(form.options[p])
         }
         catch(e) {
-          proxyOptions[p] = []
+          formConfig. proxyOptions[p] = []
         }
       }
+      getPathObj()
     }
     async function getOptions (oldOptions) {
       if(!Array.isArray(oldOptions)) {
@@ -58,13 +69,25 @@ export default {
         return oldOptions
       }
     }
+    function getPathObj () {
+      useFormConfigStore().pathSet.forEach(item=>{
+        let prop = componentId2fileId[item.childProp]
+        if(!pathSetObj[prop]) {
+          pathSetObj[prop] = {}
+        }
+        pathSetObj[prop][item.action] = {
+          parentProp:componentId2fileId[item.parentProp],
+          equation:item.equation,
+          value:item.value
+        }
+      })
+
+      console.log(pathSetObj)
+    }
     getFormObj()
     return {
-      formObj,
-      formData,
-      formOptions,
-      getOptions,
-      proxyOptions
+      ...toRefs(formConfig),
+      pathSetObj
     }
   },
 }

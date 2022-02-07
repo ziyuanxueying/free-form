@@ -57,10 +57,10 @@ export default {
       proto.value = 'defaultVal'
     }
     const EditItem = (element,type)=>{
-      let res = getComponentsObj(formConfig.formItemList,element.fieldId)
+      let res = getComponentsObj(formConfig.formItemList,element.componentId)
       if(res) {
         let obj = _.cloneDeep(res.obj)
-        obj.fieldId = `${obj.name}_${new Date().getTime()}`
+        obj.componentId = `${obj.name}_${new Date().getTime()}`
         type ? res.parentArr.splice(res.index,0,obj) : res.parentArr.splice(res.index,1)
       }
     }

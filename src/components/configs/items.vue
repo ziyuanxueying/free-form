@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     clone (obj) {
-      const newObj = Object.assign(_.cloneDeep(obj), { fieldId: `${obj.name}_${new Date().getTime()}` })
+      const newObj = Object.assign(_.cloneDeep(obj), { componentId: `${obj.name}_${new Date().getTime()}` })
       return newObj
     }
   }

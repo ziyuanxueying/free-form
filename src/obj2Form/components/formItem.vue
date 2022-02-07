@@ -1,7 +1,7 @@
 <template>
   <span>
     <a-form-item
-      :field="item.configList.fileId||item.fieldId"
+      :field="item.configList.fileId||item.componentId"
       :label="item.configList.label||item.moduleName"
       v-for="item in formObj"
       :key="item.configList.fileId"
@@ -87,6 +87,9 @@ export default {
       type:Object
     },
     proxyOptions:{
+      type:Object
+    },
+    pathSetObj:{
       type:Object
     }
   }
