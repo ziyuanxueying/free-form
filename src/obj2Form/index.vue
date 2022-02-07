@@ -1,9 +1,8 @@
 <template>
   <div class="nx-form">
     <a-form :model="formData" class="nxf-layout-content-form">
-      <FormItem :formObj="formObj"/>
+      <FormItem :formObj="formObj" :formData="formData" :proxyOptions="proxyOptions"/>
     </a-form>
-    {{ formData }}
   </div>
 </template>
 <script>

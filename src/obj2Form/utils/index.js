@@ -22,22 +22,21 @@ export function getForm (formItemList,options) {
       }else{
         options[configList.fileId] = configList.columns
       }
-    }else{
+    }
     //布局组件
-      if(configList.layout) {
-        let obj = {}
-        configList.layout.colContent.forEach((citem)=>{
-          let res = getForm(citem,options)
-          Object.assign(obj,res.form)
-        })
-        if(configList.layout.ifAdd) {
-          form[configList.layout.fileId] = [obj]
-        }else{
-          Object.assign(form,obj)
-        }
+    if(configList.layout) {
+      let obj = {}
+      configList.layout.colContent.forEach((citem)=>{
+        let res = getForm(citem,options)
+        Object.assign(obj,res.form)
+      })
+      if(configList.layout.ifAdd) {
+        form[configList.layout.fileId] = [obj]
       }else{
-        form[configList.fileId] = configList.defaultVal || null
+        Object.assign(form,obj)
       }
+    }else{
+      form[configList.fileId] = configList.defaultVal || null
     }
   })
   return { form,options }
