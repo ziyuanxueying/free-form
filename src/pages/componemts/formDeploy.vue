@@ -23,7 +23,7 @@
           <a-button
             class="operate-btn"
             type="text"
-            @click="itemEdit(record,'configPage')"
+            @click="itemEdit(record,'formShow')"
           >
             编辑
           </a-button>

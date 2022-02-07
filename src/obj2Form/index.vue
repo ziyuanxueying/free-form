@@ -1,28 +1,38 @@
 <template>
   <div class="nx-form">
     <a-form :model="formData" class="nxf-layout-content-form">
-      <FormItem :formObj="formObj" :formData="formData" :proxyOptions="proxyOptions"/>
+      <FormItem :formObj="formConfig.formItemList" :formData="formData" :proxyOptions="proxyOptions"/>
     </a-form>
   </div>
 </template>
 <script>
-import { reactive } from 'vue-demi'
+import { reactive } from 'vue'
+import { useRoute } from 'vue-router'
 import { useFormConfigStore } from './../store'
 // import { toRaw } from '@vue/reactivity'
 import { getForm } from './utils'
+import{ post } from '../tools/request'
 import FormItem from './components/formItem.vue'
 export default {
   components: {
     FormItem,
   },
   setup () {
-    let formObj = reactive({})
     let proxyOptions = reactive({})
     let formData,formOptions
+    const route = useRoute()
+    const formConfig  = useFormConfigStore()
+    const initJson = async ()=>{
+      const url = route.query.version ? '/formDefDeploy/preview' : `/formDef/get/${route.query.id}`
+      let res = await post(url,{ formId:route.query.id, version:route.query.version })
+      formConfig.initJson(res)
+      getFormObj()
+    }
+    route.query.id ? initJson() : formConfig.initJson({ formDefJson:'{}', })
     async function getFormObj () {
-      formObj = useFormConfigStore().formItemList
       //获取表单解构及所有原始options对象
-      let form = getForm(formObj,{})
+      let form = getForm(formConfig.formItemList,{})
+      console.log('form: ', form)
       //为表单数据添加响应
       formData = reactive(form.form)
       formOptions = form.options
@@ -58,13 +68,13 @@ export default {
         return oldOptions
       }
     }
-    getFormObj()
+    // getFormObj()
     return {
-      formObj,
       formData,
       formOptions,
       getOptions,
-      proxyOptions
+      proxyOptions,
+      formConfig,
     }
   },
 }
