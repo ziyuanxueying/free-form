@@ -3,6 +3,22 @@ import {
   IconDelete,
   IconCopy,
   IconLanguage,
+  IconUserGroup,
+  IconMessage,
+  IconInteraction,
+  IconEdit,
+  IconList,
+  IconOriginalSize,
+  IconLayout,
+  IconFolder,
+  IconCalendar,
+  IconDownCircle,
+  IconPoweroff,
+  IconDashboard,
+  IconCodeBlock,
+  IconSubscribed,
+  IconFilePdf,
+  IconBold,
 } from '@arco-design/web-vue/es/icon'
 
 const iconComponents = {
@@ -10,6 +26,22 @@ const iconComponents = {
   IconDelete,
   IconCopy,
   IconLanguage,
+  IconUserGroup,
+  IconMessage,
+  IconInteraction,
+  IconEdit,
+  IconList,
+  IconOriginalSize,
+  IconLayout,
+  IconFolder,
+  IconCalendar,
+  IconDownCircle,
+  IconPoweroff,
+  IconDashboard,
+  IconCodeBlock,
+  IconSubscribed,
+  IconFilePdf,
+  IconBold,
 }
 
 export default{
@@ -18,4 +50,23 @@ export default{
       app.component(key, iconComponents[key])
     }) 
   }
+}
+
+export const icons = {
+  IconUserGroup,
+  IconMessage,
+  IconInteraction,
+  IconEdit,
+  IconList,
+  IconOriginalSize,
+  IconLayout,
+  IconFolder,
+  IconCalendar,
+  IconDownCircle,
+  IconPoweroff,
+  IconDashboard,
+  IconCodeBlock,
+  IconSubscribed,
+  IconFilePdf,
+  IconBold,
 }

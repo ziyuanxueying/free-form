@@ -49,7 +49,6 @@ export default {
     }
     else if(props.pageFrom === 'setform') {
       settings = formConfig.formSet
-      console.log('formConfig: ', formConfig.formSet)
       proto.value = propsVal.element.configList.fileId
     }
     else if(props.pageFrom === 'content') {
