@@ -102,7 +102,6 @@ export function getTree (formItemList,disabled) {
     }
     treeData.push(obj)
   })
-  console.log('treeData',treeData)
   return treeData
 }
 /**
