@@ -20,5 +20,19 @@ export default [
       label:'回显路径',
       fileId:'formPath',
     }
+  },
+  {
+    type: 'NxInput',
+    configList:{
+      label:'数据路径',
+      fileId:'dataPath',    
+    }
+  },
+  {
+    type: 'NxInput',
+    configList:{
+      label:'提报路径',
+      fileId:'submitPath',    
+    }
   }
 ]

@@ -45,8 +45,25 @@ export function getForm (formItemList,options) {
       }
     }else{
       form[configList.fileId] = configList.defaultVal || null
-      componentId2fileId[item.componentId] = configList.fileId || item.componentId
     }
+    componentId2fileId[item.componentId] = configList.fileId || item.componentId
   })
   return { form,options,componentId2fileId }
+}
+
+
+//采用递归读取对象的属性值
+export function getField (data,fields) {
+  let arr = fields.split('.')
+  let key = arr.shift()
+  let value = data[key]
+ 
+  if(value === null) {
+    return value
+  }else if(arr.length === 0) {
+    return value
+  }
+ 
+  let result = getField(value,arr.join('.'))
+  return result
 }

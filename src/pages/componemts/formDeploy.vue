@@ -34,6 +34,13 @@
           >
             历史
           </a-button>
+          <a-button
+            class="operate-btn"
+            type="text"
+            @click="itemEdit(record,'formShow')"
+          >
+            填写
+          </a-button>
         </template>
       </a-table-column>
     </template>
