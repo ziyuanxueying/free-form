@@ -2,7 +2,9 @@
   <div class="nx-form">
     <a-form :model="formData" class="nxf-layout-content-form">
       <FormItem
-        :formObj="formObj"
+        v-for="item in formObj"
+        :key="item.configList.fileId"
+        :item="item"
         :formData="formData"
         :proxyOptions="proxyOptions"
         :pathSetObj="pathSetObj"
