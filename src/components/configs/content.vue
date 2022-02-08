@@ -142,6 +142,7 @@ export default {
         formConfig.formSet.formId = id
         type === 'deaft' ? Message.success('已暂存为草稿') : saveAsRelease()
       }
+      return true
     }
     return {
       checkElement,
