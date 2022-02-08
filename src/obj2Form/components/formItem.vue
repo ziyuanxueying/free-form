@@ -86,7 +86,7 @@
     </a-table>
   </a-form-item>
   <template v-if="item.type=== 'NxCard'">
-    <div class="card-view">
+    <div v-if="item.configList.layout.ifAdd" class="card-view">
       <div
         class="card-item"
         v-for="(ditem,dindex) in formData[item.configList.layout.fileId]"
@@ -115,16 +115,28 @@
             <icon-delete/>
           </a-button>
         </div>
-        <a-button
-          v-if="item.configList.layout.ifAdd"
-          class="add-btn"
-          type="outline"
-          @click="cardAdd"
-        >
-          添加
-        </a-button>
       </div>
+      <a-button
+        v-if="item.configList.layout.ifAdd"
+        class="add-btn"
+        type="outline"
+        @click="cardAdd"
+      >
+        添加
+      </a-button>
     </div>
+    <template v-else>
+      <FormItem
+        v-for="(ccitem,ccindex) in item.configList.layout.colContent[0]"
+        :item="ccitem"
+        :key="ccindex"
+        :formData="formData"
+        :proxyOptions="proxyOptions"
+        :pathSetObj="pathSetObj"
+        :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
+        :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+      />
+    </template>
   </template>
 </template>
 <script>
