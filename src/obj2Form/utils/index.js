@@ -27,14 +27,21 @@ export function getForm (formItemList,options) {
     //布局组件
     if(configList.layout) {
       let obj = {}
+      //存放id映射关系
+      let componentId2fileIdObj = {}
+      //遍历布局组件子节点
       configList.layout.colContent.forEach((citem)=>{
+        //循环迭代，获取子节点form结构
         let res = getForm(citem,options)
         Object.assign(obj,res.form)
+        Object.assign(componentId2fileIdObj,res.componentId2fileId)
       })
       if(configList.layout.ifAdd) {
         form[configList.layout.fileId] = [obj]
+        componentId2fileId[item.componentId] = configList.layout.fileId
       }else{
         Object.assign(form,obj)
+        Object.assign(componentId2fileId,componentId2fileIdObj)
       }
     }else{
       form[configList.fileId] = configList.defaultVal || null

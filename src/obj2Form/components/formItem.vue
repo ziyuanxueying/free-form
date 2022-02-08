@@ -3,10 +3,9 @@
     <a-form-item
       :field="item.configList.fileId||item.componentId"
       :label="item.configList.label||item.moduleName"
-      v-for="item in formObj"
-      :key="item.configList.fileId"
-      :required="item.configList.required||false"
-      :disabled="item.configList.disabled||false"
+      :required="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
+      :disabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+      v-if="!(pathSetObj[item.configList.fileId]?.hide?hide:false)"
       :validate-trigger="['change','input']"
     >
       <a-input v-if="item.type=='NxInput'" v-model="formData[item.configList.fileId]" :placeholder="item.configList.placeholder||'请输入'"/>
@@ -41,8 +40,17 @@
         </a-option>
       </a-select>
       <a-row v-if="item.type=='NxGrid'" style="width:100%">
-        <a-col :span="24 / item.configList.layout.colCount" v-for="(citem,index ) in item.configList.layout.colContent" :key="index">
-          <FormItem :formObj="citem" :formData="formData"/>
+        <a-col :span="24 / item.configList.layout.colCount" v-for="(citem,cindex ) in item.configList.layout.colContent" :key="cindex">
+          <FormItem
+            v-for="(ccitem,ccindex) in citem"
+            :item="ccitem"
+            :formData="formData"
+            :key="ccindex"
+            :proxyOptions="proxyOptions"
+            :pathSetObj="pathSetObj"
+            :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
+            :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+          />
         </a-col>
       </a-row>
       <a-table
@@ -60,8 +68,17 @@
             :data-index="citem.key"
           >
             <template #cell>
-              <div class="nxf-table-td" :key="ccindex">
-                <FormItem :formObj="item.configList.layout.colContent[index]" :formData="formData" :proxyOptions="proxyOptions"/>
+              <div class="nxf-table-td">
+                <FormItem
+                  v-for="(ccitem,ccindex) in item.configList.layout.colContent[index]"
+                  :item="ccitem"
+                  :key="ccindex"
+                  :formData="formData"
+                  :proxyOptions="proxyOptions"
+                  :pathSetObj="pathSetObj"
+                  :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
+                  :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+                />
               </div>
             </template>
           </a-table-column>
@@ -71,17 +88,39 @@
   </span>
 </template>
 <script>
+import { reactive, toRefs, watch } from 'vue-demi'
 export default {
   name:'FormItem',
-  data () {
-    console.log(this.formData)
-    return{
-      tableData:[{}]
+  setup (props) {
+    let config = reactive({
+      disabled:false,
+      required:false,
+      hide:false
+    })
+    watch(()=>props.formData,()=>{
+      let actArr = ['disabled','hide','required']
+      if(props.pathSetObj[props.item.configList.fileId]) {
+        actArr.forEach(item=>{
+          if(props.pathSetObj[props.item.configList.fileId][item]) {
+            if(props.pathSetObj[props.item.configList.fileId][item].equation === 'equal') {
+              // eslint-disable-next-line eqeqeq
+              config[item] = props.formData[props.pathSetObj[props.item.configList.fileId][item].parentProp] == props.pathSetObj[props.item.configList.fileId][item].value
+            }else{
+              // eslint-disable-next-line eqeqeq
+              config[item] = props.formData[props.pathSetObj[props.item.configList.fileId][item].parentProp] != props.pathSetObj[props.item.configList.fileId][item].value
+            }
+          }
+        })
+      }
+    },{ deep: true,immediate:true })
+    return {
+      tableData:[{}],
+      ...toRefs(config)
     }
   },
   props:{
-    formObj:{
-      type:Array
+    item:{
+      type:Object
     },
     formData:{
       type:Object
@@ -91,7 +130,16 @@ export default {
     },
     pathSetObj:{
       type:Object
-    }
+    },
+    ifRequired:{
+      type:Boolean,
+      default:()=>false
+    },
+    ifDisabled:{
+      type:Boolean,
+      default:()=>false
+    },
+
   }
 }
 </script>

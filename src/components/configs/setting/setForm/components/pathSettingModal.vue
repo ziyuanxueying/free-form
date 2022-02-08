@@ -42,7 +42,7 @@
           />
           <a-select placeholder="请选择行为" :style="{width:'200px'}" v-model="item.action">
             <a-option value="disabled" label="禁用"/>
-            <a-option value="none" label="隐藏"/>
+            <a-option value="hide" label="隐藏"/>
             <a-option value="required" label="必选"/>
           </a-select>
           <icon-delete class="delIcon" @click="delPathSetting(index)"/>
