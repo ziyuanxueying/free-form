@@ -21,7 +21,7 @@
                 item-key="componentId"
               >
                 <template #item="{element}">
-                  <div :class="{'nxf-layout-content-form-item':true,'nxf-layout-content-form-item-active':element.fieldId===formConfig.fieldId}" @click.stop="checkElement(element)">
+                  <div :class="{'nxf-layout-content-form-item':true,'nxf-layout-content-form-item-active':element.componentId===formConfig.componentId}" @click.stop="checkElement(element)">
                     <FormItem :element="element" :pageFrom="pageFrom"/>
                   </div>
                 </template>
