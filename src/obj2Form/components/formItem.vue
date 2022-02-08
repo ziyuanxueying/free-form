@@ -2,10 +2,10 @@
   <!-- {{ !(pathSetObj[item.configList.fileId]?.hide?hide:false) }} -->
   <a-form-item
     v-show="!hide&&item.type!=='NxCard'"
-    :field="item.configList.fileId||item.componentId"
+    :field="id"
     :label="item.configList.label||item.moduleName"
-    :required="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
-    :disabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+    :required="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
+    :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     :validate-trigger="['change','input']"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[item.configList.fileId]" :placeholder="item.configList.placeholder||'请输入'"/>
@@ -48,8 +48,9 @@
           :key="ccindex"
           :proxyOptions="proxyOptions"
           :pathSetObj="pathSetObj"
-          :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
-          :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+          :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
+          :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+          :id="ccitem.configList.fileId||ccitem.componentId"
         />
       </a-col>
     </a-row>
@@ -76,8 +77,9 @@
                 :formData="formData"
                 :proxyOptions="proxyOptions"
                 :pathSetObj="pathSetObj"
-                :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
-                :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+                :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
+                :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+                :id="ccitem.configList.fileId||ccitem.componentId"
               />
             </div>
           </template>
@@ -101,8 +103,9 @@
               :formData="ditem"
               :proxyOptions="proxyOptions"
               :pathSetObj="pathSetObj"
-              :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
-              :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+              :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
+              :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+              :id="ccitem.configList.fileId||ccitem.componentId"
             />
           </div>
           <a-button
@@ -133,8 +136,9 @@
         :formData="formData"
         :proxyOptions="proxyOptions"
         :pathSetObj="pathSetObj"
-        :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
-        :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+        :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
+        :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+        :id="ccitem.configList.fileId||ccitem.componentId"
       />
     </template>
   </template>
@@ -174,10 +178,9 @@ export default {
     }
     watch(()=>props.formData,()=>{
       let actArr = ['disabled','hide','required']
-      console.log(props.pathSetObj[props.item.configList.fileId])
-      if(props.pathSetObj[props.item.configList.fileId]) {
+      if(props.pathSetObj[props.id]) {
         actArr.forEach(item=>{
-          let itemLink = props.pathSetObj[props.item.configList.fileId][item]
+          let itemLink = props.pathSetObj[props.id][item]
           if(itemLink) {
             if(itemLink.equation === 'equal') {
               // eslint-disable-next-line eqeqeq
@@ -218,7 +221,9 @@ export default {
       type:Boolean,
       default:()=>false
     },
-
+    id:{
+      type:null,
+    }
   }
 }
 </script>

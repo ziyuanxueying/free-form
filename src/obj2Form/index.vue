@@ -1,7 +1,6 @@
 <template>
   <div class="nx-form">
     <a-form :model="formData" class="nxf-layout-content-form" ref="formRef">
-      {{ pathSetObj }}
       <FormItem
         v-for="item in formObj"
         :key="item.configList.fileId"
@@ -9,6 +8,7 @@
         :formData="formData"
         :proxyOptions="proxyOptions"
         :pathSetObj="pathSetObj"
+        :id="item.configList.fileId||item.componentId"
       />
       <a-form-item>
         <a-space>
@@ -57,6 +57,7 @@ export default {
         useFormConfigStore = JSON.parse(res.formDefJson)
       }
       getFormObj()
+      getPathObj()
       let type = route.query.type
       //编辑录入内容
       if(type === 'edit') {
@@ -82,7 +83,6 @@ export default {
           formConfig. proxyOptions[p] = []
         }
       }
-      getPathObj()
     }
     async function getOptions (oldOptions) {
       if(!Array.isArray(oldOptions)) {
@@ -108,7 +108,6 @@ export default {
       }
     }
     function getPathObj () {
-      console.log(useFormConfigStore.pathSet)
       useFormConfigStore.pathSet.forEach(item=>{
         let prop = componentId2fileId[item.childProp]
         if(!pathSetObj[prop]) {
@@ -124,9 +123,9 @@ export default {
       console.log(pathSetObj)
     }
     function reset () {
-      console.log(111111111111111111111111111,formRef.value.resetFields)
       formRef.value.resetFields()
     }
+    console.log(22222222222222222222222222222222222222)
     return {
       ...toRefs(formConfig),
       pathSetObj,
