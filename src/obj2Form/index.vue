@@ -13,12 +13,10 @@
   </div>
 </template>
 <script>
-import { useRoute } from 'vue-router'
 import { reactive, toRefs } from 'vue'
 import { useFormConfigStore } from './../store'
 // import { toRaw } from '@vue/reactivity'
 import { getForm } from './utils'
-import{ post } from '../tools/request'
 import FormItem from './components/formItem.vue'
 export default {
   components: {
@@ -31,16 +29,6 @@ export default {
       proxyOptions:{}, //转换格式后的下拉选项列表对象
       formData:{},  //表单数据
     })
-    const route = useRoute()
-    const formStore = useFormConfigStore()
-
-    const initJson = async ()=>{
-      const url = route.query.version ? '/formDefDeploy/preview' : `/formDef/get/${route.query.id}`
-      let res = await post(url,{ formId:route.query.id, version:route.query.version })
-      formStore.initJson(res)
-      getFormObj()
-    }
-    route.query.id ? initJson() : formStore.initJson({ formDefJson:'{}', })
 
     let componentId2fileId = {}
     let pathSetObj = {}
@@ -62,6 +50,7 @@ export default {
       }
       getPathObj()
     }
+    getFormObj()
     async function getOptions (oldOptions) {
       if(!Array.isArray(oldOptions)) {
         try{
