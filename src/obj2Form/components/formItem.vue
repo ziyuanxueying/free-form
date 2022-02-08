@@ -86,27 +86,51 @@
     </a-table>
   </a-form-item>
   <template v-if="item.type=== 'NxCard'">
-    <FormItem
-      v-for="(ccitem,ccindex) in item.configList.layout.colContent[0]"
-      :item="ccitem"
-      :key="ccindex"
-      :formData="formData"
-      :proxyOptions="proxyOptions"
-      :pathSetObj="pathSetObj"
-      :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
-      :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
-    />
-    <a-button
-      v-if="item.configList.layout.ifAdd"
-      class="add-btn"
-      type="outline"
-    >
-      添加
-    </a-button>
+    <div class="card-view">
+      <div
+        class="card-item"
+        v-for="(ditem,dindex) in formData[item.configList.layout.fileId]"
+        :key="dindex"
+      >
+        <div class="flex-row">
+          <div class="form-view">
+            <FormItem
+              v-for="(ccitem,ccindex) in item.configList.layout.colContent[0]"
+              :item="ccitem"
+              :key="ccindex"
+              :formData="ditem"
+              :proxyOptions="proxyOptions"
+              :pathSetObj="pathSetObj"
+              :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
+              :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+            />
+          </div>
+          <a-button
+            :style="!dindex&&'visibility:hidden'"
+            type="outline"
+            status="danger"
+            shape="circle"
+            @click="cardDelete(dindex)"
+          >
+            <icon-delete/>
+          </a-button>
+        </div>
+        <a-button
+          v-if="item.configList.layout.ifAdd"
+          class="add-btn"
+          type="outline"
+          @click="cardAdd"
+        >
+          添加
+        </a-button>
+      </div>
+    </div>
   </template>
 </template>
 <script>
 import { reactive, toRefs, watch } from 'vue-demi'
+import{ getForm } from '../utils'
+// import { useFormConfigStore } from '../../store'
 export default {
   name:'FormItem',
   setup (props) {
@@ -115,6 +139,27 @@ export default {
       required:false,
       hide:false,
     })
+
+    const cardAdd = ()=> {
+    //   let childPathSet
+      let formCard = getForm(props.item.configList.layout.colContent[0])
+      props.formData[props.item.configList.layout.fileId].push(formCard.form)
+    //   let componentId2fileId = formCard.componentId2fileId
+    //   useFormConfigStore().pathSet.forEach(item=>{
+    //     let prop = componentId2fileId[item.childProp]
+    //     if(!childPathSet[prop]) {
+    //       childPathSet[prop] = {}
+    //     }
+    //     childPathSet[prop][item.action] = {
+    //       parentProp:componentId2fileId[item.parentProp],
+    //       equation:item.equation,
+    //       value:item.value
+    //     }
+    //   })
+    }
+    const cardDelete = (dindex)=>{
+      props.formData[props.item.configList.layout.fileId].splice(dindex,1)
+    }
     watch(()=>props.formData,()=>{
       let actArr = ['disabled','hide','required']
       console.log(props.pathSetObj[props.item.configList.fileId])
@@ -135,7 +180,9 @@ export default {
     },{ deep: true,immediate:true })
     return {
       tableData:[{}],
-      ...toRefs(config)
+      ...toRefs(config),
+      cardAdd,
+      cardDelete,
     }
   },
   props:{
@@ -164,9 +211,26 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.add-btn {
-  margin: 10px auto;
-  width: 400px;
+.card-view {
+  margin: 10px 0;
+
+  .card-item {
+    margin: 10px 0;
+    border: 1px solid #eee;
+    padding-top: 10px;
+    background-color: #f7f7f8cc;
+
+    .form-view {
+      flex: 1;
+      margin-right: 10px;
+    }
+  }
+
+  .add-btn {
+    display: block;
+    margin: auto;
+    width: 400px;
+  }
 }
 
 </style>
