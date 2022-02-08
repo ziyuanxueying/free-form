@@ -17,7 +17,7 @@ export default [
   {
     type: 'NxInput',
     configList:{
-      label:'页面路径',
+      label:'回显路径',
       fileId:'formPath',
     }
   }
