@@ -1,113 +1,190 @@
 <template>
-  <span>
-    <a-form-item
-      :field="item.configList.fileId||item.componentId"
-      :label="item.configList.label||item.moduleName"
-      :required="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
-      :disabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
-      v-if="!(pathSetObj[item.configList.fileId]?.hide?hide:false)"
-      :validate-trigger="['change','input']"
+  <!-- {{ !(pathSetObj[item.configList.fileId]?.hide?hide:false) }} -->
+  <a-form-item
+    v-show="!hide&&item.type!=='NxCard'"
+    :field="item.configList.fileId||item.componentId"
+    :label="item.configList.label||item.moduleName"
+    :required="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
+    :disabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+    :validate-trigger="['change','input']"
+  >
+    <a-input v-if="item.type=='NxInput'" v-model="formData[item.configList.fileId]" :placeholder="item.configList.placeholder||'请输入'"/>
+    <a-textarea
+      v-if="item.type=='NxTextarea'"
+      v-model="formData[item.configList.fileId]"
+      :placeholder="item.configList.placeholder||'请输入'"
+      :max-length="item.configList.maxLength"
+    />
+    <a-input
+      v-else-if="item.type=='NxInputNum'"
+      v-model="formData[item.configList.fileId]"
+      :placeholder="item.configList.placeholder||'请输入'"
+      :min="item.configList.min"
+      :max="item.configList.max"
+    />
+    <a-typography-paragraph v-if="item.type=='NxText'" :style="`width: 100%; text-align:${item.configList.position||'left'};`">
+      {{ item.configList.defaultContent }}
+    </a-typography-paragraph>
+    <a-date-picker
+      v-if="item.type=='NxDatePicker'"
+      :placeholder="item.configList.placeholder||'请输入'"
+      allow-clear
+      v-model="formData[item.configList.fileId]"
+      :format="item.configList.format"
+    />
+    <a-range-picker v-if="item.type=='NxRangePicker'" v-model="formData[item.configList.fileId]" allow-clear/>
+    <a-switch v-if="item.type=='NxSwitch'" v-model="formData[item.configList.fileId]"/>
+    <a-select v-if="item.type=='NxSelect'" v-model="formData[item.configList.fileId]" :placeholder="item.configList.placeholder||'请选择'">
+      <a-option v-for="(citem,index) in proxyOptions[item.configList.fileId]" :key="index">
+        {{ citem.value }}
+      </a-option>
+    </a-select>
+    <a-row v-if="item.type=='NxGrid'" style="width: 100%;">
+      <a-col :span="Math.floor(24 / item.configList.layout.colCount)" v-for="(citem,cindex ) in item.configList.layout.colContent" :key="cindex">
+        <FormItem
+          v-for="(ccitem,ccindex) in citem"
+          :item="ccitem"
+          :formData="formData"
+          :key="ccindex"
+          :proxyOptions="proxyOptions"
+          :pathSetObj="pathSetObj"
+          :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
+          :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+        />
+      </a-col>
+    </a-row>
+    <a-table
+      v-if="item.type=='NxTable'"
+      :data="tableData"
+      :bordered="{wrapper: true, cell: true}"
+      :pagination="false"
+      style="width: 100%;"
     >
-      <a-input v-if="item.type=='NxInput'" v-model="formData[item.configList.fileId]" :placeholder="item.configList.placeholder||'请输入'"/>
-      <a-textarea
-        v-if="item.type=='NxTextarea'"
-        v-model="formData[item.configList.fileId]"
-        :placeholder="item.configList.placeholder||'请输入'"
-        :max-length="item.configList.maxLength"
-      />
-      <a-input
-        v-if="item.type=='NxInputNum'"
-        v-model="formData[item.configList.fileId]"
-        :placeholder="item.configList.placeholder||'请输入'"
-        :min="item.configList.min"
-        :max="item.configList.max"
-      />
-      <a-typography-paragraph v-if="item.type=='NxText'" :style="`width: 100%; text-align:${item.configList.position||'left'};`">
-        {{ item.configList.defaultContent }}
-      </a-typography-paragraph>
-      <a-date-picker
-        v-if="item.type=='NxDatePicker'"
-        :placeholder="item.configList.placeholder||'请输入'"
-        allow-clear
-        v-model="formData[item.configList.fileId]"
-        :format="item.configList.format"
-      />
-      <a-range-picker v-if="item.type=='NxRangePicker'" v-model="formData[item.configList.fileId]" allow-clear/>
-      <a-switch v-if="item.type=='NxSwitch'" v-model="formData[item.configList.fileId]"/>
-      <a-select v-if="item.type=='NxSelect'" v-model="formData[item.configList.fileId]" :placeholder="item.configList.placeholder||'请选择'">
-        <a-option v-for="(citem,index) in proxyOptions[item.configList.fileId]" :key="index">
-          {{ citem.value }}
-        </a-option>
-      </a-select>
-      <a-row v-if="item.type=='NxGrid'" style="width:100%">
-        <a-col :span="24 / item.configList.layout.colCount" v-for="(citem,cindex ) in item.configList.layout.colContent" :key="cindex">
-          <FormItem
-            v-for="(ccitem,ccindex) in citem"
-            :item="ccitem"
-            :formData="formData"
-            :key="ccindex"
-            :proxyOptions="proxyOptions"
-            :pathSetObj="pathSetObj"
-            :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
-            :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
-          />
-        </a-col>
-      </a-row>
-      <a-table
-        :data="tableData"
-        :bordered="{wrapper: true, cell: true}"
-        :pagination="false"
-        v-if="item.type=='NxTable'"
-        style="width:100%"
+      <template #columns>
+        <a-table-column
+          v-for="(citem,index) in item.configList.layout.columns"
+          :key="index"
+          :title="citem.value"
+          :data-index="citem.key"
+        >
+          <template #cell>
+            <div class="nxf-table-td">
+              <FormItem
+                v-for="(ccitem,ccindex) in item.configList.layout.colContent[index]"
+                :item="ccitem"
+                :key="ccindex"
+                :formData="formData"
+                :proxyOptions="proxyOptions"
+                :pathSetObj="pathSetObj"
+                :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
+                :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+              />
+            </div>
+          </template>
+        </a-table-column>
+      </template>
+    </a-table>
+  </a-form-item>
+  <template v-if="item.type=== 'NxCard'">
+    <div v-if="item.configList.layout.ifAdd" class="card-view">
+      <div
+        class="card-item"
+        v-for="(ditem,dindex) in formData[item.configList.layout.fileId]"
+        :key="dindex"
       >
-        <template #columns>
-          <a-table-column
-            v-for="(citem,index) in item.configList.layout.columns"
-            :key="index"
-            :title="citem.value"
-            :data-index="citem.key"
+        <div class="flex-row">
+          <div class="form-view">
+            <FormItem
+              v-for="(ccitem,ccindex) in item.configList.layout.colContent[0]"
+              :item="ccitem"
+              :key="ccindex"
+              :formData="ditem"
+              :proxyOptions="proxyOptions"
+              :pathSetObj="pathSetObj"
+              :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
+              :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+            />
+          </div>
+          <a-button
+            :style="!dindex&&'visibility:hidden'"
+            type="outline"
+            status="danger"
+            shape="circle"
+            @click="cardDelete(dindex)"
           >
-            <template #cell>
-              <div class="nxf-table-td">
-                <FormItem
-                  v-for="(ccitem,ccindex) in item.configList.layout.colContent[index]"
-                  :item="ccitem"
-                  :key="ccindex"
-                  :formData="formData"
-                  :proxyOptions="proxyOptions"
-                  :pathSetObj="pathSetObj"
-                  :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
-                  :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
-                />
-              </div>
-            </template>
-          </a-table-column>
-        </template>
-      </a-table>
-    </a-form-item>
-  </span>
+            <icon-delete/>
+          </a-button>
+        </div>
+      </div>
+      <a-button
+        v-if="item.configList.layout.ifAdd"
+        class="add-btn"
+        type="outline"
+        @click="cardAdd"
+      >
+        添加
+      </a-button>
+    </div>
+    <template v-else>
+      <FormItem
+        v-for="(ccitem,ccindex) in item.configList.layout.colContent[0]"
+        :item="ccitem"
+        :key="ccindex"
+        :formData="formData"
+        :proxyOptions="proxyOptions"
+        :pathSetObj="pathSetObj"
+        :ifRequired="ifRequired||(pathSetObj[item.configList.fileId]?.required?required:(item.configList.required||false))"
+        :ifDisabled="ifDisabled||(pathSetObj[item.configList.fileId]?.disabled?disabled:(item.configList.disabled||false))"
+      />
+    </template>
+  </template>
 </template>
 <script>
 import { reactive, toRefs, watch } from 'vue-demi'
+import{ getForm } from '../utils'
+// import { useFormConfigStore } from '../../store'
 export default {
   name:'FormItem',
   setup (props) {
-    let config = reactive({
+    const config = reactive({
       disabled:false,
       required:false,
-      hide:false
+      hide:false,
     })
+
+    const cardAdd = ()=> {
+    //   let childPathSet
+      let formCard = getForm(props.item.configList.layout.colContent[0])
+      props.formData[props.item.configList.layout.fileId].push(formCard.form)
+    //   let componentId2fileId = formCard.componentId2fileId
+    //   useFormConfigStore().pathSet.forEach(item=>{
+    //     let prop = componentId2fileId[item.childProp]
+    //     if(!childPathSet[prop]) {
+    //       childPathSet[prop] = {}
+    //     }
+    //     childPathSet[prop][item.action] = {
+    //       parentProp:componentId2fileId[item.parentProp],
+    //       equation:item.equation,
+    //       value:item.value
+    //     }
+    //   })
+    }
+    const cardDelete = (dindex)=>{
+      props.formData[props.item.configList.layout.fileId].splice(dindex,1)
+    }
     watch(()=>props.formData,()=>{
       let actArr = ['disabled','hide','required']
+      console.log(props.pathSetObj[props.item.configList.fileId])
       if(props.pathSetObj[props.item.configList.fileId]) {
         actArr.forEach(item=>{
-          if(props.pathSetObj[props.item.configList.fileId][item]) {
-            if(props.pathSetObj[props.item.configList.fileId][item].equation === 'equal') {
+          let itemLink = props.pathSetObj[props.item.configList.fileId][item]
+          if(itemLink) {
+            if(itemLink.equation === 'equal') {
               // eslint-disable-next-line eqeqeq
-              config[item] = props.formData[props.pathSetObj[props.item.configList.fileId][item].parentProp] == props.pathSetObj[props.item.configList.fileId][item].value
+              config[item] = props.formData[itemLink.parentProp] == itemLink.value
             }else{
               // eslint-disable-next-line eqeqeq
-              config[item] = props.formData[props.pathSetObj[props.item.configList.fileId][item].parentProp] != props.pathSetObj[props.item.configList.fileId][item].value
+              config[item] = props.formData[itemLink.parentProp] != itemLink.value
             }
           }
         })
@@ -115,7 +192,9 @@ export default {
     },{ deep: true,immediate:true })
     return {
       tableData:[{}],
-      ...toRefs(config)
+      ...toRefs(config),
+      cardAdd,
+      cardDelete,
     }
   },
   props:{
@@ -143,3 +222,27 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+.card-view {
+  margin: 10px 0;
+
+  .card-item {
+    margin: 10px 0;
+    border: 1px solid #eee;
+    padding-top: 10px;
+    background-color: #f7f7f8cc;
+
+    .form-view {
+      flex: 1;
+      margin-right: 10px;
+    }
+  }
+
+  .add-btn {
+    display: block;
+    margin: auto;
+    width: 400px;
+  }
+}
+
+</style>

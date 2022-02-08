@@ -34,14 +34,12 @@ export const useFormConfigStore = defineStore('formConfig', {
   actions: {
     async initJson (res) {
       let json = JSON.parse(res.formDefJson) 
-      console.log('json: ', json)
+      console.log('json: ', res)
       this.fieldId = json.fieldId
       this.formItemList = json.formItemList || []
-      this.formSet = json.formSet  || this.formSet
-      console.log('this.formSet: ', this.formSet)
-      //   this.formSet.formId = res.formId
-      //   this.formSet.formTitle = res.title
-      console.log('res: ', JSON.stringify(this.formSet))
+      this.formSet = json.formSet  || {}
+      this.formSet.formId = res.formId
+      this.pathSet = json.pathSet  || []
     },
     setPreview (val) {
       this.isPreview = val
