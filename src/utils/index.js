@@ -127,7 +127,11 @@ export function getForm (formItemList) {
         Object.assign(form,obj)
       }
     }else{
-      form[configList.fileId] = configList.defaultVal || null
+      if(configList.multiple) {
+        form[configList.fileId] = []
+      }else{
+        form[configList.fileId] = configList.defaultVal
+      }
     }
   })
   return form

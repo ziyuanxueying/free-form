@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs,ref } from 'vue'
+import { reactive, toRefs } from 'vue'
 // import { useFormConfigStore } from './../store'
 import { useRoute } from 'vue-router'
 // import { toRaw } from '@vue/reactivity'
@@ -35,6 +35,7 @@ import { getForm,getField } from './utils'
 import FormItem from './components/formItem.vue'
 import{ post } from './../tools/request'
 import { Message } from '@arco-design/web-vue'
+import _ from 'lodash'
 export default {
   components: {
     FormItem,
@@ -48,10 +49,12 @@ export default {
       formData:{},  //表单数据
       formTitle:'',  //表单标题
     })
+    //存放原始表单数据，用于重置
+    let resetFromData = {}
     let componentId2fileId = {}
     let pathSetObj = {}
-    let formRef = ref(null)
     init()
+    //初始化，获取表单结构及数据
     async function init () {
       const route = useRoute()
       //根据表单id及版本号获取表单结构
@@ -72,12 +75,14 @@ export default {
         Message.success(`数据路径:${useFormConfigStore.formSet.dataPath}`)
       }
     }
+    //获取表单绑定数据的数据结构
     async function getFormObj () {
       formConfig.formObj = useFormConfigStore.formItemList
       //获取表单解构及所有原始options对象
       let form = getForm(formConfig.formObj,{})
       //为表单数据添加响应
       formConfig.formData = form.form
+      resetFromData = _.cloneDeep(form.form)
       componentId2fileId = form.componentId2fileId
       //解析原始options对象为可用options数组对象
       for(let p in form.options) {
@@ -89,6 +94,7 @@ export default {
         }
       }
     }
+    //执行select远程操作获取options数组
     async function getOptions (oldOptions) {
       if(!Array.isArray(oldOptions)) {
         try{
@@ -112,6 +118,7 @@ export default {
         return oldOptions
       }
     }
+    //拼接流程对象
     function getPathObj () {
       useFormConfigStore.pathSet.forEach(item=>{
         let prop = componentId2fileId[item.childProp]
@@ -124,18 +131,14 @@ export default {
           value:item.value
         }
       })
-
-      console.log(pathSetObj)
     }
     function reset () {
-      formRef.value.resetFields()
+      formConfig.formData = _.cloneDeep(resetFromData)
     }
-    console.log(2222)
     return {
       ...toRefs(formConfig),
       pathSetObj,
-      formRef,
-      reset
+      reset,
     }
   },
 }

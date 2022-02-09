@@ -5,6 +5,7 @@ let inputSetting = {
   hideLabel:false,
   text:'点击上传',
   maxCount:0,
-  action:'/'
+  action:'/',
+  defaultVal:[]
 }
 export default inputSetting

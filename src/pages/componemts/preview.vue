@@ -27,7 +27,7 @@
           :max="item.max"
         />
         <a-typography-paragraph :style="`width: 100%; text-align:${item.position};`">
-          {{ item.defaultContent }}
+          {{ item.defaultVal }}
         </a-typography-paragraph>
       </a-form-item>
       <template v-else-if="item.type=== 'NxCard'">

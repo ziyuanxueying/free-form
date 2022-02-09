@@ -38,7 +38,7 @@ export default {
       type: Boolean,
     },
     defaultVal:{
-      type: Number,
+      type: null,
     },
     disabled:{ type: Boolean, },
     hideLabel:{ type: Boolean, },

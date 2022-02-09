@@ -2,7 +2,7 @@ let inputSetting = {
   fileId: 'inputNum',
   label:'数字输入框',
   placeholder: '请输入内容',
-  defaultVal: undefined,
+  defaultVal: '',
   required: false,
   disabled: false, 
   hideLabel:false,

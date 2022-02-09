@@ -5,7 +5,6 @@ export const setting = [
   {
     type: 'NxInput',
     configList:{
-      defaultValue: 'input',
       label:'字段标识',
       fileId:'fileId'
     }
@@ -13,14 +12,12 @@ export const setting = [
   },{
     type: 'NxInput',
     configList:{
-      defaultValue: '输入框',
       label:'标签名称',
       fileId:'label',
     }
   },{
     type: 'NxInput',
     configList:{
-      defaultValue: '请输入内容',
       label:'提示文字',
       fileId:'placeholder',
     }
@@ -29,6 +26,13 @@ export const setting = [
     configList:{
       label:'必填',
       fileId:'required',
+    }
+  },
+  {
+    type: 'NxSwitch',
+    configList:{
+      label:'是否多选',
+      fileId:'multiple',
     }
   },
   {
