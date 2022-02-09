@@ -10,8 +10,9 @@ export function getForm (formItemList,options) {
   let form = {}
   let componentId2fileId = {}
   formItemList.forEach(item=>{
+    console.log('item: ', item)
     let configList = item.configList
-    if(item.type === 'NxSelect') {
+    if(item.type === 'NxSelect' || item.type === 'NxCheckbox') {
       if(configList.remote) {
         let fnc = ()=> post(configList.remoteUrl) 
         options[configList.fileId] = {

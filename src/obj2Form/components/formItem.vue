@@ -38,6 +38,13 @@
         {{ citem.value }}
       </a-option>
     </a-select>
+    <a-space v-if="item.type=='NxCheckbox'" direction="vertical" size="large">
+      <a-checkbox-group v-model="formData[item.configList.fileId]" :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))">
+        <a-checkbox v-for="(citem,index) in proxyOptions[item.configList.fileId]" :key="index" :value="citem.key">
+          {{ citem.value }}
+        </a-checkbox>
+      </a-checkbox-group>
+    </a-space>
     <a-row v-if="item.type=='NxGrid'" style="width: 100%;">
       <a-col :span="Math.floor(24 / item.configList.layout.colCount)" v-for="(citem,cindex ) in item.configList.layout.colContent" :key="cindex">
         <FormItem

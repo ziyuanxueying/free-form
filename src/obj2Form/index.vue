@@ -1,6 +1,9 @@
 <template>
-  <div class="nx-form">
-    <a-form :model="formData" class="nxf-layout-content-form" ref="formRef">
+  <div>
+    <a-form :model="formData" class="nxf-layout-form-pc" ref="formRef">
+      <div class="form-title">
+        {{ formTitle }}
+      </div>
       <FormItem
         v-for="item in formObj"
         :key="item.configList.fileId"
@@ -43,6 +46,7 @@ export default {
       formObj:[],  //表单结构
       proxyOptions:{}, //转换格式后的下拉选项列表对象
       formData:{},  //表单数据
+      formTitle:'',  //表单标题
     })
     let componentId2fileId = {}
     let pathSetObj = {}
@@ -53,6 +57,7 @@ export default {
       //根据表单id及版本号获取表单结构
       const configUrl = '/formDefDeploy/preview'
       let res = await post(configUrl,{ formId:route.query.id, version:route.query.version })
+      formConfig.formTitle = res.title
       if(res.formDefJson) {
         useFormConfigStore = JSON.parse(res.formDefJson)
       }
@@ -125,7 +130,7 @@ export default {
     function reset () {
       formRef.value.resetFields()
     }
-    console.log(22222222222222222222222222222222222222)
+    console.log(2222)
     return {
       ...toRefs(formConfig),
       pathSetObj,
