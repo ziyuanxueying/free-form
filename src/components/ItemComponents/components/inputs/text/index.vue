@@ -5,7 +5,7 @@
     :hideLabel="hideLabel"
   >
     <a-typography-paragraph :style="`width: 100%; text-align:${position};`">
-      {{ defaultContent }}
+      {{ defaultVal }}
     </a-typography-paragraph>
   </a-form-item>
 </template>
@@ -18,7 +18,7 @@ export default {
   props: {
     fileId: { type: null },
     label: { type: String, },
-    defaultContent:{
+    defaultVal:{
       type: String,
       default: '文本内容'
     },

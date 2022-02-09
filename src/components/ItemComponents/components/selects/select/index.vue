@@ -37,6 +37,10 @@ export default {
       type: Boolean,
       default: false
     },
+    multiple:{
+      type: Boolean,
+      default: false
+    },
     hideLabel:{ type: Boolean, },
     columns:{
       type: Object

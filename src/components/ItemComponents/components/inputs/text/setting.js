@@ -1,8 +1,8 @@
 let inputSetting = {
   fileId: 'text',
   label:'文本框',
-  defaultContent:'文本内容',
+  defaultVal:'请输入内容,不超过50字',
   hideLabel:false,
-  required: 'false'
+  required: false
 }
 export default inputSetting

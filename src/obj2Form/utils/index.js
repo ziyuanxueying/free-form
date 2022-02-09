@@ -44,7 +44,12 @@ export function getForm (formItemList,options) {
         Object.assign(componentId2fileId,componentId2fileIdObj)
       }
     }else{
-      form[configList.fileId] = configList.defaultVal || null
+      if(configList.multiple) {
+        form[configList.fileId] = []
+      }else{
+        console.log(configList.fileId,configList.defaultVal,11111111111111111)
+        form[configList.fileId] = configList.defaultVal
+      }
     }
     componentId2fileId[item.componentId] = configList.fileId || item.componentId
   })

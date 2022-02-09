@@ -1,5 +1,5 @@
 <template>
-  <!-- {{ !(pathSetObj[item.configList.fileId]?.hide?hide:false) }} -->
+  <!-- {{ !(pathSetObj[id]?.hide?hide:false) }} -->
   <a-form-item
     v-show="!hide&&item.type!=='NxCard'"
     :field="id"
@@ -8,34 +8,39 @@
     :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     :validate-trigger="['change','input']"
   >
-    <a-input v-if="item.type=='NxInput'" v-model="formData[item.configList.fileId]" :placeholder="item.configList.placeholder||'请输入'"/>
+    <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <a-textarea
       v-if="item.type=='NxTextarea'"
-      v-model="formData[item.configList.fileId]"
+      v-model="formData[id]"
       :placeholder="item.configList.placeholder||'请输入'"
       :max-length="item.configList.maxLength"
     />
     <a-input
       v-else-if="item.type=='NxInputNum'"
-      v-model="formData[item.configList.fileId]"
+      v-model="formData[id]"
       :placeholder="item.configList.placeholder||'请输入'"
       :min="item.configList.min"
       :max="item.configList.max"
     />
     <a-typography-paragraph v-if="item.type=='NxText'" :style="`width: 100%; text-align:${item.configList.position||'left'};`">
-      {{ item.configList.defaultContent }}
+      {{ item.configList.defaultVal }}
     </a-typography-paragraph>
     <a-date-picker
       v-if="item.type=='NxDatePicker'"
       :placeholder="item.configList.placeholder||'请输入'"
       allow-clear
-      v-model="formData[item.configList.fileId]"
+      v-model="formData[id]"
       :format="item.configList.format"
     />
-    <a-range-picker v-if="item.type=='NxRangePicker'" v-model="formData[item.configList.fileId]" allow-clear/>
-    <a-switch v-if="item.type=='NxSwitch'" v-model="formData[item.configList.fileId]"/>
-    <a-select v-if="item.type=='NxSelect'" v-model="formData[item.configList.fileId]" :placeholder="item.configList.placeholder||'请选择'">
-      <a-option v-for="(citem,index) in proxyOptions[item.configList.fileId]" :key="index">
+    <a-range-picker v-if="item.type=='NxRangePicker'" v-model="formData[id]" allow-clear/>
+    <a-switch v-if="item.type=='NxSwitch'" v-model="formData[id]"/>
+    <a-select
+      v-if="item.type=='NxSelect'"
+      v-model="formData[id]"
+      :placeholder="item.configList.placeholder||'请选择'"
+      :multiple="item.configList.multiple"
+    >
+      <a-option v-for="(citem,index) in proxyOptions[id]" :key="index">
         {{ citem.value }}
       </a-option>
     </a-select>

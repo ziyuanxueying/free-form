@@ -13,7 +13,6 @@ export const setting = [
   {
     type: 'NxInput',
     configList:{
-      defaultValue: '输入框',
       label:'标签名称',
       fileId:'label',
     }
