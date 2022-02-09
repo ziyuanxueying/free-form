@@ -10,10 +10,10 @@ export const setting = [
       fileId:'fileId'
     }
     
-  },{
+  },
+  {
     type: 'NxInput',
     configList:{
-      defaultValue: '输入框',
       label:'标签名称',
       fileId:'label',
     }
@@ -35,33 +35,33 @@ export const setting = [
   {
     type: 'NxSwitch',
     configList:{
+      label:'是否禁用',
+      fileId:'disabled',
+    }
+  },
+  {
+    type: 'NxSwitch',
+    configList:{
       label:'是否远程',
       fileId:'remote',
     }
   },
   {
-    type: 'NxInput',
+    type: 'NxDoubleInput',
     configList:{
-      label:'标签名称',
-      fileId:'columns',
+      columns:[{
+        value: '',
+        key: '',
+      }],
+      label:'选项',
+      fileId:'columns'
     }
   },
-//   {
-//     type: 'NxDoubleInput',
-//     configList:{
-//       columns:[{
-//         value: '',
-//         key: '',
-//       }],
-//       label:'选项',
-//       fileId:'columns'
-//     }
-//   },
-//   {
-//     type: 'NxRemoteData',
-//     configList:{
-//       label:'对应字段',
-//       fileId:'remoteUrl'
-//     }
-//   },
+  {
+    type: 'NxRemoteData',
+    configList:{
+      label:'对应字段',
+      fileId:'remoteUrl'
+    }
+  },
 ]

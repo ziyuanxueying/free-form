@@ -6,15 +6,16 @@
     :hideLabel="hideLabel"
     :disabled="disabled"
   >
-    {{ columns }}
     <a-space direction="vertical" size="large">
-      <a-checkbox-group>
-        <a-checkbox value="1">
-          Option 1
-        </a-checkbox>
-        <a-checkbox value="2">
-          Option 2
-        </a-checkbox>
+      <a-checkbox-group v-model="form[proto]" :disabled="disabled">
+        <template v-if="!remote">
+          <a-checkbox v-for="(item,index) in columns" :key="index" :value="item.key">
+            {{ item.value }}
+          </a-checkbox>
+        </template>
+        <div v-else>
+          远程数据
+        </div>
       </a-checkbox-group>
     </a-space>
   </a-form-item>

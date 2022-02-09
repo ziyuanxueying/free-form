@@ -4,9 +4,9 @@ let checkboxSetting = {
   required: false,
   disabled:false,
   hideLabel:false,
-  //   defaultVal:[],
+  defaultVal:[],
   remote: false,
-  columns: '123',
+  columns: [{ value: 'value', key: 'key', }],
   remoteUrl:'/',
   keys: {  key:'', value:'' },
   remotePath:''
