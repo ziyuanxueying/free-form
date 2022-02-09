@@ -1,5 +1,4 @@
 <template>
-  <!-- {{ !(pathSetObj[item.configList.fileId]?.hide?hide:false) }} -->
   <a-form-item
     v-show="!hide&&item.type!=='NxCard'"
     :field="id"
@@ -88,7 +87,7 @@
     </a-table>
   </a-form-item>
   <template v-if="item.type=== 'NxCard'">
-    <div v-if="item.configList.layout.ifAdd" class="card-view">
+    <div v-if="item.configList.layout.ifAdd" v-show="!hide" class="card-view">
       <div
         class="card-item"
         v-for="(ditem,dindex) in formData[item.configList.layout.fileId]"
@@ -129,17 +128,19 @@
       </a-button>
     </div>
     <template v-else>
-      <FormItem
-        v-for="(ccitem,ccindex) in item.configList.layout.colContent[0]"
-        :item="ccitem"
-        :key="ccindex"
-        :formData="formData"
-        :proxyOptions="proxyOptions"
-        :pathSetObj="pathSetObj"
-        :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
-        :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
-        :id="ccitem.configList.fileId||ccitem.componentId"
-      />
+      <div v-show="!hide">
+        <FormItem
+          v-for="(ccitem,ccindex) in item.configList.layout.colContent[0]"
+          :item="ccitem"
+          :key="ccindex"
+          :formData="formData"
+          :proxyOptions="proxyOptions"
+          :pathSetObj="pathSetObj"
+          :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
+          :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+          :id="ccitem.configList.fileId||ccitem.componentId"
+        />
+      </div>
     </template>
   </template>
 </template>
@@ -157,21 +158,8 @@ export default {
     })
 
     const cardAdd = ()=> {
-    //   let childPathSet
       let formCard = getForm(props.item.configList.layout.colContent[0])
       props.formData[props.item.configList.layout.fileId].push(formCard.form)
-    //   let componentId2fileId = formCard.componentId2fileId
-    //   useFormConfigStore().pathSet.forEach(item=>{
-    //     let prop = componentId2fileId[item.childProp]
-    //     if(!childPathSet[prop]) {
-    //       childPathSet[prop] = {}
-    //     }
-    //     childPathSet[prop][item.action] = {
-    //       parentProp:componentId2fileId[item.parentProp],
-    //       equation:item.equation,
-    //       value:item.value
-    //     }
-    //   })
     }
     const cardDelete = (dindex)=>{
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
