@@ -1,6 +1,13 @@
 <template>
   <div>
-    <a-form :model="formData" class="nxf-layout-form-pc" ref="formRef">
+    {{ formData }}
+    <a-form
+      :model="formData"
+      class="nxf-layout-form-pc"
+      ref="formRef"
+      layout="horizontal"
+      auto-label-width 
+    >
       <div class="form-title">
         {{ formTitle }}
       </div>
@@ -13,16 +20,17 @@
         :pathSetObj="pathSetObj"
         :id="item.configList.fileId||item.componentId"
       />
-      <a-form-item>
-        <a-space>
-          <a-button html-type="submit">
-            提交
-          </a-button>
-          <a-button @click="reset">
-            重置
-          </a-button>
-        </a-space>
-      </a-form-item>
+      <a-space class="flex-row-center">
+        <a-button html-type="submit">
+          提交
+        </a-button>
+        <a-button @click="reset">
+          重置
+        </a-button>
+        <a-button @click="check">
+          查看格式
+        </a-button>
+      </a-space>
     </a-form>
   </div>
 </template>

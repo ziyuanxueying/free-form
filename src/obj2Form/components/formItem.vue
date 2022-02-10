@@ -183,9 +183,10 @@ export default {
         actArr.forEach(item=>{
           let itemLink = props.pathSetObj[props.id][item]
           if(itemLink) {
+            let type = ['true','false'].includes(itemLink.value) ? Boolean(itemLink.value) : itemLink.value
             if(itemLink.equation === 'equal') {
               // eslint-disable-next-line eqeqeq
-              config[item] = props.formData[itemLink.parentProp] == itemLink.value
+              config[item] = props.formData[itemLink.parentProp] == type
             }else{
               // eslint-disable-next-line eqeqeq
               config[item] = props.formData[itemLink.parentProp] != itemLink.value
