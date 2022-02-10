@@ -4,19 +4,18 @@
       <draggable
         v-model="formConfig.formItemList"
         group="NXFormGroup"
+        :sort="true"
         class="nxf-layout-content-draggable"
         item-key="componentId"
       >
         <template #item="{element}">
-          <span>
-            <div
-              :class="{ 'nxf-layout-content-form-item':true,
-                        'nxf-layout-content-form-item-active':element.componentId===formConfig.componentId }" 
-              @click="checkElement(element)"
-            >
-              <FormItem :element="element" pageFrom="content"/>
-            </div>
-          </span>
+          <div
+            :class="{ 'nxf-layout-content-form-item':true,
+                      'nxf-layout-content-form-item-active':element.componentId===formConfig.componentId }" 
+            @click="checkElement(element)"
+          >
+            <FormItem :element="element" pageFrom="content"/>
+          </div>
         </template>
       </draggable>
     </a-form>
