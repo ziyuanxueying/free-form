@@ -2,7 +2,7 @@
   <a-form-item
     :field="fileId"
     :label="label"
-    :hideLabel="hideLabel"
+    :hideLabel="true"
   >
     <a-typography-paragraph :style="`width: 100%; text-align:${position};`">
       {{ defaultVal }}

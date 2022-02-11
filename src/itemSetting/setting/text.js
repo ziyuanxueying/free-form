@@ -9,13 +9,14 @@ export const setting = [
       fileId:'fileId'
     }
   },
+  //   {
+  //     type: 'NxInput',
+  //     configList:{
+  //       label:'标签名称',
+  //       fileId:'label',
+  //     }
+  //   },
   {
-    type: 'NxInput',
-    configList:{
-      label:'标签名称',
-      fileId:'label',
-    }
-  },{
     type: 'NxInput',
     configList:{
       label:'文本内容',
@@ -24,24 +25,17 @@ export const setting = [
       maxLength: 50
     }
   },{
-    type: 'NxInput',
+    type: 'NxSelect',
     configList:{
       label:'文本位置',
       fileId:'position',
-    }
-  },
-  {
-    type: 'NxSwitch',
-    configList:{
-      label:'必填',
-      fileId:'required',
-    }
-  },
-  {
-    type: 'NxSwitch',
-    configList:{
-      label:'隐藏标签',
-      fileId:'hideLabel',
+      remote:false,
+      defaultVal:'left',
+      columns:[
+        { value:'左对齐', key:'left' },
+        { value:'居中',key:'center' },
+        { value:'右对齐', key:'right' }
+      ]
     }
   },
 ]

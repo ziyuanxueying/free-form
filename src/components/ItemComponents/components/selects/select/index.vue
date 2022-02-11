@@ -6,7 +6,7 @@
   >
     <a-select v-model="form[proto]" :placeholder="placeholder">
       <span v-if="!remote">
-        <a-option v-for="(item,index) in columns" :key="index">
+        <a-option v-for="(item,index) in columns" :key="index" :value="item.key">
           {{ item.value }}
         </a-option>
       </span>
@@ -56,7 +56,10 @@ export default {
     },
     proto:{  //绑定的key
       type: String,
-    }
+    },
+    defaultVal:{
+      type: String,
+    },
   },
   setup (props) {
     console.log('props: ', props)

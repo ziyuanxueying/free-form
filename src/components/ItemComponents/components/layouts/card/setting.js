@@ -3,6 +3,7 @@ let cardSetting = {
     colContent:[[]],
     fileId: 'card',
     ifAdd:false,
+    hideLabel:true ,
     pageFrom: '',
   }
 }

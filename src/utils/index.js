@@ -95,6 +95,7 @@ export function getTree (formItemList,disabled) {
         })
       })
     }else{
+      if(item.configList.label === '文本框') return
       obj =  {
         title: item.configList ? item.configList.label : undefined,
         key: item.configList ? item.componentId : undefined,

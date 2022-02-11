@@ -16,6 +16,6 @@ let selectSetting = {
     key:'',
     value:''
   },
-  remotePath:''
+  remotePath:'',
 }
 export default selectSetting

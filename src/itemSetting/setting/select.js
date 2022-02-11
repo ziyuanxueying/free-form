@@ -43,6 +43,13 @@ export const setting = [
     }
   },
   {
+    type: 'NxInput',
+    configList:{
+      label:'默认值',
+      fileId:'defaultVal',
+    }
+  },
+  {
     type: 'NxSwitch',
     configList:{
       label:'是否远程',

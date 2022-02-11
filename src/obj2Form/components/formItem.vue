@@ -3,10 +3,11 @@
   <a-form-item
     v-show="!hide&&item.type!=='NxCard'"
     :field="id"
-    :label="item.configList.label||item.moduleName"
+    :label="item.configList.label|| item.moduleName"
     :required="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
     :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     :validate-trigger="['change','input']"
+    :hideLabel="item.hideLabel"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <a-textarea

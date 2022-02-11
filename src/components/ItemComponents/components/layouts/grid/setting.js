@@ -4,6 +4,7 @@ let gridSetting = {
     colContent:[[]],
     fileId: 'grid', 
     pageFrom: '',
+    hideLabel:true ,
   }
 }
 export default gridSetting

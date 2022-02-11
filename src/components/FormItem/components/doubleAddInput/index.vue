@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!form.remote">
+  <div style="margin-top: 10px;" v-if="!form.remote">
     <a-form-item
       :field="fileId+index"
       :label="label+index"

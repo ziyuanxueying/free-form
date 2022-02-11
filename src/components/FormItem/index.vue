@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <div :class="pageFrom==='setting'&&proto!=='columns'?'line':''">
     <component
       :is="item"
       v-bind="{...element.configList,pageFrom}"
@@ -8,7 +8,7 @@
     />
     <icon-copy v-show="pageFrom==='content'" class="item-btn copy" @click="EditItem(element,1)"/>
     <icon-delete v-show="pageFrom==='content'" class="item-btn del" @click="EditItem(element,0)"/>
-  </span>
+  </div>
 </template>
 <script>
 import { getAllComponents ,getComponentsObj } from '../../utils'
@@ -98,6 +98,19 @@ export default {
 
   &:hover {
     color: #0089ff;
+  }
+}
+
+.line {
+  margin-top: 10px;
+  border-bottom: 1px solid #f0f0f0;
+
+  .arco-row {
+    margin-bottom: 10px;
+  }
+
+  &:last-child {
+    border: none;
   }
 }
 </style>

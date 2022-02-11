@@ -1,52 +1,56 @@
 <template>
   <div>
-    {{ formData }}
-    <a-form
-      :model="formData"
-      class="nxf-layout-form-pc"
-      ref="formRef"
-      layout="horizontal"
-      auto-label-width 
-    >
-      <div class="form-title">
-        {{ formTitle }}
+    <div class="flex-row">
+      <a-form
+        :model="formData"
+        class="nxf-layout-form-pc"
+        ref="formRef"
+        auto-label-width 
+      >
+        <div class="form-title">
+          {{ formTitle }}
+        </div>
+        <FormItem
+          v-for="item in formObj"
+          :key="item.configList.fileId"
+          :item="item"
+          :formData="formData"
+          :proxyOptions="proxyOptions"
+          :pathSetObj="pathSetObj"
+          :id="item.configList.fileId||item.componentId"
+        />
+        <a-space class="flex-row-center">
+          <a-button html-type="submit">
+            提交
+          </a-button>
+          <a-button @click="reset">
+            重置
+          </a-button>
+        </a-space>
+      </a-form>
+      <div class="json-view">
+        <span class="form-title">
+          JSON格式
+        </span>
+        <vue-json-pretty :data="formData" :showSelectController="true"/>
       </div>
-      <FormItem
-        v-for="item in formObj"
-        :key="item.configList.fileId"
-        :item="item"
-        :formData="formData"
-        :proxyOptions="proxyOptions"
-        :pathSetObj="pathSetObj"
-        :id="item.configList.fileId||item.componentId"
-      />
-      <a-space class="flex-row-center">
-        <a-button html-type="submit">
-          提交
-        </a-button>
-        <a-button @click="reset">
-          重置
-        </a-button>
-        <a-button @click="check">
-          查看格式
-        </a-button>
-      </a-space>
-    </a-form>
+    </div>
   </div>
 </template>
 <script>
 import { reactive, toRefs } from 'vue'
-// import { useFormConfigStore } from './../store'
 import { useRoute } from 'vue-router'
-// import { toRaw } from '@vue/reactivity'
 import { getForm,getField } from './utils'
 import FormItem from './components/formItem.vue'
 import{ post } from './../tools/request'
 import { Message } from '@arco-design/web-vue'
 import _ from 'lodash'
+import VueJsonPretty from 'vue-json-pretty'
+import 'vue-json-pretty/lib/styles.css'
 export default {
   components: {
     FormItem,
+    VueJsonPretty,
   },
   setup () {
     let useFormConfigStore = {}
@@ -151,3 +155,6 @@ export default {
   },
 }
 </script>
+<style lang="less" scoped>
+@import url('../style/obg2form.less');
+</style>
