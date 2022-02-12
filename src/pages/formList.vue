@@ -100,7 +100,7 @@ export default defineComponent({
     })
     const getListDraft = async ()=>{
       state.tableLoad = true 
-      let data = await post('/formDef/query',{ page: state.pagination.current })
+      let data = await post('/oa-platform/formDef/query',{ page: state.pagination.current })
       state.tableLoad = false
       state.data = data.content
       state.pagination.current = data.number - 1
@@ -143,7 +143,7 @@ export default defineComponent({
     // 批量删除
     const itemDel = async ()=>{
       try {
-        await post('/formDef/delete',{ formIds:state.selectList })
+        await post('/oa-platform/formDef/delete',{ formIds:state.selectList })
         getListDraft()
       } catch (error) {
         console.log('error: ', error)

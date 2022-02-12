@@ -61,7 +61,7 @@ export default defineComponent({
       state.history = route.query.history
     }
     const saveAsRelease = async ()=>{
-      await post('/formDef/upsert',
+      await post('/oa-platform/formDef/upsert',
         { projectName: 'oa',
           title: formConfig.formSet.formTitle,
           formDefJson: JSON.stringify(formConfig.toJSON) ,

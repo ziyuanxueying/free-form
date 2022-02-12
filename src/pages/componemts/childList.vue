@@ -76,7 +76,7 @@ export default {
     })
     const rollbackList = async ()=> {
       try {
-        let data  = await post('/formDefDeploy/query', { ...state.res, page: state.pageDeploy.current })
+        let data  = await post('/oa-platform/formDefDeploy/query', { ...state.res, page: state.pageDeploy.current })
         state.dataDeploy = data.content
         state.pageDeploy.current = data.number - 1
         state.pageDeploy.total = data.totalElements
@@ -100,7 +100,7 @@ export default {
     // 表单回滚
     const itemRollback = async (item)=> {
       try {
-        let data = await post('/formDefDeploy/rollback',{ formId:item.formId, version:item.version })
+        let data = await post('/oa-platform/formDefDeploy/rollback',{ formId:item.formId, version:item.version })
         console.log('data: ', data)
         ctx.emit('changeShow', false)
       } catch (error) {

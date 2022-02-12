@@ -128,7 +128,7 @@ export default {
 
     const saveAsDraft = async (type)=>{
       if(formConfig.formSet.formId) {
-        await post('/formDef/upsert',
+        await post('/oa-platform/formDef/upsert',
           { projectName: 'oa',
             title: formConfig.formSet.formTitle,
             formDefJson: JSON.stringify(formConfig.toJSON) ,
@@ -137,7 +137,7 @@ export default {
         type === 'deaft' ? Message.success('已暂存为草稿') : saveAsRelease()
       } else {
         if(!formConfig.formSet.formTitle) return Message.warning('请填写表单标题')
-        let id = await post('/formDef/create',{ projectName:'oa',title:formConfig.formSet.formTitle,formDefJson: JSON.stringify(formConfig.toJSON)  })
+        let id = await post('/oa-platform/formDef/create',{ projectName:'oa',title:formConfig.formSet.formTitle,formDefJson: JSON.stringify(formConfig.toJSON)  })
         formConfig.formSet.formId = id
         type === 'deaft' ? Message.success('已暂存为草稿') : saveAsRelease()
       }
