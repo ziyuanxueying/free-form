@@ -12,6 +12,7 @@
       allow-clear
       :min="min" 
       :max="max"
+      :precision="precision" 
     />
   </a-form-item>
 </template>
@@ -44,6 +45,7 @@ export default {
     hideLabel:{ type: Boolean, },
     min:{ type: Number, },
     max:{ type: Number, },
+    precision:{ type: Number, },
     proto:{  //绑定的key
       type: String,
     },

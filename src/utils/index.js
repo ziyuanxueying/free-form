@@ -81,7 +81,7 @@ export function getTree (formItemList,disabled) {
     let obj = null
     if(item.configList.layout) {
       obj =  {
-        title: item.moduleName,
+        title: item.configList.layout.label || item.moduleName,
         key: item.componentId,
         children:[],
         disabled: disabled,

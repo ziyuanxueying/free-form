@@ -2,18 +2,19 @@
 export const settingName = 'NxTable'
 
 export const setting = [
-//   {
-//     type: 'NxSwitch',
-//     configList:{
-//       fileId:'remote',
-//       label:'是否远程'
-//     }
-//   },
   {
     type: 'NxInput',
     configList:{
       label:'字段标识',
       fileId:'fileId',
+    }
+    
+  },
+  {
+    type: 'NxInput',
+    configList:{
+      label:'字段标识',
+      fileId:'label',
     }
     
   },

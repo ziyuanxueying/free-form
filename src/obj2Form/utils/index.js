@@ -7,11 +7,12 @@
 // import { toRaw } from '@vue/reactivity'
 import { post } from './request'
 export function getForm (formItemList,options) {
+  console.log('formItemList: ', formItemList)
   let form = {}
   let componentId2fileId = {}
   formItemList.forEach(item=>{
-    console.log('item: ', item)
     let configList = item.configList
+    console.log('configList: ', item)
     item.hideLabel = configList.layout ? configList.layout.hideLabel : configList.hideLabel
     if(item.type === 'NxSelect' || item.type === 'NxCheckbox') {
       if(configList.remote) {
@@ -49,7 +50,6 @@ export function getForm (formItemList,options) {
       if(configList.multiple) {
         form[configList.fileId] = []
       }else{
-        console.log(configList.fileId,configList.defaultVal,11111111111111111)
         form[configList.fileId] = configList.defaultVal
       }
     }

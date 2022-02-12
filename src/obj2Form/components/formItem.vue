@@ -41,7 +41,7 @@
       :placeholder="item.configList.placeholder||'请选择'"
       :multiple="item.configList.multiple"
     >
-      <a-option v-for="(citem,index) in proxyOptions[id]" :key="index">
+      <a-option v-for="(citem,index) in proxyOptions[id]" :key="index" :value="citem.key">
         {{ citem.value }}
       </a-option>
     </a-select>
@@ -67,27 +67,27 @@
         />
       </a-col>
     </a-row>
+    
     <a-table
       v-if="item.type=='NxTable'"
-      :data="tableData"
+      :data="formData.table"
+      :columns="columns"
       :bordered="{wrapper: true, cell: true}"
       :pagination="false"
       style="width: 100%;"
     >
       <template #columns>
         <a-table-column
-          v-for="(citem,index) in item.configList.layout.columns"
+          v-for="(citem,index) in columns"
           :key="index"
           :title="citem.value"
           :data-index="citem.key"
         >
-          <template #cell>
-            <div class="nxf-table-td">
+          <template #cell="{ rowIndex }">
+            <div class="nxf-table-td" v-for="(ccitem,ccindex) in item.configList.layout.colContent[index]" :key="ccindex">
               <FormItem
-                v-for="(ccitem,ccindex) in item.configList.layout.colContent[index]"
                 :item="ccitem"
-                :key="ccindex"
-                :formData="formData"
+                :formData="formData[item.configList.layout.fileId][rowIndex]"
                 :proxyOptions="proxyOptions"
                 :pathSetObj="pathSetObj"
                 :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
@@ -95,6 +95,14 @@
                 :id="ccitem.configList.fileId||ccitem.componentId"
               />
             </div>
+            <a-space v-if="citem.key === 'operate'">
+              <a-button class="add-btn" type="outline" @click="tableAdd">
+                添加
+              </a-button>
+              <a-button class="add-btn" type="outline" @click="cardDelete(rowIndex)">
+                删除
+              </a-button>
+            </a-space>
           </template>
         </a-table-column>
       </template>
@@ -169,11 +177,18 @@ export default {
       disabled:false,
       required:false,
       hide:false,
+      columns:null,
     })
-
+    if(props.item.type === 'NxTable') {
+      config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作' }]]
+    }
     const cardAdd = ()=> {
       let formCard = getForm(props.item.configList.layout.colContent[0])
       props.formData[props.item.configList.layout.fileId].push(formCard.form)
+    }
+    const tableAdd = ()=> {
+      let formCard = getForm([props.item])
+      props.formData[props.item.configList.layout.fileId].push(formCard.form[props.item.configList.layout.fileId][0])
     }
     const cardDelete = (dindex)=>{
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
@@ -201,6 +216,7 @@ export default {
       ...toRefs(config),
       cardAdd,
       cardDelete,
+      tableAdd,
     }
   },
   props:{

@@ -45,6 +45,13 @@ export const setting = [
     }
   },
   {
+    type: 'NxInputNum',
+    configList:{
+      label:'数字精度',
+      fileId:'precision',
+    }
+  },
+  {
     type: 'NxSwitch',
     configList:{
       label:'是否必填',

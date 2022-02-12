@@ -9,7 +9,8 @@
     "lib": "vue-cli-service build --target lib --name nx-free-from --dest lib ./src/pages/index.js",
     "lint": "vue-cli-service lint",
     "lint:eslint": "eslint '**/*.{js,vue}' --fix",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "prepublish": "npm version patch"
   },
   "dependencies": {
     "axios": "^0.25.0",

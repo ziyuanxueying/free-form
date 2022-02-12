@@ -16,8 +16,12 @@
         allow-clear
         v-model="item.value"
       />
+      <!-- <a-button type="outline">
+        <icon-delete/>
+      </a-button> -->
     </a-form-item>
     <a-button type="outline" style="width: 100%;" @click="()=>add(form[fileId])">
+      <icon-delete/>
       添加
     </a-button>
   </div>

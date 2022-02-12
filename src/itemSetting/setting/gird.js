@@ -14,7 +14,9 @@ export const setting = [
     configList:{
       label:'列数量',
       fileId:'colCount',
-      placeholder:'请输入1-24'
+      placeholder:'请输入1-24',
+      min: 1,
+      max: 24,
     }
   }
 ]
