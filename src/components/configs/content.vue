@@ -113,7 +113,7 @@ export default {
     let form = ref({})
     const route = useRoute()
     const initJson = async ()=>{
-      const url = route.query.version ? '/oa-platform/formDefDeploy/preview' : `/formDef/get/${route.query.id}`
+      const url = route.query.version ? '/oa-platform/formDefDeploy/preview' : `/oa-platform/formDef/get/${route.query.id}`
       let res = await post(url,{ formId:route.query.id, version:route.query.version })
       formConfig.initJson(res)
     }
