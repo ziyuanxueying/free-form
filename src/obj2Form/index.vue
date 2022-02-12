@@ -70,7 +70,7 @@ export default {
     async function init () {
       const route = useRoute()
       //根据表单id及版本号获取表单结构
-      const configUrl = '/formDefDeploy/preview'
+      const configUrl = '/oa-platform/formDefDeploy/preview'
       let res = await post(configUrl,{ formId:route.query.id, version:route.query.version })
       formConfig.formTitle = res.title
       if(res.formDefJson) {

@@ -131,7 +131,7 @@ export default defineComponent({
     // 部署表单
     const formDeploy = async (done)=> {
       try {
-        let data = await post(`/formDefDeploy/deploy/${state.selectItem.formId}`)
+        let data = await post(`/oa-platform/formDefDeploy/deploy/${state.selectItem.formId}`)
         console.log('data: ', data)
         state.reload++
         getListDraft()
