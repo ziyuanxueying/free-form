@@ -7,23 +7,23 @@
 // import { toRaw } from '@vue/reactivity'
 import { post } from './request'
 export function getForm (formItemList,options) {
-  console.log('formItemList: ', formItemList)
+//   console.log('formItemList: ', formItemList)
   let form = {}
   let componentId2fileId = {}
   formItemList.forEach(item=>{
+    console.log('item: ', item)
     let configList = item.configList
-    console.log('configList: ', item)
     item.hideLabel = configList.layout ? configList.layout.hideLabel : configList.hideLabel
-    if(item.type === 'NxSelect' || item.type === 'NxCheckbox') {
+    if(['NxSelect','NxCheckbox','NxStaff'].includes(item.type)) {
       if(configList.remote) {
         let fnc = ()=> post(configList.remoteUrl) 
         options[configList.fileId] = {
           fnc,
-          remotePath:configList.remotePath,
-          value:configList.keys.value,
-          key:configList.keys.key
+          remotePath: configList.remotePath,
+          value: configList.keys.value,
+          key: configList.keys.key
         }
-      }else{
+      } else {
         options[configList.fileId] = configList.columns
       }
     }
@@ -67,7 +67,7 @@ export function getField (data,fields) {
  
   if(value === null) {
     return value
-  }else if(arr.length === 0) {
+  } else if(arr.length === 0) {
     return value
   }
  

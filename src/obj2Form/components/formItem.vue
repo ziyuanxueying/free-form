@@ -45,6 +45,15 @@
         {{ citem.value }}
       </a-option>
     </a-select>
+    <itemOa
+      v-if="item.type=='NxStaff'"
+      :item="item"
+      :formData="formData"
+      :proxyOptions="proxyOptions"
+      :pathSetObj="pathSetObj"
+      :id="item.configList.fileId||item.componentId"
+      :ifDisabled="ifDisabled"
+    />
     <a-space v-if="item.type=='NxCheckbox'" direction="vertical" size="large">
       <a-checkbox-group v-model="formData[item.configList.fileId]" :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))">
         <a-checkbox v-for="(citem,index) in proxyOptions[item.configList.fileId]" :key="index" :value="citem.key">
@@ -169,8 +178,9 @@
 <script>
 import { reactive, toRefs, watch } from 'vue-demi'
 import{ getForm } from '../utils'
-// import { useFormConfigStore } from '../../store'
+import itemOa from './itemOa.vue'
 export default {
+  components:{ itemOa },
   name:'FormItem',
   setup (props) {
     const config = reactive({

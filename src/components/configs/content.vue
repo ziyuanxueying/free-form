@@ -115,9 +115,9 @@ export default {
     const initJson = async ()=>{
       const url = route.query.version ? '/oa-platform/formDefDeploy/preview' : `/oa-platform/formDef/get/${route.query.id}`
       let res = await post(url,{ formId:route.query.id, version:route.query.version })
-      formConfig.initJson(res)
+      formConfig.initJson(JSON.parse(res.formDefJson))
     }
-    route.query.id ? initJson() : formConfig.initJson({ formDefJson:'{}', })
+    route.query.id ? initJson() : formConfig.initJson({})
     formConfig.setPreview(Boolean(route.query.history))
     const router = useRouter()
     const saveAsRelease = async ()=>{

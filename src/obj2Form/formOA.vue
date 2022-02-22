@@ -18,6 +18,7 @@
           :proxyOptions="proxyOptions"
           :pathSetObj="pathSetObj"
           :id="item.configList.fileId||item.componentId"
+          :ifDisabled="ifDisabled"
         />
       </a-form>
     </div>
@@ -25,7 +26,6 @@
 </template>
 <script>
 import { reactive, toRefs ,ref } from 'vue'
-// import { useRoute } from 'vue-router'
 import { getForm,getField } from './utils'
 import FormItem from './components/formItem.vue'
 // import { Message } from '@arco-design/web-vue'
@@ -48,6 +48,7 @@ export default {
       formData:{},  //表单数据
       formTitle:'',  //表单标题
       formRef: ref('formRef'),
+      ifDisabled:false
     })
     //存放原始表单数据，用于重置
     let resetFromData = {}
@@ -126,9 +127,7 @@ export default {
 
     config.$onAction(({ store, })=>{
       setTimeout(() => {
-        console.log('store: ', store.toJSON)
         formStore = store.toJSON
-        console.log('formStore: ', formStore)
         init()
       }, 0)
     })
