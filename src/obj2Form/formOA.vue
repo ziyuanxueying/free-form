@@ -19,41 +19,28 @@
           :pathSetObj="pathSetObj"
           :id="item.configList.fileId||item.componentId"
         />
-        <a-space class="flex-row-center">
-          <a-button html-type="submit">
-            提交
-          </a-button>
-          <a-button @click="reset">
-            重置
-          </a-button>
-        </a-space>
       </a-form>
-      <div class="json-view">
-        <span class="form-title">
-          JSON格式
-        </span>
-        <vue-json-pretty :data="formData" :showSelectController="true"/>
-      </div>
     </div>
   </div>
 </template>
 <script>
 import { reactive, toRefs ,ref } from 'vue'
-import { useRoute } from 'vue-router'
+// import { useRoute } from 'vue-router'
 import { getForm,getField } from './utils'
 import FormItem from './components/formItem.vue'
-import{ post } from './../tools/request'
-import { Message } from '@arco-design/web-vue'
+// import { Message } from '@arco-design/web-vue'
 import _ from 'lodash'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
+import { useFormConfigStore } from '../store'
 export default {
   components: {
     FormItem,
     VueJsonPretty,
   },
   setup () {
-    let useFormConfigStore = {}
+    const config = useFormConfigStore()
+    let formStore = {}
     //form相关配置
     let formConfig = reactive({
       formObj:[],  //表单结构
@@ -66,31 +53,14 @@ export default {
     let resetFromData = {}
     let componentId2fileId = {}
     let pathSetObj = {}
-    init()
     //初始化，获取表单结构及数据
     async function init () {
-      const route = useRoute()
-      //根据表单id及版本号获取表单结构
-      const configUrl = '/oa-platform/formDefDeploy/preview'
-      let res = await post(configUrl,{ formId:route.query.id, version:route.query.version })
-      //   formConfig.formTitle = res.title
-      if(res.formDefJson) {
-        useFormConfigStore = JSON.parse(res.formDefJson)
-      }
       getFormObj()
       getPathObj()
-      let type = route.query.type
-      //编辑录入内容
-      if(type === 'edit') {
-        Message.success('行为:编辑')
-        Message.success(`地址:${useFormConfigStore.formSet.formPath}`)
-        Message.success(`参数:${route.query}`)
-        Message.success(`数据路径:${useFormConfigStore.formSet.dataPath}`)
-      }
     }
     //获取表单绑定数据的数据结构
     async function getFormObj () {
-      formConfig.formObj = useFormConfigStore.formItemList
+      formConfig.formObj = formStore.formItemList
       //获取表单解构及所有原始options对象
       let form = getForm(formConfig.formObj,{})
       //为表单数据添加响应
@@ -133,7 +103,7 @@ export default {
     }
     //拼接流程对象
     function getPathObj () {
-      useFormConfigStore.pathSet.forEach(item=>{
+      formStore.pathSet.forEach(item=>{
         let prop = componentId2fileId[item.childProp]
         if(!pathSetObj[prop]) {
           pathSetObj[prop] = {}
@@ -147,15 +117,22 @@ export default {
     }
 
     const handleOk = () => {
-      formConfig.formRef.validate().then((res) => {
-        console.log('res: ', res)
-
-      })
+      return formConfig.formRef.validate()
     }
-
+    
     function reset () {
       formConfig.formData = _.cloneDeep(resetFromData)
     }
+
+    config.$onAction(({ store, })=>{
+      setTimeout(() => {
+        console.log('store: ', store.toJSON)
+        formStore = store.toJSON
+        console.log('formStore: ', formStore)
+        init()
+      }, 0)
+    })
+
     return {
       ...toRefs(formConfig),
       pathSetObj,
