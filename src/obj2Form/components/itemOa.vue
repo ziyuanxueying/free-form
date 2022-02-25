@@ -8,6 +8,7 @@
     allow-clear
     allow-search
     :loading="staffLoad"
+    :disabled="ifDisabled"
   >
     <a-option v-for="(citem,index) in proxyOptions[id]" :key="index" :value="citem.key">
       {{ citem.value }}
