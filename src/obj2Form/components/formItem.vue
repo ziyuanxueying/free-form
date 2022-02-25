@@ -16,7 +16,7 @@
       :placeholder="item.configList.placeholder||'请输入'"
       :max-length="item.configList.maxLength"
     />
-    <a-input
+    <a-input-number
       v-else-if="item.type=='NxInputNum'"
       v-model="formData[id]"
       :placeholder="item.configList.placeholder||'请输入'"
