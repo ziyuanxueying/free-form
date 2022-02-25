@@ -13,11 +13,14 @@
       {{ citem.value }}
     </a-option>
   </a-select>
+  <a-input v-if="item.type=='NxOAName'" v-model="formData[id]" disabled/>
+  <a-input v-if="item.type=='NxOADepart'" v-model="formData[id]" disabled/>
 </template>
 
 <script>
 import { reactive, toRefs, } from 'vue'
 import { post } from '../utils/request'
+import { useRoute } from 'vue-router'
 export default {
   props:{
     item:{ type:Object },
@@ -29,9 +32,17 @@ export default {
     id:{ type:null, }
   },
   setup (props) { 
+    const route = useRoute()
     const state = reactive({ staffLoad:false })
+    if(!props.ifDisabled) {
+      if(props.item.type === 'NxOAName') {
+        props.formData[props.id] =  route.query.name === '自己' ? JSON.parse(localStorage.getItem('user')).enName : route.query.name
+      }
+      if(props.item.type === 'NxOADepart') {
+        props.formData[props.id] =  route.query.name === '自己' ? '前端' : route.query.depart
+      }
+    }
     const handleSearch = (value)=>{
-      console.log('value: ', value)
       state.staffLoad = true
       post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: value }).then((res)=>{
         state.staffLoad = false

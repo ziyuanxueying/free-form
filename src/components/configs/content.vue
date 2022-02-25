@@ -125,7 +125,6 @@ export default {
       Message.success('表单已发布') 
       router.back(-1)
     }
-
     const saveAsDraft = async (type)=>{
       if(formConfig.formSet.formId) {
         await post('/oa-platform/formDef/upsert',

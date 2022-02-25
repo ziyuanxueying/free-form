@@ -19,7 +19,7 @@
     "source.fixAll.eslint": true
   },
   "[javascript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features" // 格式规范由prettier改为eslint
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint" // 格式规范由prettier改为eslint
   },
   "[vue]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint" // 格式规范由prettier改为eslint

@@ -46,7 +46,7 @@
       </a-option>
     </a-select>
     <itemOa
-      v-if="item.type=='NxStaff'"
+      v-if="['NxStaff','NxOAName','NxOADepart'].includes(item.type)"
       :item="item"
       :formData="formData"
       :proxyOptions="proxyOptions"

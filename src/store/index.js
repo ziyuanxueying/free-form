@@ -33,7 +33,7 @@ export const useFormConfigStore = defineStore('formConfig', {
   },
   actions: {
     initJson (json) {
-      this.fieldId = json.fieldId
+      this.fieldId = json.fieldId || ''
       this.formItemList = json.formItemList || []
       this.formSet = json.formSet  || {}
       this.pathSet = json.pathSet  || []

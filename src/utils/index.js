@@ -4,7 +4,6 @@
  * @returns 
  */
 export function getModulesFiles (modulesFiles) {
-  console.log('modulesFiles: ', modulesFiles)
   const modules = modulesFiles.keys().reduce((modules, modulePath) => {
     const value = modulesFiles(modulePath)
     const moduleName = value.default.nameCN
@@ -39,6 +38,7 @@ export function getAllComponents () {
     return modules
   },formModules)
 
+  console.log('allModules: ', allModules)
   return allModules
 }
 /**
