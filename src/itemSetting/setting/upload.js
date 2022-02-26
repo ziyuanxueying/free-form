@@ -31,13 +31,6 @@ export const setting = [
     }
   },
   {
-    type: 'NxInput',
-    configList:{
-      label:'上传地址',
-      fileId:'action',
-    }
-  },
-  {
     type: 'NxSwitch',
     configList:{
       label:'是否必填',

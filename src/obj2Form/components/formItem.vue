@@ -10,6 +10,12 @@
     :hideLabel="item.hideLabel"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
+    <n-upload
+      v-if="item.type=='NxUpload'"
+      v-model:file-list="formData[id]"
+      :limit="item.configList.maxCount"
+      :state="$route.query.preId ?'detail':'edit'"
+    />
     <a-textarea
       v-if="item.type=='NxTextarea'"
       v-model="formData[id]"
@@ -49,8 +55,8 @@
       v-if="['NxStaff','NxOAName','NxOADepart'].includes(item.type)"
       :item="item"
       :formData="formData"
-      :proxyOptions="proxyOptions"
       :pathSetObj="pathSetObj"
+      :proxyOptions="proxyOptions"
       :id="item.configList.fileId||item.componentId"
       :ifDisabled="ifDisabled"
     />
@@ -179,8 +185,9 @@
 import { reactive, toRefs, watch } from 'vue-demi'
 import{ getForm } from '../utils'
 import itemOa from './itemOa.vue'
+import { NUpload } from '@naxions/nax-common'
 export default {
-  components:{ itemOa },
+  components:{ itemOa, NUpload },
   name:'FormItem',
   setup (props) {
     const config = reactive({

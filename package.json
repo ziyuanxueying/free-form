@@ -13,6 +13,7 @@
     "prepublish": "npm version patch"
   },
   "dependencies": {
+    "@naxions/nax-common": "^0.0.23",
     "axios": "^0.25.0",
     "core-js": "^3.6.5",
     "less": "4",
