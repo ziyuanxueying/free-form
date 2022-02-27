@@ -41,7 +41,7 @@ export default defineComponent({
     if(route.query.info) {
       let info = JSON.parse(route.query.info) 
       if(props.item.type === 'NxOAName') {
-        props.formData[props.id] =  route.query.name === '自己' ? JSON.parse(localStorage.getItem('user')).enName : info.name
+        props.formData[props.id] =  info.name === '自己' ? JSON.parse(localStorage.getItem('user')).enName : info.name
         props.formData[`${props.id}Id`] =  info.id
       }
       if(props.item.type === 'NxOADepart') {

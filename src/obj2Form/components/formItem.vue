@@ -14,7 +14,7 @@
       v-if="item.type=='NxUpload'"
       v-model:file-list="formData[id]"
       :limit="item.configList.maxCount"
-      :state="$route.query.preId ?'detail':'edit'"
+      :state="$route.query.type === 'edit' ? 'edit' :'detail'"
     />
     <a-textarea
       v-if="item.type=='NxTextarea'"
