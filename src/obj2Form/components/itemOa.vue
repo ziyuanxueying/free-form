@@ -6,8 +6,7 @@
       :placeholder="item.configList.placeholder||'请选择'"
       @search="handleSearch"
       :filter-option="false"
-      allow-clear
-      allow-search
+      :allow-search="true"
       :loading="staffLoad"
       :disabled="ifDisabled"
     >

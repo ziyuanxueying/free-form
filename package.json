@@ -13,7 +13,7 @@
     "prepublish": "npm version patch"
   },
   "dependencies": {
-    "@naxions/nax-common": "^0.0.23",
+    "@naxions/nax-common": "^0.0.26",
     "axios": "^0.25.0",
     "core-js": "^3.6.5",
     "less": "4",
@@ -29,7 +29,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@arco-design/web-vue": "^2.16.2",
+    "@arco-design/web-vue": "^2.18.0",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@vue/cli-plugin-babel": "~4.5.0",

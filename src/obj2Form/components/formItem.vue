@@ -12,7 +12,8 @@
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
       v-if="item.type=='NxUpload'"
-      v-model:file-list="formData[id]"
+      :default-files="formData[id]"
+      v-model:files="formData[id]"
       :limit="item.configList.maxCount"
       :state="$route.query.type === 'edit' ? 'edit' :'detail'"
     />
@@ -68,7 +69,17 @@
       </a-checkbox-group>
     </a-space>
     <a-row v-if="item.type=='NxGrid'" style="width: 100%;">
-      <a-col :span="Math.floor(24 / item.configList.layout.colCount)" v-for="(citem,cindex ) in item.configList.layout.colContent" :key="cindex">
+      <a-col
+        :span="Math.floor(24 / item.configList.layout.colCount)"
+        v-for="(citem,cindex ) in item.configList.layout.colContent"
+        :key="cindex"
+        :xs="24"
+        :sm="12"
+        :md="8"
+        :lg="8"
+        :xl="Math.floor(24 / item.configList.layout.colCount)"
+        :xxl="Math.floor(24 / item.configList.layout.colCount)"
+      >
         <FormItem
           v-for="(ccitem,ccindex) in citem"
           :item="ccitem"
@@ -195,6 +206,7 @@ export default {
       required:false,
       hide:false,
       columns:null,
+      deafultList: props.formData[props.id]
     })
     if(props.item.type === 'NxTable') {
       config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作' }]]
@@ -210,7 +222,19 @@ export default {
     const cardDelete = (dindex)=>{
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
     }
+    const hanlderSuccess = (res)=>{
+      console.log('res: ', res)
+    //   props.formData[props.id].push({
+    //     name: 'arco-palette.less',
+    //     url: 'https://naxions-front-end.oss-cn-beijing.aliyuncs.com/files/1645859009332_44f29aee.less'
+    //   })
+    //   props.formData[props.item.configList.layout.fileId].splice(dindex,1)
+    }
     watch(()=>props.formData,()=>{
+      if(props.item.type === 'NxUpload') {
+        console.log(props.formData[props.id])
+        config.deafultList = props.formData[props.id]
+      }
       let actArr = ['disabled','hide','required']
       if(props.pathSetObj[props.id]) {
         actArr.forEach(item=>{
@@ -234,6 +258,7 @@ export default {
       cardAdd,
       cardDelete,
       tableAdd,
+      hanlderSuccess,
     }
   },
   props:{
