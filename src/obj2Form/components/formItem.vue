@@ -8,6 +8,7 @@
     :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
+    :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'}]"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
@@ -231,10 +232,10 @@ export default {
     //   props.formData[props.item.configList.layout.fileId].splice(dindex,1)
     }
     watch(()=>props.formData,()=>{
-      if(props.item.type === 'NxUpload') {
-        console.log(props.formData[props.id])
-        config.deafultList = props.formData[props.id]
-      }
+    //   if(props.item.type === 'NxUpload') {
+    //     console.log(props.formData[props.id])
+    //     config.deafultList = props.formData[props.id]
+    //   }
       let actArr = ['disabled','hide','required']
       if(props.pathSetObj[props.id]) {
         actArr.forEach(item=>{

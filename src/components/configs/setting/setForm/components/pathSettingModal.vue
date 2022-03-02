@@ -23,9 +23,10 @@
             v-model="item.parentProp"
           />
           值
-          <a-select placeholder="请选择表达式" :style="{width:'200px'}" v-model="item.equation">
-            <a-option value="equal" label="等于"/>
-            <a-option value="noEqual" label="不等于"/>
+          <a-select placeholder="请选择表达式" :style="{width:'150px'}" v-model="item.equation">
+            <a-option v-for="ops in equations" :key="ops.value" :value="ops.value">
+              {{ ops.label }}
+            </a-option>
           </a-select>
           <a-input
             placeholder="请填写值"
@@ -41,9 +42,9 @@
             v-model="item.childProp"
           />
           <a-select placeholder="请选择行为" :style="{width:'200px'}" v-model="item.action">
-            <a-option value="disabled" label="禁用"/>
-            <a-option value="hide" label="隐藏"/>
-            <a-option value="required" label="必选"/>
+            <a-option v-for="ops in actions" :key="ops.value" :value="ops.value">
+              {{ ops.label }}
+            </a-option>
           </a-select>
           <icon-delete class="delIcon" @click="delPathSetting(index)"/>
         </a-space>
@@ -60,6 +61,8 @@ import { getTree } from '../../../../../utils'
 import { useFormConfigStore } from '../../../../../store'
 import _ from 'lodash'
 // import { watch } from '@vue/runtime-core'
+const equations = [{ value:'equal', label:'等于' },{ value:'noEqual', label:'不等于' }]
+const actions = [{ value:'disabled', label:'禁用' },{ value:'hide', label:'隐藏' },{ value:'required', label:'必选' }]
 export default {
   emits:['close'],
   setup (prop,{ emit }) {
@@ -111,7 +114,9 @@ export default {
       delPathSetting,
       treeDataNotRoot,
       treeData,
-      noDataList
+      noDataList,
+      equations,
+      actions,
     }
   },
   methods: {
