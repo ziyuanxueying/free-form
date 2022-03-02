@@ -3,9 +3,10 @@
   min-width: 750px;
 
   :deep(.arco-row-justify-start) {
-    align-items: center;
+    align-items: flex-start;
 
     .arco-form-item-label-col {
+      margin-top: 8px;
       padding-right: 6px;
       padding-left: 4px;
       line-height: 16px;
@@ -29,14 +30,8 @@
     margin: 0 auto;
     min-width: 100%;
 
-    :deep(.arco-row-justify-start) {
-      align-items: center;
-
-      .arco-form-item-label-col {
-        padding-right: 6px;
-        padding-left: 4px;
-        line-height: 16px;
-      }
+    :deep(.arco-upload-wrapper) {
+      width: 80%;
     }
   }
 }

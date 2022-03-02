@@ -9,11 +9,11 @@ export function getModulesFiles (modulesFiles) {
     const moduleName = value.default.nameCN
     const setting = value.setting
     const type = value.default.name
-    if(setting.fileId) { 
-      setting.fileId =  `${setting.fileId}_${new Date().getTime()}`
-    } else {
-      setting.layout.fileId = `${setting.layout.fileId}_${new Date().getTime()}`
-    }
+    // if(setting.fileId) { 
+    //   setting.fileId =  `${setting.fileId}_${new Date().getTime()}`
+    // } else {
+    //   setting.layout.fileId = `${setting.layout.fileId}_${new Date().getTime()}`
+    // }
     let item = {
       name:type,
       icon:value.default.icon,

@@ -21,7 +21,7 @@
       </a-button> -->
     </a-form-item>
     <a-button type="outline" style="width: 100%;" @click="()=>add(form[fileId])">
-      <icon-delete/>
+      <IconPlus/>
       添加
     </a-button>
   </div>

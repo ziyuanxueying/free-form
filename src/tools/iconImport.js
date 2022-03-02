@@ -19,6 +19,7 @@ import {
   IconSubscribed,
   IconFilePdf,
   IconBold,
+  IconPlus,
 } from '@arco-design/web-vue/es/icon'
 
 const iconComponents = {
@@ -42,6 +43,7 @@ const iconComponents = {
   IconSubscribed,
   IconFilePdf,
   IconBold,
+  IconPlus,
 }
 
 export default{

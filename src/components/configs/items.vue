@@ -50,6 +50,12 @@ export default {
   methods: {
     clone (obj) {
       const newObj = Object.assign(_.cloneDeep(obj), { componentId: `${obj.name}_${new Date().getTime()}` })
+      if(newObj.configList.fileId === 'userName' || newObj.configList.fileId === 'userDepart') return newObj
+      if(newObj.configList.fileId) { 
+        newObj.configList.fileId =  `${newObj.configList.fileId}_${new Date().getTime()}`
+      } else {
+        newObj.configList.layout.fileId = `${newObj.configList.layout.fileId}_${new Date().getTime()}`
+      }
       return newObj
     }
   }

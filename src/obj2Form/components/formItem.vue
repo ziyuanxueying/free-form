@@ -223,19 +223,12 @@ export default {
     const cardDelete = (dindex)=>{
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
     }
-    const hanlderSuccess = (res)=>{
-      console.log('res: ', res)
-    //   props.formData[props.id].push({
-    //     name: 'arco-palette.less',
-    //     url: 'https://naxions-front-end.oss-cn-beijing.aliyuncs.com/files/1645859009332_44f29aee.less'
-    //   })
-    //   props.formData[props.item.configList.layout.fileId].splice(dindex,1)
-    }
     watch(()=>props.formData,()=>{
-    //   if(props.item.type === 'NxUpload') {
-    //     console.log(props.formData[props.id])
-    //     config.deafultList = props.formData[props.id]
-    //   }
+      console.log('props.formData: ', props.formData)
+      //   if(props.item.type === 'NxUpload') {
+      //     console.log(props.formData[props.id])
+      //     config.deafultList = props.formData[props.id]
+      //   }
       let actArr = ['disabled','hide','required']
       if(props.pathSetObj[props.id]) {
         actArr.forEach(item=>{
@@ -259,7 +252,6 @@ export default {
       cardAdd,
       cardDelete,
       tableAdd,
-      hanlderSuccess,
     }
   },
   props:{

@@ -10,7 +10,7 @@
       :loading="staffLoad"
       :disabled="ifDisabled"
     >
-      <a-option v-for="(citem,index) in proxyOptions[id]" :key="index" :value="citem.key">
+      <a-option v-for="citem in proxyOptions[id]" :key="citem.key" :value="citem.key">
         {{ citem.value }}
       </a-option>
     </a-select>
@@ -37,7 +37,7 @@ export default defineComponent({
   setup (props) { 
     const route = useRoute()
     const state = reactive({ staffLoad:false ,list:[] })
-    if(route.query.info) {
+    function changeApply () {
       let info = JSON.parse(route.query.info) 
       if(props.item.type === 'NxOAName') {
         props.formData[props.id] =  info.name === '自己' ? JSON.parse(localStorage.getItem('user')).enName : info.name
@@ -48,6 +48,7 @@ export default defineComponent({
         props.formData[`${props.id}Id`] =  info.departId
       }
     }
+    route.query.info && changeApply()
     const handleSearch = (value)=>{
       state.staffLoad = true
       post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: value }).then((res)=>{
@@ -60,6 +61,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       handleSearch,
+      changeApply,
     }
   },
   mounted () {
