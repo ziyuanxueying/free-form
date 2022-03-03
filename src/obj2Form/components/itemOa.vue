@@ -9,8 +9,13 @@
       :allow-search="true"
       :loading="staffLoad"
       :disabled="ifDisabled"
-      :options="proxyOptions[id]"
-    />
+      :show-extra-options="false"
+    >
+      <a-option v-for="citem in proxyOptions[id]" :key="citem.key" :value="citem.key">
+        {{ citem.value }}
+      </a-option>
+    </a-select>
+    {{ formData[id] }}
     <a-input v-if="item.type=='NxOAName'" v-model="formData[id]" disabled/>
     <a-input v-if="item.type=='NxOADepart'" v-model="formData[id]" disabled/>
   </div>
