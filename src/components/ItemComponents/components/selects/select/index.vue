@@ -3,6 +3,7 @@
     :field="fileId"
     :label="label"
     :hideLabel="hideLabel"
+    :disabled="disabled"
   >
     <a-select v-model="form[proto]" :placeholder="placeholder">
       <span v-if="!remote">
@@ -36,6 +37,9 @@ export default {
     required:{
       type: Boolean,
       default: false
+    },
+    disabled:{
+      type: Boolean,
     },
     multiple:{
       type: Boolean,

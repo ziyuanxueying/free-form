@@ -38,6 +38,13 @@ export const setting = [
   {
     type: 'NxSwitch',
     configList:{
+      label:'是否禁用',
+      fileId:'disabled',
+    }
+  },
+  {
+    type: 'NxSwitch',
+    configList:{
       label:'隐藏标签',
       fileId:'hideLabel',
     }

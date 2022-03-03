@@ -62,7 +62,6 @@ export default {
     //获取表单绑定数据的数据结构
     async function getFormObj () {
       formConfig.formObj = formStore.formItemList
-      console.log(' formConfig.formObj: ',  formConfig.formObj)
       //获取表单解构及所有原始options对象
       let form = getForm(formConfig.formObj,{})
       //为表单数据添加响应

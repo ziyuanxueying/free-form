@@ -13,7 +13,7 @@ export function getForm (formItemList,options) {
   formItemList.forEach(item=>{
     let configList = item.configList
     item.hideLabel = configList.layout ? configList.layout.hideLabel : configList.hideLabel
-    if(['NxSelect','NxCheckbox','NxStaff'].includes(item.type)) {
+    if(['NxSelect','NxCheckbox'].includes(item.type)) {
       if(configList.remote) {
         let fnc = ()=> post(configList.remoteUrl) 
         options[configList.fileId] = {

@@ -4,6 +4,7 @@
     :label="label"
     :required="required"
     :hideLabel="hideLabel"
+    :disabled="disabled"
   >
     <a-upload action="/" :limit="maxCount">
       <template #upload-button>
@@ -38,6 +39,9 @@ export default {
     required:{
       type: Boolean,
       default: false
+    },
+    disabled:{
+      type: Boolean,
     },
     hideLabel:{ type: Boolean, },
     text:{

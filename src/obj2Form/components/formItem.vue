@@ -30,6 +30,7 @@
       :placeholder="item.configList.placeholder||'请输入'"
       :min="item.configList.min"
       :max="item.configList.max"
+      :precision="item.configList.precision" 
     />
     <a-typography-paragraph v-if="item.type=='NxText'" :style="`width: 100%; text-align:${item.configList.position||'left'};`">
       {{ item.configList.defaultVal }}
@@ -224,7 +225,6 @@ export default {
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
     }
     watch(()=>props.formData,()=>{
-      console.log('props.formData: ', props.formData)
       //   if(props.item.type === 'NxUpload') {
       //     console.log(props.formData[props.id])
       //     config.deafultList = props.formData[props.id]
@@ -245,7 +245,7 @@ export default {
           }
         })
       }
-    },{ deep: true,immediate:true })
+    },{ deep: true, immediate:true })
     return {
       tableData:[{}],
       ...toRefs(config),

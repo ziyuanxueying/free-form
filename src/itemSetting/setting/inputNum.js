@@ -49,6 +49,7 @@ export const setting = [
     configList:{
       label:'数字精度',
       fileId:'precision',
+      min:0
     }
   },
   {

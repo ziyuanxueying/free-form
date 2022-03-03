@@ -9,11 +9,8 @@
       :allow-search="true"
       :loading="staffLoad"
       :disabled="ifDisabled"
-    >
-      <a-option v-for="citem in proxyOptions[id]" :key="citem.key" :value="citem.key">
-        {{ citem.value }}
-      </a-option>
-    </a-select>
+      :options="proxyOptions[id]"
+    />
     <a-input v-if="item.type=='NxOAName'" v-model="formData[id]" disabled/>
     <a-input v-if="item.type=='NxOADepart'" v-model="formData[id]" disabled/>
   </div>
@@ -36,7 +33,7 @@ export default defineComponent({
   },
   setup (props) { 
     const route = useRoute()
-    const state = reactive({ staffLoad:false ,list:[] })
+    const state = reactive({ staffLoad:false ,list:[], })
     function changeApply () {
       let info = JSON.parse(route.query.info) 
       if(props.item.type === 'NxOAName') {
@@ -48,6 +45,15 @@ export default defineComponent({
         props.formData[`${props.id}Id`] =  info.departId
       }
     }
+    if(props.item.type === 'NxStaff') {
+      setTimeout(() => {
+        if(props.formData[props.id]) {
+          post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
+            state.list = [{ value: res.data[0].enName, key: res.data[0].id }]
+          })
+        }
+      }, 0)
+    }
     route.query.info && changeApply()
     const handleSearch = (value)=>{
       state.staffLoad = true
@@ -56,8 +62,10 @@ export default defineComponent({
         props.proxyOptions[props.id] = res.data.map(item=>{
           return { value: item.enName, key: item.id }
         })
+        props.proxyOptions[props.id] = [...props.proxyOptions[props.id], ...state.list]
       })
     }
+    handleSearch()
     return {
       ...toRefs(state),
       handleSearch,
