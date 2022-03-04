@@ -224,9 +224,14 @@ export default {
     }
 
     watch(()=>props.formData,()=>{
-    //   if(props.item.type === 'NxUpload' && !config.deafultList.length) {
-    //     config.deafultList = JSON.parse(JSON.stringify(props.formData[props.id] || []))
-    //   }
+      //   console.log('config.deafultLis: ', config.deafultList.length)
+      if(props.item.type === 'NxUpload' && !config.deafultList.length) {
+        let val = JSON.stringify(props.formData[props.id] || [])
+        if(val !== JSON.stringify(config.deafultList)) {
+          config.deafultList = JSON.parse(val)
+        }
+      }
+
       if(props.pathSetObj[props.id]) {
         console.log('pathSetObj')
         let actArr = ['disabled','hide','required']
