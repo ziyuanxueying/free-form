@@ -225,10 +225,10 @@ export default {
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
     }
     watch(()=>props.formData,()=>{
-      //   if(props.item.type === 'NxUpload') {
-      //     console.log(props.formData[props.id])
-      //     config.deafultList = props.formData[props.id]
-      //   }
+      if(props.item.type === 'NxUpload') {
+        console.log(props.formData[props.id])
+        config.deafultList = props.formData[props.id]
+      }
       let actArr = ['disabled','hide','required']
       if(props.pathSetObj[props.id]) {
         actArr.forEach(item=>{
