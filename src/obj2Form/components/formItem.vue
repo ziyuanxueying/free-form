@@ -13,7 +13,7 @@
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
       v-if="item.type=='NxUpload'"
-      :default-files="formData[id]"
+      :default-files="deafultList"
       v-model:files="formData[id]"
       :limit="item.configList.maxCount"
       :state="$route.query.type === 'edit' ? 'edit' :'detail'"
@@ -65,7 +65,7 @@
     />
     <a-space v-if="item.type=='NxCheckbox'" direction="vertical" size="large">
       <a-checkbox-group v-model="formData[item.configList.fileId]" :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))">
-        <a-checkbox v-for="(citem,index) in proxyOptions[item.configList.fileId]" :key="index" :value="citem.key">
+        <a-checkbox v-for="(citem,index) in proxyOptions[item.configList.fileId]" :key="index" :value="citem.key || citem.value">
           {{ citem.value }}
         </a-checkbox>
       </a-checkbox-group>
@@ -76,11 +76,9 @@
         v-for="(citem,cindex ) in item.configList.layout.colContent"
         :key="cindex"
         :xs="24"
-        :sm="12"
-        :md="8"
+        :sm="24"
+        :md="12"
         :lg="8"
-        :xl="Math.floor(24 / item.configList.layout.colCount)"
-        :xxl="Math.floor(24 / item.configList.layout.colCount)"
       >
         <FormItem
           v-for="(ccitem,ccindex) in citem"
@@ -208,7 +206,7 @@ export default {
       required:false,
       hide:false,
       columns:null,
-      deafultList: props.formData[props.id]
+      deafultList: []
     })
     if(props.item.type === 'NxTable') {
       config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作' }]]
@@ -225,9 +223,8 @@ export default {
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
     }
     watch(()=>props.formData,()=>{
-      if(props.item.type === 'NxUpload') {
-        console.log(props.formData[props.id])
-        config.deafultList = props.formData[props.id]
+      if(props.item.type === 'NxUpload' && !config.deafultList.length) {
+        config.deafultList = JSON.parse(JSON.stringify(props.formData[props.id] || []))
       }
       let actArr = ['disabled','hide','required']
       if(props.pathSetObj[props.id]) {
