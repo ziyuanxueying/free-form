@@ -41,28 +41,29 @@ export default defineComponent({
     function changeApply () {
       let info = JSON.parse(route.query.info) 
       if(props.item.type === 'NxOAName') {
-        props.formData[props.id] =  info.name === '自己' ? JSON.parse(localStorage.getItem('user')).enName : info.name
-        props.formData[`${props.id}Id`] =  info.id
+        props.formData[props.id] = info.name === '自己' ? JSON.parse(localStorage.getItem('user')).enName : info.name
+        props.formData[`${props.id}Id`] = info.id
       }
       if(props.item.type === 'NxOADepart') {
         props.formData[props.id] =  info.departName
         props.formData[`${props.id}Id`] =  info.departId
       }
     }
-    if(props.item.type === 'NxStaff') {
+    if(props.item.type === 'NxStaff' && props.formData[props.id]) {
       setTimeout(() => {
-        if(props.formData[props.id]) {
-          post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
-            state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
-          })
-        }
+        let URL = window.location.hostname === '127.0.0.1' ? '/api' : window.location.origin
+        post(`${URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
+          state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
+        })
       }, 0)
     }
-    // route.query.info && changeApply()
+    route.query.info && changeApply()
+    
     const handleSearch = (value)=>{
       value && (state.choose = [])
       state.staffLoad = true
-      post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: value }).then((res)=>{
+      let URL = window.location.hostname === '127.0.0.1' ? '/api' : window.location.origin
+      post(`${URL}/user-api/user/search-compound`,{ searchKey: value }).then((res)=>{
         state.staffLoad = false
         state.list = res.data.map(item=>{
           return { value: item.enName, key: item.id }
@@ -70,7 +71,7 @@ export default defineComponent({
         state.list = [...state.list, ...state.choose]
       })
     }
-    // handleSearch()
+    props.item.type === 'NxStaff' && handleSearch()
     return {
       ...toRefs(state),
       handleSearch,

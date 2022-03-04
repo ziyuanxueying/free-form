@@ -222,12 +222,14 @@ export default {
     const cardDelete = (dindex)=>{
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
     }
+
     watch(()=>props.formData,()=>{
       if(props.item.type === 'NxUpload' && !config.deafultList.length) {
         config.deafultList = JSON.parse(JSON.stringify(props.formData[props.id] || []))
       }
-      let actArr = ['disabled','hide','required']
       if(props.pathSetObj[props.id]) {
+        console.log('pathSetObj')
+        let actArr = ['disabled','hide','required']
         actArr.forEach(item=>{
           let itemLink = props.pathSetObj[props.id][item]
           if(itemLink) {
