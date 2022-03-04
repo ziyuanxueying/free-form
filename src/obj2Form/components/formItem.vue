@@ -224,9 +224,9 @@ export default {
     }
 
     watch(()=>props.formData,()=>{
-      if(props.item.type === 'NxUpload' && !config.deafultList.length) {
-        config.deafultList = JSON.parse(JSON.stringify(props.formData[props.id] || []))
-      }
+    //   if(props.item.type === 'NxUpload' && !config.deafultList.length) {
+    //     config.deafultList = JSON.parse(JSON.stringify(props.formData[props.id] || []))
+    //   }
       if(props.pathSetObj[props.id]) {
         console.log('pathSetObj')
         let actArr = ['disabled','hide','required']
