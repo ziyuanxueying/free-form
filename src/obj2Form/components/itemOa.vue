@@ -51,8 +51,8 @@ export default defineComponent({
     }
     if(props.item.type === 'NxStaff' && props.formData[props.id]) {
       setTimeout(() => {
-        let URL = window.location.hostname === '127.0.0.1' ? '/api' : window.location.origin
-        post(`${URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
+        // let URL = window.location.hostname === '127.0.0.1' ? '/api' : window.location.origin
+        post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
           state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
         })
       }, 0)
@@ -62,8 +62,7 @@ export default defineComponent({
     const handleSearch = (value)=>{
       value && (state.choose = [])
       state.staffLoad = true
-      let URL = window.location.hostname === '127.0.0.1' ? '/api' : window.location.origin
-      post(`${URL}/user-api/user/search-compound`,{ searchKey: value }).then((res)=>{
+      post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: value }).then((res)=>{
         state.staffLoad = false
         state.list = res.data.map(item=>{
           return { value: item.enName, key: item.id }
@@ -71,7 +70,9 @@ export default defineComponent({
         state.list = [...state.list, ...state.choose]
       })
     }
+
     props.item.type === 'NxStaff' && handleSearch()
+
     return {
       ...toRefs(state),
       handleSearch,

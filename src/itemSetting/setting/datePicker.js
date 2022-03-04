@@ -23,7 +23,7 @@ export const setting = [
     }
   },
   {
-    type: 'NxInput',
+    type: 'NxDatePicker',
     configList:{
       label:'默认值',
       fileId:'defaultVal',

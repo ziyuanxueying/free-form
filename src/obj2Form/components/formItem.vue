@@ -96,7 +96,7 @@
     
     <a-table
       v-if="item.type=='NxTable'"
-      :data="formData.table"
+      :data="formData[item.configList.layout.fileId]"
       :columns="columns"
       :bordered="{wrapper: true, cell: true}"
       :pagination="false"
@@ -125,7 +125,12 @@
               <a-button class="add-btn" type="outline" @click="tableAdd">
                 添加
               </a-button>
-              <a-button class="add-btn" type="outline" @click="cardDelete(rowIndex)">
+              <a-button
+                v-show="rowIndex"
+                class="add-btn"
+                type="outline"
+                @click="cardDelete(rowIndex)"
+              >
                 删除
               </a-button>
             </a-space>
@@ -216,7 +221,9 @@ export default {
       props.formData[props.item.configList.layout.fileId].push(formCard.form)
     }
     const tableAdd = ()=> {
-      let formCard = getForm([props.item])
+      console.log('[props.item]: ', [props.item])
+      let formCard = getForm([props.item],{})
+      console.log('formCard: ', formCard)
       props.formData[props.item.configList.layout.fileId].push(formCard.form[props.item.configList.layout.fileId][0])
     }
     const cardDelete = (dindex)=>{
@@ -224,7 +231,6 @@ export default {
     }
 
     watch(()=>props.formData,()=>{
-      //   console.log('config.deafultLis: ', config.deafultList.length)
       if(props.item.type === 'NxUpload' && !config.deafultList.length) {
         let val = JSON.stringify(props.formData[props.id] || [])
         if(val !== JSON.stringify(config.deafultList)) {

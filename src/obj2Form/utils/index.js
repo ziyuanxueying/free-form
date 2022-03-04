@@ -23,6 +23,8 @@ export function getForm (formItemList,options) {
           key: configList.keys.key
         }
       } else {
+        console.log('options: ', options)
+        console.log('configList.fileId: ', configList.fileId)
         options[configList.fileId] = configList.columns
       }
     }
@@ -35,6 +37,7 @@ export function getForm (formItemList,options) {
       configList.layout.colContent.forEach((citem)=>{
         //循环迭代，获取子节点form结构
         let res = getForm(citem,options)
+        console.log('res: ', res)
         Object.assign(obj,res.form)
         Object.assign(componentId2fileIdObj,res.componentId2fileId)
       })

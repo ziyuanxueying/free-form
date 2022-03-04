@@ -7,9 +7,11 @@
     :hideLabel="hideLabel"
   >
     <a-date-picker
+      v-model="form[proto]"
       :placeholder="placeholder"
       allow-clear
       :format="format"
+      :value-format="format"
     />
   </a-form-item>
 </template>
@@ -33,6 +35,7 @@ export default {
       type: String,
       default: '请选择日期'
     },
+    proto:{ type: String, },
     defaultVal:{
       type: String,
     },
@@ -42,6 +45,12 @@ export default {
     format:{
       type: String,
       default: 'YYYY-MM-DD'
+    },
+    form:{
+      type:Object,
+      default () {
+        return null
+      }
     },
   },
 }
