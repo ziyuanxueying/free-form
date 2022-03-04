@@ -58,7 +58,7 @@ export default defineComponent({
         }
       }, 0)
     }
-    route.query.info && changeApply()
+    // route.query.info && changeApply()
     const handleSearch = (value)=>{
       value && (state.choose = [])
       state.staffLoad = true
@@ -70,7 +70,7 @@ export default defineComponent({
         state.list = [...state.list, ...state.choose]
       })
     }
-    handleSearch()
+    // handleSearch()
     return {
       ...toRefs(state),
       handleSearch,
