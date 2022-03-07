@@ -220,7 +220,7 @@ export default {
       props.item.configList.showToday && (props.formData[props.id] = Date.now())
     }
     const cardAdd = ()=> {
-      let formCard = getForm(props.item.configList.layout.colContent[0])
+      let formCard = getForm(props.item.configList.layout.colContent[0],{})
       props.formData[props.item.configList.layout.fileId].push(formCard.form)
     }
     const tableAdd = ()=> {
