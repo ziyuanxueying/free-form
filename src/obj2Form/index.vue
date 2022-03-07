@@ -149,7 +149,6 @@ export default {
     const handleOk = () => {
       formConfig.formRef.validate().then((res) => {
         console.log('res: ', res)
-
       })
     }
 

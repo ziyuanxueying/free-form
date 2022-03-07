@@ -30,10 +30,15 @@ export const setting = [
     }
   },
   {
-    type: 'NxInput',
+    type: 'NxSelect',
     configList:{
       label:'日期格式',
       fileId:'format',
+      remote: false,
+      columns: [
+        { value: 'YYYY-MM-DD', key:'' },
+        { value: 'YYYY/MM/DD', key:'' },
+      ],
     }
   },
   {
@@ -55,6 +60,13 @@ export const setting = [
     configList:{
       label:'隐藏标签',
       fileId:'hideLabel',
+    }
+  },
+  {
+    type: 'NxSwitch',
+    configList:{
+      label:'默认当前日期',
+      fileId:'showToday',
     }
   },
 ]

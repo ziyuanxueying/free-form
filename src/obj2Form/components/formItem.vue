@@ -216,6 +216,9 @@ export default {
     if(props.item.type === 'NxTable') {
       config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作' }]]
     }
+    if(props.item.type === 'NxDatePicker') {
+      props.item.configList.showToday && (props.formData[props.id] = Date.now())
+    }
     const cardAdd = ()=> {
       let formCard = getForm(props.item.configList.layout.colContent[0])
       props.formData[props.item.configList.layout.fileId].push(formCard.form)
