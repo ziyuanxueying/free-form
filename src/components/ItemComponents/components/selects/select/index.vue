@@ -7,7 +7,7 @@
   >
     <a-select v-model="form[proto]" :placeholder="placeholder">
       <span v-if="!remote">
-        <a-option v-for="(item,index) in columns" :key="index" :value="item.key">
+        <a-option v-for="item in columns" :key="item.key || item.value" :value="item.key">
           {{ item.value }}
         </a-option>
       </span>
@@ -49,9 +49,7 @@ export default {
     columns:{
       type: Object
     },
-    remote:{
-      type: Boolean
-    },
+    remote:{ type: Boolean },
     form:{
       type:Object,
       default () {
@@ -64,6 +62,10 @@ export default {
     defaultVal:{
       type: String,
     },
+    remoteUrl:{ type: String, },
+    remotePath:{ type: String, },
+    keys:{ type: Object, },
+    pageFrom:{ type: String, },
   },
   setup (props) {
     console.log('props: ', props)

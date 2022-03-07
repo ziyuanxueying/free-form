@@ -50,7 +50,7 @@
       :placeholder="item.configList.placeholder||'请选择'"
       :multiple="item.configList.multiple"
     >
-      <a-option v-for="(citem,index) in proxyOptions[id]" :key="index" :value="citem.key">
+      <a-option v-for="(citem,index) in proxyOptions[id]" :key="index" :value="citem.key || citem.value">
         {{ citem.value }}
       </a-option>
     </a-select>
@@ -242,7 +242,6 @@ export default {
       }
 
       if(props.pathSetObj[props.id]) {
-        console.log('pathSetObj')
         let actArr = ['disabled','hide','required']
         actArr.forEach(item=>{
           let itemLink = props.pathSetObj[props.id][item]
