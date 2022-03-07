@@ -23,8 +23,6 @@ export function getForm (formItemList,options) {
           key: configList.keys.key
         }
       } else {
-        console.log('options: ', options)
-        console.log('configList.fileId: ', configList.fileId)
         options[configList.fileId] = configList.columns
       }
     }

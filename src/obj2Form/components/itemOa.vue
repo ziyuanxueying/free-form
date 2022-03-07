@@ -49,9 +49,8 @@ export default defineComponent({
         props.formData[`${props.id}Id`] =  info.departId
       }
     }
-    if(props.item.type === 'NxStaff' && props.formData[props.id]) {
+    if(props.item.type === 'NxStaff') {
       setTimeout(() => {
-        // let URL = window.location.hostname === '127.0.0.1' ? '/api' : window.location.origin
         post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
           state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
         })
