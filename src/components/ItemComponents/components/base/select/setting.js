@@ -6,7 +6,7 @@ let selectSetting = {
   required: false,
   disabled:false,
   hideLabel:false,
-  remote: true ,
+  remote: false ,
   multiple:false,
   columns: [
     { value: 'value', key: 'key', }

@@ -6,7 +6,7 @@
       :form="settings"
       :proto="proto"
     />
-    <icon-copy v-show="pageFrom==='content'" class="item-btn copy" @click="EditItem(element,1)"/>
+    <!-- <icon-copy v-show="pageFrom==='content'" class="item-btn copy" @click="EditItem(element,1)"/> -->
     <icon-delete v-show="pageFrom==='content'" class="item-btn del" @click="EditItem(element,0)"/>
   </div>
 </template>
