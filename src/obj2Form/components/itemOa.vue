@@ -50,15 +50,6 @@ export default defineComponent({
       }
     }
 
-    if(props.item.type === 'NxStaff') {
-      setTimeout(() => {
-        if(!props.formData[props.id]) return
-        // let URL = window.location.hostname === '127.0.0.1' ? '/api' : window.location.origin
-        post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
-          state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
-        })
-      }, 0)
-    }
     
     const handleSearch = (value)=>{
       value && (state.choose = [])
@@ -72,8 +63,19 @@ export default defineComponent({
       })
     }
 
+    if(props.item.type === 'NxStaff') {
+      setTimeout(() => {
+        if(!props.formData[props.id]) { handleSearch() } else {
+          // let URL = window.location.hostname === '127.0.0.1' ? '/api' : window.location.origin
+          post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
+            state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
+          })
+          handleSearch()
+        }
+      }, 0)
+    }
+
     route.query.info && changeApply()
-    props.item.type === 'NxStaff' && handleSearch()
 
     return {
       ...toRefs(state),
