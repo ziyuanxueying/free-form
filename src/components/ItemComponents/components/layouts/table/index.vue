@@ -99,4 +99,12 @@ export default {
     }
   }
 }
+
+:deep(.arco-table-td-resizing:not(.arco-table-tr-expand)) {
+  border-right: 1px solid var(--color-neutral-3);
+}
+
+:deep(.arco-table-th-resizing) {
+  border-right: 1px solid var(--color-neutral-3);
+}
 </style>

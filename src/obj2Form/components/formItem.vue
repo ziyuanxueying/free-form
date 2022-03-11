@@ -1,5 +1,5 @@
 <template>
-  <!-- {{ !(pathSetObj[id]?.hide?hide:false) }} -->
+  {{ ifDisabled }}123
   <a-form-item
     v-show="!hide&&item.type!=='NxCard'"
     :field="id"
@@ -32,6 +32,10 @@
       :max="item.configList.max"
       :precision="item.configList.precision" 
     />
+    <template v-if="item.type=='NxInputNum'" #extra>
+      {{ item.configList.min ? `限制最小输入值为${item.configList.min},`:'' }}
+      {{ item.configList.max ? `限制最大输入值为${item.configList.max}`:'' }}
+    </template>
     <a-typography-paragraph v-if="item.type=='NxText'" :style="`width: 100%; text-align:${item.configList.position||'left'};`">
       {{ item.configList.defaultVal }}
     </a-typography-paragraph>
@@ -172,7 +176,7 @@
         </div>
       </div>
       <a-button
-        v-if="item.configList.layout.ifAdd"
+        v-if="item.configList.layout.ifAdd && ! ifDisabled"
         class="add-btn"
         type="outline"
         @click="cardAdd"
@@ -246,13 +250,13 @@ export default {
         actArr.forEach(item=>{
           let itemLink = props.pathSetObj[props.id][item]
           if(itemLink) {
-            let type = ['true','false'].includes(itemLink.value) ? Boolean(itemLink.value) : itemLink.value
+            let type = itemLink.value === 'false' ? false : itemLink.value === 'true' ? true : itemLink.value
             if(itemLink.equation === 'equal') {
               // eslint-disable-next-line eqeqeq
               config[item] = props.formData[itemLink.parentProp] == type
             }else{
               // eslint-disable-next-line eqeqeq
-              config[item] = props.formData[itemLink.parentProp] != itemLink.value
+              config[item] = props.formData[itemLink.parentProp] != type
             }
           }
         })

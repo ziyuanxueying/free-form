@@ -7,6 +7,13 @@ export const setting = [
       label:'字段标识',
       fileId:'fileId',
     }
+  },
+  {
+    type: 'NxInput',
+    configList:{
+      label:'字段标识',
+      fileId:'label',
+    }
     
   },
   {

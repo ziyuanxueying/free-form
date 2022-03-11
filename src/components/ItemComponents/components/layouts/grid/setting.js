@@ -1,8 +1,9 @@
 let gridSetting = {
   layout:{ 
-    colCount: 1,
-    colContent:[[]],
+    colCount: 2,
+    colContent:[[],[]],
     fileId: 'grid', 
+    label:'栅格',
     pageFrom: '',
     hideLabel:true ,
   }
