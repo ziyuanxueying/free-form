@@ -49,13 +49,13 @@ export const setting = [
       fileId:'hideLabel',
     }
   },
-  {
-    type: 'NxInput',
-    configList:{
-      label:'默认值',
-      fileId:'defaultVal',
-    }
-  },
+  //   {
+  //     type: 'NxInput',
+  //     configList:{
+  //       label:'默认值',
+  //       fileId:'defaultVal',
+  //     }
+  //   },
   {
     type: 'NxSwitch',
     configList:{
