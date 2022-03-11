@@ -63,6 +63,7 @@ export default {
       arr.push({
         value: '',
         key: '',
+        id:Math.random()
       })
     }
     return {

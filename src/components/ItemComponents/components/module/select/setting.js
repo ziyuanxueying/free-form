@@ -9,7 +9,7 @@ let selectSetting = {
   remote: false ,
   multiple:false,
   columns: [
-    { value: 'value', key: 'key', }
+    { value: 'value', key: 'key', id:Math.random() }
   ],
   remoteUrl:'/',
   keys: {

@@ -49,13 +49,13 @@ export const setting = [
       fileId:'hideLabel',
     }
   },
-  //   {
-  //     type: 'NxInput',
-  //     configList:{
-  //       label:'默认值',
-  //       fileId:'defaultVal',
-  //     }
-  //   },
+  {
+    type: 'NXWatchSelect',
+    configList:{
+      label:'默认值',
+      fileId:'defaultVal',
+    }
+  },
   {
     type: 'NxSwitch',
     configList:{
@@ -69,6 +69,7 @@ export const setting = [
       columns:[{
         value: '',
         key: '',
+        id:Math.random()
       }],
       label:'选项',
       fileId:'columns'

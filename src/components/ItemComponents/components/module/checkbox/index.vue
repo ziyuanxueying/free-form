@@ -30,7 +30,7 @@ export default {
   props: {
     fileId: { type: null, },
     label: { type: String, },
-    // defaultVal:{ type: String, },
+    // defaultVal:{ type: Array, },
     required:{ type: Boolean, },
     hideLabel:{ type: Boolean, },
     disabled:{ type: Boolean, },
