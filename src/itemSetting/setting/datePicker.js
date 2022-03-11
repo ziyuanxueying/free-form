@@ -27,6 +27,7 @@ export const setting = [
     configList:{
       label:'默认值',
       fileId:'defaultVal',
+      format:'YYYY-MM-DD HH:mm:ss',
     }
   },
   {
@@ -37,8 +38,8 @@ export const setting = [
       remote: false,
       columns: [
         { value: 'YYYY-MM-DD', key:'' },
-        { value: 'YYYY/MM/DD', key:'' },
         { value: 'YYYY-MM-DD HH:mm:ss', key:'' },
+        { value: 'YYYY/MM/DD', key:'' },
         { value: 'YYYY/MM/DD HH:mm:ss', key:'' },
       ],
     }

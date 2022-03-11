@@ -118,7 +118,11 @@ export default {
     }
 
     const handleOk = () => {
-      return formConfig.formRef.validate()
+      formConfig.formRef.validate().then((res)=>{
+        console.log('res: ', res)
+
+      })
+    //   return formConfig.formRef.validate()
     }
     
     function reset () {

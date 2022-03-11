@@ -1,5 +1,5 @@
 <template>
-  {{ ifDisabled }}123
+  {{ ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)) }}
   <a-form-item
     v-show="!hide&&item.type!=='NxCard'"
     :field="id"
@@ -45,8 +45,14 @@
       allow-clear
       v-model="formData[id]"
       :format="item.configList.format"
+      :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     />
-    <a-range-picker v-if="item.type=='NxRangePicker'" v-model="formData[id]" allow-clear/>
+    <a-range-picker
+      v-if="item.type=='NxRangePicker'"
+      v-model="formData[id]"
+      allow-clear
+      :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+    />
     <a-switch v-if="item.type=='NxSwitch'" v-model="formData[id]"/>
     <a-select
       v-if="item.type=='NxSelect'"

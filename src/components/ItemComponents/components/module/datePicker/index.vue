@@ -13,6 +13,7 @@
       :format="format"
       :value-format="format"
       :showTime="showTime"
+      :disabled="pageFrom === 'content'"
     />
   </a-form-item>
 </template>
@@ -57,6 +58,7 @@ export default {
       type: Boolean,
       default: false
     },
+    pageFrom:{ type: String, },
   },
 }
 </script>
