@@ -7,6 +7,7 @@ let datePickerSetting = {
   hideLabel:false,
   defaultVal:'',
   format:'YYYY-MM-DD',
-  showToday:false
+  showToday:false,
+  showTime:false
 }
 export default datePickerSetting

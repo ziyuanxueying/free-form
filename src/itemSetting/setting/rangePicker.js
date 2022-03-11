@@ -37,4 +37,11 @@ export const setting = [
       fileId:'hideLabel',
     }
   },
+  {
+    type: 'NxSwitch',
+    configList:{
+      label:'是否显示时间',
+      fileId:'showTime',
+    }
+  },
 ]

@@ -12,6 +12,7 @@
       allow-clear
       :format="format"
       :value-format="format"
+      :showTime="showTime"
     />
   </a-form-item>
 </template>
@@ -51,6 +52,10 @@ export default {
       default () {
         return null
       }
+    },
+    showTime:{
+      type: Boolean,
+      default: false
     },
   },
 }

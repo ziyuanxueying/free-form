@@ -4,6 +4,7 @@ let rangePickerSetting = {
   required: false,
   disabled:false,
   hideLabel:false,
-  defaultVal:[]
+  defaultVal:[],
+  showTime:false
 }
 export default rangePickerSetting

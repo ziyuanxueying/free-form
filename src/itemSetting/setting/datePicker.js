@@ -38,6 +38,8 @@ export const setting = [
       columns: [
         { value: 'YYYY-MM-DD', key:'' },
         { value: 'YYYY/MM/DD', key:'' },
+        { value: 'YYYY-MM-DD HH:mm:ss', key:'' },
+        { value: 'YYYY/MM/DD HH:mm:ss', key:'' },
       ],
     }
   },
@@ -67,6 +69,13 @@ export const setting = [
     configList:{
       label:'默认当前日期',
       fileId:'showToday',
+    }
+  },
+  {
+    type: 'NxSwitch',
+    configList:{
+      label:'是否显示时间',
+      fileId:'showTime',
     }
   },
 ]

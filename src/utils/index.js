@@ -142,3 +142,23 @@ export function getForm (formItemList) {
   })
   return form
 }
+/**
+ * 判断是否存在重复id
+ */
+export function checkId (formItemList,arr = []) {
+  formItemList.forEach(item=>{
+    let configList = item.configList
+    if(!configList.layout) {
+      arr.push(configList.fileId)
+    }else{
+      if(configList.layout.ifAdd) {
+        arr.push(configList.layout.fileId)
+      }else{
+        configList.layout.colContent.forEach(citem=>{
+          checkId(citem,arr)
+        })
+      }
+    }
+  })
+  return arr
+}
