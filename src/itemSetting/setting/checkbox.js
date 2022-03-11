@@ -47,11 +47,19 @@ export const setting = [
     }
   },
   {
+    type: 'NxWatchCheckbox',
+    configList:{
+      label:'默认值',
+      fileId:'defaultVal',
+    }
+  },
+  {
     type: 'NxDoubleInput',
     configList:{
       columns:[{
         value: '',
         key: '',
+        id:Math.random()
       }],
       label:'选项',
       fileId:'columns'
