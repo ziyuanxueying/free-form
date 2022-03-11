@@ -5,6 +5,7 @@ let rangePickerSetting = {
   disabled:false,
   hideLabel:false,
   defaultVal:[],
-  showTime:false
+  showTime:false,
+  format:'YYYY-MM-DD',
 }
 export default rangePickerSetting

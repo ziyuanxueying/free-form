@@ -17,6 +17,20 @@ export const setting = [
     }
   },
   {
+    type: 'NxSelect',
+    configList:{
+      label:'日期格式',
+      fileId:'format',
+      remote: false,
+      columns: [
+        { value: 'YYYY-MM-DD', key:'' },
+        { value: 'YYYY/MM/DD', key:'' },
+        { value: 'YYYY-MM-DD HH:mm:ss', key:'' },
+        { value: 'YYYY/MM/DD HH:mm:ss', key:'' },
+      ],
+    }
+  },
+  {
     type: 'NxSwitch',
     configList:{
       label:'是否必填',

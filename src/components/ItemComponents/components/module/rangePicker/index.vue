@@ -5,7 +5,7 @@
     :required="required"
     :hideLabel="hideLabel"
   >
-    <a-range-picker :showTime="showTime"/>
+    <a-range-picker :showTime="showTime" :format="format"/>
   </a-form-item>
 </template>
 <script>
@@ -27,6 +27,10 @@ export default {
     required:{
       type: Boolean,
       default: false
+    },
+    format:{
+      type: String,
+      default: 'YYYY-MM-DD'
     },
     hideLabel:{ type: Boolean, },
     showTime:{
