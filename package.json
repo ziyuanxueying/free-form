@@ -1,6 +1,6 @@
 {
   "name": "nx-free-form",
-  "version": "0.2.43",
+  "version": "0.2.42",
   "private": false,
   "main": "lib/nx-free-from.common.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@arco-design/web-vue": "2.12.0",
+    "@arco-design/web-vue": "2.19.0",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@vue/cli-plugin-babel": "~4.5.0",

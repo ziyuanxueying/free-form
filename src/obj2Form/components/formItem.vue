@@ -1,14 +1,15 @@
 <template>
-  {{ ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)) }}
   <a-form-item
     v-show="!hide&&item.type!=='NxCard'"
-    :field="id"
+    :field="field||id"
     :label="item.configList.label|| item.moduleName"
     :required="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
     :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
-    :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'}]"
+    :rules="[
+      {required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},
+    ] "
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
@@ -103,7 +104,6 @@
         />
       </a-col>
     </a-row>
-    
     <a-table
       v-if="item.type=='NxTable'"
       :data="formData[item.configList.layout.fileId]"
@@ -128,11 +128,12 @@
                 :pathSetObj="pathSetObj"
                 :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
                 :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
-                :id="ccitem.configList.fileId||ccitem.componentId"
+                :id="`${ccitem.configList.fileId||ccitem.componentId}`"
+                :field="`${item.configList.layout.fileId}.${rowIndex}.${ccitem.configList.fileId||ccitem.componentId}`"
               />
             </div>
             <a-space v-if="citem.key === 'operate'">
-              <a-button class="add-btn" type="outline" @click="tableAdd">
+              <a-button class="add-btn" type="outline" @click="tableAdd(rowIndex)">
                 添加
               </a-button>
               <a-button
@@ -141,7 +142,7 @@
                 type="outline"
                 @click="cardDelete(rowIndex)"
               >
-                删除
+                删除{{ rowIndex }}
               </a-button>
             </a-space>
           </template>
@@ -168,6 +169,7 @@
               :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
               :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
               :id="ccitem.configList.fileId||ccitem.componentId"
+              :field="`${item.configList.layout.fileId}.${dindex}.${ccitem.configList.fileId||ccitem.componentId}`"
             />
           </div>
           <a-button
@@ -221,7 +223,7 @@ export default {
       required:false,
       hide:false,
       columns:null,
-      deafultList: []
+      deafultList: [],
     })
     if(props.item.type === 'NxTable') {
       config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作' }]]
@@ -233,11 +235,9 @@ export default {
       let formCard = getForm(props.item.configList.layout.colContent[0],{})
       props.formData[props.item.configList.layout.fileId].push(formCard.form)
     }
-    const tableAdd = ()=> {
-      console.log('[props.item]: ', [props.item])
+    const tableAdd = (index)=> {
       let formCard = getForm([props.item],{})
-      console.log('formCard: ', formCard)
-      props.formData[props.item.configList.layout.fileId].push(formCard.form[props.item.configList.layout.fileId][0])
+      props.formData[props.item.configList.layout.fileId].splice(index + 1, 0, formCard.form[props.item.configList.layout.fileId][0])
     }
     const cardDelete = (dindex)=>{
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
@@ -299,7 +299,8 @@ export default {
     },
     id:{
       type:null,
-    }
+    },
+    field:{ type: String, default:'' }
   }
 }
 </script>

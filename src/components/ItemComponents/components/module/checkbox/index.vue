@@ -22,7 +22,6 @@
 </template>
 <script>
 export { default as setting } from './setting'
-import { watch } from 'vue'
 export default {
   name: 'NxCheckbox',
   nameCN: '复选框组',
@@ -43,16 +42,6 @@ export default {
         return null
       }
     },
-  },
-  setup (props) {
-    console.log('props: ', props)
-    watch(()=>props.columns,()=>{
-      console.log(props)
-      let colCount = props.columns.length
-      console.log('colCount: ', colCount)
-    },{
-      deep:true
-    })
   }
 }
 </script>

@@ -151,13 +151,10 @@ export function checkId (formItemList,arr = []) {
     if(!configList.layout) {
       arr.push(configList.fileId)
     }else{
-      if(configList.layout.ifAdd) {
-        arr.push(configList.layout.fileId)
-      }else{
-        configList.layout.colContent.forEach(citem=>{
-          checkId(citem,arr)
-        })
-      }
+      arr.push(configList.layout.fileId)
+      configList.layout.colContent.forEach(citem=>{
+        checkId(citem,arr)
+      })
     }
   })
   return arr

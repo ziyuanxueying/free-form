@@ -7,7 +7,7 @@
       <a-option
         v-for="(item) in option"
         :key="item.id"
-        :value="item.key"
+        :value="item.key || item.value"
         :label="item.value"
       />
     </a-select>
