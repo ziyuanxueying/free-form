@@ -15,6 +15,18 @@
         {{ citem.value }}
       </a-option>
     </a-select>
+    <a-select
+      v-if="item.type=='NxOABank'"
+      v-model="formData[id]"
+      :placeholder="item.configList.placeholder||'请选择'"
+      :allow-search="true"
+      :virtual-list-props="{height:200}"
+      :options="list"
+    >
+      <!-- <a-option v-for="(citem,index) in list" :key="index" :value="citem.key || citem.value">
+        {{ citem.value }}
+      </a-option> -->
+    </a-select>
     <a-input v-if="item.type=='NxOAName'" v-model="formData[id]" disabled/>
     <a-input v-if="item.type=='NxOADepart'" v-model="formData[id]" disabled/>
   </div>
@@ -24,7 +36,7 @@
 import { reactive, toRefs, defineComponent } from 'vue'
 import { post } from '../utils/request'
 import { useRoute } from 'vue-router'
-import { Decrypt } from '../../utils/index'
+// import { Decrypt } from '../../utils/index'
 export default defineComponent({
   name:'ItemOa',
   props:{
@@ -40,7 +52,7 @@ export default defineComponent({
     const route = useRoute()
     const state = reactive({ staffLoad:false ,list:[], choose:[] })
     function changeApply () {
-      let info = JSON.parse(Decrypt(route.query.info)) 
+      let info = JSON.parse(route.query.info) 
       if(props.item.type === 'NxOAName') {
         props.formData[props.id] = info.name === '自己' ? JSON.parse(localStorage.getItem('user')).enName : info.name
         props.formData[`${props.id}Id`] = info.id
@@ -50,7 +62,6 @@ export default defineComponent({
         props.formData[`${props.id}Id`] =  info.departId
       }
     }
-
     
     const handleSearch = (value)=>{
       value && (state.choose = [])
@@ -67,11 +78,31 @@ export default defineComponent({
     if(props.item.type === 'NxStaff') {
       setTimeout(() => {
         if(!props.formData[props.id]) { handleSearch() } else {
-          // let URL = window.location.hostname === '127.0.0.1' ? '/api' : window.location.origin
           post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
             state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
           })
           handleSearch()
+        }
+      }, 0)
+    }
+
+    const selectSearch = (value)=>{
+      value && (state.choose = [])
+      state.staffLoad = true
+      post(`${process.env.VUE_APP_BASE_URL}/oa-platform/region/cityList`,{ city: value }).then((res)=>{
+        state.staffLoad = false
+        state.list = res.data
+        state.list = [...res.data, ...state.choose]
+      })
+    }
+    console.log('props.item.type: ', props.item.type)
+    if(props.item.type === 'NxOABank') {
+      setTimeout(() => {
+        if(!props.formData[props.id]) { selectSearch() } else {
+          post(`${process.env.VUE_APP_BASE_URL}/oa-platform/region/cityList`,{ city: props.formData[props.id] }).then((res)=>{
+            state.choose = res.data
+          })
+          selectSearch()
         }
       }, 0)
     }

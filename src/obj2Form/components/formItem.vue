@@ -1,15 +1,13 @@
 <template>
   <a-form-item
     v-show="!hide&&item.type!=='NxCard'"
-    :field="field||id"
+    :field="field&&id?`${field}${id}`:field||id"
     :label="item.configList.label|| item.moduleName"
     :required="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
     :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
-    :rules="[
-      {required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},
-    ] "
+    :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},] "
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
@@ -33,7 +31,7 @@
       :max="item.configList.max"
       :precision="item.configList.precision" 
     />
-    <template v-if="item.type=='NxInputNum'" #extra>
+    <template v-if="item.type=='NxInput'" #extra>
       {{ item.configList.min ? `限制最小输入值为${item.configList.min},`:'' }}
       {{ item.configList.max ? `限制最大输入值为${item.configList.max}`:'' }}
     </template>
@@ -66,7 +64,7 @@
       </a-option>
     </a-select>
     <itemOa
-      v-if="['NxStaff','NxOAName','NxOADepart'].includes(item.type)"
+      v-if="['NxStaff','NxOAName','NxOADepart','NxOABank'].includes(item.type)"
       :item="item"
       :formData="formData"
       :pathSetObj="pathSetObj"
@@ -101,6 +99,7 @@
           :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
           :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
           :id="ccitem.configList.fileId||ccitem.componentId"
+          :field="field"
         />
       </a-col>
     </a-row>
@@ -129,7 +128,7 @@
                 :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
                 :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
                 :id="`${ccitem.configList.fileId||ccitem.componentId}`"
-                :field="`${item.configList.layout.fileId}.${rowIndex}.${ccitem.configList.fileId||ccitem.componentId}`"
+                :field="`${item.configList.layout.fileId}.${rowIndex}.`"
               />
             </div>
             <a-space v-if="citem.key === 'operate'">
@@ -142,7 +141,7 @@
                 type="outline"
                 @click="cardDelete(rowIndex)"
               >
-                删除{{ rowIndex }}
+                删除
               </a-button>
             </a-space>
           </template>
@@ -169,10 +168,11 @@
               :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
               :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
               :id="ccitem.configList.fileId||ccitem.componentId"
-              :field="`${item.configList.layout.fileId}.${dindex}.${ccitem.configList.fileId||ccitem.componentId}`"
+              :field="id.indexOf('NxGrid') === -1 ?`${item.configList.layout.fileId}.${dindex}.`:`${item.configList.layout.fileId}.${dindex}.${ccitem.configList.fileId||ccitem.componentId}`"
             />
           </div>
           <a-button
+            v-if="!ifDisabled"
             :style="!dindex&&'visibility:hidden'"
             type="outline"
             status="danger"
@@ -184,7 +184,7 @@
         </div>
       </div>
       <a-button
-        v-if="item.configList.layout.ifAdd && ! ifDisabled"
+        v-if="item.configList.layout.ifAdd && !ifDisabled"
         class="add-btn"
         type="outline"
         @click="cardAdd"
@@ -300,6 +300,7 @@ export default {
     id:{
       type:null,
     },
+    // 校验是否必填增加的字段
     field:{ type: String, default:'' }
   }
 }
