@@ -24,6 +24,7 @@
 import { reactive, toRefs, defineComponent } from 'vue'
 import { post } from '../utils/request'
 import { useRoute } from 'vue-router'
+import { Decrypt } from '../../utils/index'
 export default defineComponent({
   name:'ItemOa',
   props:{
@@ -39,7 +40,7 @@ export default defineComponent({
     const route = useRoute()
     const state = reactive({ staffLoad:false ,list:[], choose:[] })
     function changeApply () {
-      let info = JSON.parse(route.query.info) 
+      let info = JSON.parse(Decrypt(route.query.info)) 
       if(props.item.type === 'NxOAName') {
         props.formData[props.id] = info.name === '自己' ? JSON.parse(localStorage.getItem('user')).enName : info.name
         props.formData[`${props.id}Id`] = info.id

@@ -159,3 +159,21 @@ export function checkId (formItemList,arr = []) {
   })
   return arr
 }
+
+import crypto from 'crypto-js'
+// 加密方法
+export function Encrypt (word) {
+  return crypto.AES.encrypt(JSON.stringify(word), crypto.enc.Utf8.parse('aaaabbbbccccdddd'), {
+    mode: crypto.mode.ECB,
+    padding: crypto.pad.Pkcs7
+  }).toString()
+}
+// 解密方法
+export function Decrypt (word) {
+  let decrypt = crypto.AES.decrypt(word, crypto.enc.Utf8.parse('aaaabbbbccccdddd'), {
+    mode: crypto.mode.ECB,
+    padding: crypto.pad.Pkcs7
+  })
+  let decryptedStr = decrypt.toString(crypto.enc.Utf8)
+  return decryptedStr.toString()
+}
