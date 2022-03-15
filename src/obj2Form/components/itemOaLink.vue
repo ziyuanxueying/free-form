@@ -130,7 +130,6 @@ export default {
   },
   emits:['changeData'],
   setup (props,{ emit }) { 
-    console.log('props: ', props)
     const state = reactive({
       linkShow: false,
       form: { type:1 , search:1 },
