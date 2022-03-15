@@ -46,7 +46,7 @@
         <div class="form-label">
           设置组件
         </div>
-        <a-table :data="data" row-key="id">
+        <a-table :data="data" row-key="id" :loading="loading">
           <template #columns>
             <a-table-column title="信息库列表项" data-index="moduleName"/>
             <a-table-column title="模板标签" data-index="fileId">
@@ -81,7 +81,8 @@ export default {
       data:[],
       inforBaseList:[],
       informationBase:'',
-      type:''
+      type:'',
+      loading:false
     })
     ifExist()
     const formConfig  = useFormConfigStore()
@@ -119,6 +120,7 @@ export default {
       if(!val) {
         return 
       }
+      state.loading = true
       post(`/oa-platform/infoMeta/columnList/${val}`).then(res=>{
         let data = res || []
         state.data = data.map((item,index)=>{
@@ -132,6 +134,8 @@ export default {
             id:index,
           }
         })
+      }).finally(()=>{
+        state.loading = false
       })
     }
     function init () {
