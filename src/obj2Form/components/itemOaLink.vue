@@ -1,16 +1,24 @@
 <template>
   <div>
-    <a-button @click="linkShow=true">
+    <a-button v-if="!ifDisabled" @click="linkShow=true">
       选择关联表单
     </a-button>
-    <a-link v-show="chooseItem.link" :href="chooseItem.link" icon>
+    <a
+      class="link"
+      v-if="chooseItem.title"
+      :href="chooseItem?.link"
+      target="_blank"
+    >
+      <icon-link/>
       {{ chooseItem.title }}
-    </a-link>
+    </a>
+    <span v-else>
+      暂未选择关联表单
+    </span>
     <a-modal v-model:visible="linkShow" @ok="handleOk" width="800px">
       <template #title>
         关联表单
       </template>
-      {{ form }}
       <a-form
         class="search-form"
         :model="form"
@@ -117,28 +125,30 @@ const columns = [
   { title: '申请时间', dataIndex: 'submitTime', width: 150, align: 'left' }]
 export default {
   props:{
-    data:{ type:null  },
+    data:{ type: null  },
+    ifDisabled:{ type:Boolean, default:()=>false },
   },
   emits:['changeData'],
   setup (props,{ emit }) { 
     console.log('props: ', props)
     const state = reactive({
-      linkShow: true,
+      linkShow: false,
       form: { type:1 , search:1 },
-      pagination: {
-        current: 1,
-        total: 0,
-      },
+      pagination: { current: 1, total: 0, },
       tableList:[],
       rowSelection: { type: 'radio' },
-      chooseItem:{}
+      chooseItem: {}
     })
+
+    setTimeout(() => {
+      state.chooseItem = props.data
+    }, 10)
+
     const selectChange = (vals) => {
-      console.log('vals: ', vals[0])
       state.chooseItem = _.find(state.tableList, ['id',vals[0]])
       state.chooseItem.link = `/myApply/applyForm?type=apply&preId=${vals[0]}`
-    // state.selectList = vals
     }
+
     function handleOk () {
       emit('changeData', state.chooseItem)
     }
@@ -205,4 +215,7 @@ function pageInteraction ({ state }) {
 </script>
 
 <style lang="less" scoped>
+.link {
+  color: #0089ff;
+}
 </style>

@@ -27,8 +27,12 @@
     </a-select>
     <a-input v-if="item.type=='NxOAName'" v-model="formData[id]" disabled/>
     <a-input v-if="item.type=='NxOADepart'" v-model="formData[id]" disabled/>
-    <ItemOaLink v-if="item.type=='NxOALinkForm'" :data="formData[id]" @changeData="changeData"/>
-    {{ formData[id] }}
+    <ItemOaLink
+      v-if="item.type=='NxOALinkForm'"
+      :data="formData[id]"
+      @changeData="changeData"
+      :ifDisabled="ifDisabled"
+    />
   </div>
 </template>
 
@@ -121,6 +125,7 @@ export default defineComponent({
     }
 
     function changeData (val) {
+      props.formData[props.id] = val
       console.log('val: ', val)
     }
 
