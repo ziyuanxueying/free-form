@@ -22,6 +22,7 @@ import {
   IconPlus,
   IconBook,
   IconBarChart,
+  IconLink,
 } from '@arco-design/web-vue/es/icon'
 
 const iconComponents = {
@@ -48,6 +49,7 @@ const iconComponents = {
   IconPlus,
   IconBook,
   IconBarChart,
+  IconLink,
 }
 
 export default{
@@ -77,4 +79,5 @@ export const icons = {
   IconBold,
   IconBook,
   IconBarChart,
+  IconLink,
 }

@@ -64,7 +64,7 @@
       </a-option>
     </a-select>
     <itemOa
-      v-if="['NxStaff','NxOAName','NxOADepart','NxOABank'].includes(item.type)"
+      v-if="['NxStaff','NxOAName','NxOADepart','NxOABank','NxOACity','NxOALinkForm'].includes(item.type)"
       :item="item"
       :formData="formData"
       :pathSetObj="pathSetObj"
