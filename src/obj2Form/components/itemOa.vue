@@ -27,7 +27,8 @@
     </a-select>
     <a-input v-if="item.type=='NxOAName'" v-model="formData[id]" disabled/>
     <a-input v-if="item.type=='NxOADepart'" v-model="formData[id]" disabled/>
-    <ItemOaLink v-if="item.type=='NxOALinkForm'" :data="formData[id]"/>
+    <ItemOaLink v-if="item.type=='NxOALinkForm'" :data="formData[id]" @changeData="changeData"/>
+    {{ formData[id] }}
   </div>
 </template>
 
@@ -118,12 +119,18 @@ export default defineComponent({
         }
       }, 0)
     }
+
+    function changeData (val) {
+      console.log('val: ', val)
+    }
+
     route.query.info && changeApply()
 
     return {
       ...toRefs(state),
       handleSearch,
       changeApply,
+      changeData,
     }
   },
   mounted () {

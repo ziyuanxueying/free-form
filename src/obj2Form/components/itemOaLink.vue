@@ -3,8 +3,8 @@
     <a-button @click="linkShow=true">
       选择关联表单
     </a-button>
-    <a-link href="https://oa-dev.naxions.com/workben/initiate" icon>
-      Link
+    <a-link v-show="chooseItem.link" :href="chooseItem.link" icon>
+      {{ chooseItem.title }}
     </a-link>
     <a-modal v-model:visible="linkShow" @ok="handleOk" width="800px">
       <template #title>
@@ -106,20 +106,21 @@
 
 <script>
 import { reactive, toRefs, } from 'vue'
-import debounce from 'lodash/debounce'
 import { post } from '../utils/request'
+import _ from 'lodash'
 const applys = [{ key: 1, value:'本人申请' },{ key:2, value:'他人申请' }]
 const searchs = [{ key: 1, value:'表单标题' },{ key:2, value:'申请人' },{ key:3, value:'申请时间' }]
 const columns = [  
-  { title: '表单类型', dataIndex: 'tplClassifyName',  width: 100, align: 'left', },
-  { title: '表单标题', dataIndex: 'title', width: 170 ,align:'left' },
+  { title: '表单类型', dataIndex: 'tplClassifyName',  width: 80, align: 'left', },
+  { title: '表单标题', dataIndex: 'title', width: 180 ,align:'left' },
   { title: '申请人', dataIndex: 'applyUserName', width: 120, align: 'left' },
-  { title: '申请时间', dataIndex: 'submitTime', width: 120, align: 'left' }]
+  { title: '申请时间', dataIndex: 'submitTime', width: 150, align: 'left' }]
 export default {
   props:{
-    data:{ type:String, default:''  },
+    data:{ type:null  },
   },
-  setup (props) { 
+  emits:['changeData'],
+  setup (props,{ emit }) { 
     console.log('props: ', props)
     const state = reactive({
       linkShow: true,
@@ -130,11 +131,18 @@ export default {
       },
       tableList:[],
       rowSelection: { type: 'radio' },
+      chooseItem:{}
     })
-
-    function handleOk () {
-        
+    const selectChange = (vals) => {
+      console.log('vals: ', vals[0])
+      state.chooseItem = _.find(state.tableList, ['id',vals[0]])
+      state.chooseItem.link = `/myApply/applyForm?type=apply&preId=${vals[0]}`
+    // state.selectList = vals
     }
+    function handleOk () {
+      emit('changeData', state.chooseItem)
+    }
+
     getInitData({ state })
     const pageInteractionFun = pageInteraction({ state })
     return {
@@ -144,6 +152,7 @@ export default {
       searchs,
       columns,
       handleOk,
+      selectChange,
     }
   },
 }
@@ -158,7 +167,7 @@ function getInitData ({ state }) {
     type:1
   }
   state.loading = true
-  post(`${process.env.VUE_APP_BASE_URL}/oa-platform/procInstAuthRel/pageList`, params).then((res)=>{
+  post(`${process.env.VUE_APP_BASE_URL}/oa-platform/procInstAuthRel/pageList`, params).then((res)=> {
     state.loading = false
     if(res.code !== 200) return state.tableList = []
     state.tableList = res.data.content
@@ -185,18 +194,12 @@ function pageInteraction ({ state }) {
     state.pagination.current = page
     getInitData({ state })
   }
-  //搜索草稿名称防抖
-  const inputDebounce = debounce(() => conditionChange(), 300)
-
-  const selectChange = (vals) => {
-    console.log('vals: ', vals)
-    // state.selectList = vals
-  }
+  //搜索防抖
+  const inputDebounce = _.debounce(() => conditionChange(), 300)
   return {
     conditionChange,
     pageChange,
     inputDebounce,
-    selectChange,
   }
 }
 </script>

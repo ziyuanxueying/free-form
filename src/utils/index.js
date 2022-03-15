@@ -195,11 +195,11 @@ export function ifExist () {
     }
   })
   if(delList.length > 0) {
-    res = true
+    res = true // 有节点被删除
   }
   formConfig.delList = delList
   return{
     res,
-    delList
+    delList // 被删除的节点列表
   }
 }
