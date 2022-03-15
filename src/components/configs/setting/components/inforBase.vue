@@ -55,6 +55,7 @@
                   placeholder="请选择字段"
                   :data="treeData"
                   v-model="data[record.id].fileId"
+                  allow-clear
                 />
                 <span style="color:red;font-size:12px" v-if="formConfig.delList.includes(data[record.id].fileId)">
                   节点已经被删除，请重新选择
