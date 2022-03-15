@@ -16,6 +16,12 @@ export const useFormConfigStore = defineStore('formConfig', {
       //流程控制
       pathSet:[],
       isPreview:false,
+      moduleList:[],
+      //关联信息库
+      informationBase:'',
+      //读写类型
+      type:'',
+      delList:[], //被删除的组件列表
     }
   },
   getters: {
@@ -40,6 +46,13 @@ export const useFormConfigStore = defineStore('formConfig', {
     },
     setPreview (val) {
       this.isPreview = val
+    },
+    setModuleList (val) {
+      this.moduleList = val
+    },
+    setInformationBase (informationBase,type) {
+      this.informationBase = informationBase
+      this.type = type
     }
   }
 })

@@ -23,7 +23,7 @@ module.exports = {
     hotOnly: true, // 热更新
     proxy: { 
       '/api': {
-        target: 'https://test-platform.naxions.com',
+        target: 'https://dev-platform.naxions.com',
         changeOrigin: true,
         secure: false,
         pathRewrite: {
