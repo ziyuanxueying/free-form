@@ -56,6 +56,7 @@
                   :data="treeData"
                   v-model="data[record.id].fileId"
                   allow-clear
+                  @change="(val)=>change(val,record)"
                 />
                 <span style="color:red;font-size:12px" v-if="formConfig.delList.includes(data[record.id].fileId)">
                   节点已经被删除，请重新选择
@@ -71,7 +72,7 @@
 <script>
 import{ post } from '@/tools/request'
 import { reactive, toRefs } from 'vue-demi'
-import { getTree,ifExist } from '../../../../utils'
+import { getTree,ifExist,getNodeRoute } from '../../../../utils'
 import { useFormConfigStore } from '../../../../store'
 import { Message } from '@arco-design/web-vue'
 export default {
@@ -132,6 +133,7 @@ export default {
             rule:item.validRule,
             uiType:item.uiType ,
             id:index,
+            nodePathArray:[],
           }
         })
       }).finally(()=>{
@@ -140,10 +142,17 @@ export default {
     }
     function init () {
       getInforBase()
-      console.log(formConfig.moduleList)
       state.data = formConfig.moduleList
       state.informationBase = formConfig.informationBase
       state.type = formConfig.type
+    }
+    function change (val,record) {
+      let nodePathArray = getNodeRoute(treeData,val)
+      state.data.forEach(item=>{
+        if(item.id === record.id) {
+          item.nodePathArray = nodePathArray
+        }
+      })
     }
     init()
     return{
@@ -153,7 +162,8 @@ export default {
       handleOk,
       treeData,
       changeInforBase,
-      formConfig
+      formConfig,
+      change
     }
   },
 }
