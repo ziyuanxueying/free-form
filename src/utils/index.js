@@ -79,12 +79,16 @@ export function getComponentsObj (arr,componentId) {
  * @param {*} formItemList 组件列表
  * @returns 
  */
-export function getTree (formItemList,disabled) {
+export function getTree (formItemList,disabled,tip = '') {
   let treeData = []
   formItemList.forEach(item=>{
     // console.log(1111,toRaw(item.configList))
     let obj = null
     if(item.configList.layout) {
+      let mtip = tip
+      if(item.type === 'NxTable') {
+        mtip = '(重复表)'
+      }
       obj =  {
         title: item.configList.layout.label || item.moduleName,
         key: item.componentId,
@@ -95,14 +99,14 @@ export function getTree (formItemList,disabled) {
         obj.children.push({
           title: `容器${index + 1}`,
           key: `${item.componentId}-${index}`,
-          children:getTree(citem),
+          children:getTree(citem,disabled,mtip),
           disabled: disabled,
         })
       })
     }else{
       if(item.configList.label === '文本框') return
       obj =  {
-        title: item.configList ? item.configList.label : undefined,
+        title: item.configList ? item.configList.label + tip : undefined,
         key: item.configList ? item.componentId : undefined,
       }
     }
@@ -159,21 +163,43 @@ export function checkId (formItemList,arr = []) {
   })
   return arr
 }
-
-import crypto from 'crypto-js'
-// 加密方法
-export function Encrypt (word) {
-  return crypto.AES.encrypt(JSON.stringify(word), crypto.enc.Utf8.parse('aaaabbbbccccdddd'), {
-    mode: crypto.mode.ECB,
-    padding: crypto.pad.Pkcs7
-  }).toString()
-}
-// 解密方法
-export function Decrypt (word) {
-  let decrypt = crypto.AES.decrypt(word, crypto.enc.Utf8.parse('aaaabbbbccccdddd'), {
-    mode: crypto.mode.ECB,
-    padding: crypto.pad.Pkcs7
+/**
+ * 获取表单中所有组件的componentId
+ */
+import { useFormConfigStore } from '../store'
+const formConfig  = useFormConfigStore()
+export function getAllComponentId (arr = formConfig.formItemList,ids = []) {
+  arr.forEach(item=>{
+    ids.push(item.componentId)
+    if(item.configList.layout) {
+      item.configList.layout.colContent.forEach(citem=>{
+        getAllComponentId(citem,ids)
+      })
+    }
   })
-  let decryptedStr = decrypt.toString(crypto.enc.Utf8)
-  return decryptedStr.toString()
+  return ids
+}
+
+/**
+ * 校验信息库中的绑定字段是否都存在
+ */
+export function ifExist () {
+  
+  let fieldIdList = formConfig.moduleList.filter(item=>item.fileId)
+  let ids = getAllComponentId()
+  let delList = []
+  let res = false  //是否有被关联的节点被删除
+  fieldIdList.forEach(item=>{
+    if(!ids.includes(item.fileId)) {
+      delList.push(item.fileId)
+    }
+  })
+  if(delList.length > 0) {
+    res = true
+  }
+  formConfig.delList = delList
+  return{
+    res,
+    delList
+  }
 }
