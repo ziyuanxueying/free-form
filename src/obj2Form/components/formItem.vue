@@ -1,14 +1,13 @@
 <template>
-  <!-- {{ !(pathSetObj[id]?.hide?hide:false) }} -->
   <a-form-item
     v-show="!hide&&item.type!=='NxCard'"
-    :field="id"
+    :field="field&&id?`${field}${id}`:field||id"
     :label="item.configList.label|| item.moduleName"
     :required="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
     :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
-    :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'}]"
+    :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},] "
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
@@ -32,6 +31,10 @@
       :max="item.configList.max"
       :precision="item.configList.precision" 
     />
+    <template v-if="item.type=='NxInput'" #extra>
+      {{ item.configList.min ? `限制最小输入值为${item.configList.min},`:'' }}
+      {{ item.configList.max ? `限制最大输入值为${item.configList.max}`:'' }}
+    </template>
     <a-typography-paragraph v-if="item.type=='NxText'" :style="`width: 100%; text-align:${item.configList.position||'left'};`">
       {{ item.configList.defaultVal }}
     </a-typography-paragraph>
@@ -41,8 +44,14 @@
       allow-clear
       v-model="formData[id]"
       :format="item.configList.format"
+      :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     />
-    <a-range-picker v-if="item.type=='NxRangePicker'" v-model="formData[id]" allow-clear/>
+    <a-range-picker
+      v-if="item.type=='NxRangePicker'"
+      v-model="formData[id]"
+      allow-clear
+      :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+    />
     <a-switch v-if="item.type=='NxSwitch'" v-model="formData[id]"/>
     <a-select
       v-if="item.type=='NxSelect'"
@@ -55,7 +64,7 @@
       </a-option>
     </a-select>
     <itemOa
-      v-if="['NxStaff','NxOAName','NxOADepart'].includes(item.type)"
+      v-if="['NxStaff','NxOAName','NxOADepart','NxOABank','NxOACity','NxOALinkForm'].includes(item.type)"
       :item="item"
       :formData="formData"
       :pathSetObj="pathSetObj"
@@ -90,10 +99,10 @@
           :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
           :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
           :id="ccitem.configList.fileId||ccitem.componentId"
+          :field="field"
         />
       </a-col>
     </a-row>
-    
     <a-table
       v-if="item.type=='NxTable'"
       :data="formData[item.configList.layout.fileId]"
@@ -118,11 +127,12 @@
                 :pathSetObj="pathSetObj"
                 :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
                 :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
-                :id="ccitem.configList.fileId||ccitem.componentId"
+                :id="`${ccitem.configList.fileId||ccitem.componentId}`"
+                :field="`${item.configList.layout.fileId}.${rowIndex}.`"
               />
             </div>
             <a-space v-if="citem.key === 'operate'">
-              <a-button class="add-btn" type="outline" @click="tableAdd">
+              <a-button class="add-btn" type="outline" @click="tableAdd(rowIndex)">
                 添加
               </a-button>
               <a-button
@@ -158,9 +168,11 @@
               :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
               :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
               :id="ccitem.configList.fileId||ccitem.componentId"
+              :field="id.indexOf('NxGrid') === -1 ?`${item.configList.layout.fileId}.${dindex}.`:`${item.configList.layout.fileId}.${dindex}.${ccitem.configList.fileId||ccitem.componentId}`"
             />
           </div>
           <a-button
+            v-if="!ifDisabled"
             :style="!dindex&&'visibility:hidden'"
             type="outline"
             status="danger"
@@ -172,7 +184,7 @@
         </div>
       </div>
       <a-button
-        v-if="item.configList.layout.ifAdd"
+        v-if="item.configList.layout.ifAdd && !ifDisabled"
         class="add-btn"
         type="outline"
         @click="cardAdd"
@@ -211,7 +223,7 @@ export default {
       required:false,
       hide:false,
       columns:null,
-      deafultList: []
+      deafultList: [],
     })
     if(props.item.type === 'NxTable') {
       config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作' }]]
@@ -223,11 +235,9 @@ export default {
       let formCard = getForm(props.item.configList.layout.colContent[0],{})
       props.formData[props.item.configList.layout.fileId].push(formCard.form)
     }
-    const tableAdd = ()=> {
-      console.log('[props.item]: ', [props.item])
+    const tableAdd = (index)=> {
       let formCard = getForm([props.item],{})
-      console.log('formCard: ', formCard)
-      props.formData[props.item.configList.layout.fileId].push(formCard.form[props.item.configList.layout.fileId][0])
+      props.formData[props.item.configList.layout.fileId].splice(index + 1, 0, formCard.form[props.item.configList.layout.fileId][0])
     }
     const cardDelete = (dindex)=>{
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
@@ -246,13 +256,13 @@ export default {
         actArr.forEach(item=>{
           let itemLink = props.pathSetObj[props.id][item]
           if(itemLink) {
-            let type = ['true','false'].includes(itemLink.value) ? Boolean(itemLink.value) : itemLink.value
+            let type = itemLink.value === 'false' ? false : itemLink.value === 'true' ? true : itemLink.value
             if(itemLink.equation === 'equal') {
               // eslint-disable-next-line eqeqeq
               config[item] = props.formData[itemLink.parentProp] == type
             }else{
               // eslint-disable-next-line eqeqeq
-              config[item] = props.formData[itemLink.parentProp] != itemLink.value
+              config[item] = props.formData[itemLink.parentProp] != type
             }
           }
         })
@@ -289,7 +299,9 @@ export default {
     },
     id:{
       type:null,
-    }
+    },
+    // 校验是否必填增加的字段
+    field:{ type: String, default:'' }
   }
 }
 </script>

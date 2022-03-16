@@ -67,7 +67,6 @@ export default {
   model: { prop: 'backModal', event: 'changeShow' },
   emits: ['changeShow'],
   setup (props,ctx) { 
-    console.log('props: ', props)
     const state = reactive({ 
       dataDeploy:[],
       pageDeploy:{ current: 1,totla: 0 }, 

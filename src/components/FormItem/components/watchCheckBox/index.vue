@@ -5,7 +5,7 @@
   >
     <a-space direction="vertical" size="large">
       <a-checkbox-group v-model="form[proto]">
-        <a-checkbox v-for="(item,index) in option" :key="index" :value="item.key">
+        <a-checkbox v-for="(item,index) in option" :key="index" :value="item.key || item.key">
           {{ item.value }}
         </a-checkbox>
       </a-checkbox-group>

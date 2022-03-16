@@ -161,13 +161,10 @@ export function checkId (formItemList,arr = []) {
     if(!configList.layout) {
       arr.push(configList.fileId)
     }else{
-      if(configList.layout.ifAdd) {
-        arr.push(configList.layout.fileId)
-      }else{
-        configList.layout.colContent.forEach(citem=>{
-          checkId(citem,arr)
-        })
-      }
+      arr.push(configList.layout.fileId)
+      configList.layout.colContent.forEach(citem=>{
+        checkId(citem,arr)
+      })
     }
   })
   return arr
@@ -204,12 +201,12 @@ export function ifExist () {
     }
   })
   if(delList.length > 0) {
-    res = true
+    res = true // 有节点被删除
   }
   formConfig.delList = delList
   return{
     res,
-    delList
+    delList // 被删除的节点列表
   }
 }
 

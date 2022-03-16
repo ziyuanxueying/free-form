@@ -42,10 +42,7 @@ export default {
   },
   setup () {
     let itemList = ref(ItemComponents)
-    console.log('itemList: ', itemList)
-    return {
-      itemList
-    }
+    return { itemList }
   },
   methods: {
     clone (obj) {

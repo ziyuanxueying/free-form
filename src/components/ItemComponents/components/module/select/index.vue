@@ -7,7 +7,7 @@
   >
     <a-select v-model="form[proto]" :placeholder="placeholder">
       <span v-if="!remote">
-        <a-option v-for="item in columns" :key="item.key || item.value" :value="item.key">
+        <a-option v-for="item in columns" :key="item.key || item.value" :value="item.key || item.value">
           {{ item.value }}
         </a-option>
       </span>
@@ -68,9 +68,7 @@ export default {
     pageFrom:{ type: String, },
   },
   setup (props) {
-    console.log('props: ', props)
     watch(()=>props.columns,()=>{
-      console.log(props)
       let colCount = props.columns.length
       console.log('colCount: ', colCount)
     },{

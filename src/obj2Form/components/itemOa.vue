@@ -15,8 +15,24 @@
         {{ citem.value }}
       </a-option>
     </a-select>
+    <a-select
+      v-if="['NxOABank','NxOACity'].includes(item.type)"
+      v-model="formData[id]"
+      :placeholder="item.configList.placeholder||'请选择'"
+      :allow-search="true"
+    >
+      <a-option v-for="(citem,index) in list" :key="index" :value="citem.key || citem.value">
+        {{ citem.value }}
+      </a-option>
+    </a-select>
     <a-input v-if="item.type=='NxOAName'" v-model="formData[id]" disabled/>
     <a-input v-if="item.type=='NxOADepart'" v-model="formData[id]" disabled/>
+    <ItemOaLink
+      v-if="item.type=='NxOALinkForm'"
+      :data="formData[id]"
+      @changeData="changeData"
+      :ifDisabled="ifDisabled"
+    />
   </div>
 </template>
 
@@ -24,8 +40,15 @@
 import { reactive, toRefs, defineComponent } from 'vue'
 import { post } from '../utils/request'
 import { useRoute } from 'vue-router'
+import _ from 'lodash'
+import ItemOaLink from './itemOaLink.vue'
+const urlList = [
+  { type:'NxOABank', url:'/oa-platform/bank/selectList' },
+  { type:'NxOACity', url:'/oa-platform/region/cityList' }
+]
 export default defineComponent({
   name:'ItemOa',
+  components:{ ItemOaLink },
   props:{
     item:{ type:Object,default :()=>{}  },
     formData:{ type:Object,default :()=>{}  },
@@ -37,7 +60,12 @@ export default defineComponent({
   },
   setup (props) { 
     const route = useRoute()
-    const state = reactive({ staffLoad:false ,list:[], choose:[] })
+    const state = reactive({ 
+      staffLoad:false ,
+      list:[], 
+      choose:[],
+      typeChoose: _.find(urlList, ['type',props.item.type ])
+    })
     function changeApply () {
       let info = JSON.parse(route.query.info) 
       if(props.item.type === 'NxOAName') {
@@ -50,10 +78,32 @@ export default defineComponent({
       }
     }
 
+    const selectSearch = (value)=>{
+      value && (state.choose = [])
+      state.staffLoad = true
+      post(`${process.env.VUE_APP_BASE_URL}${state.typeChoose.url}`,{ city: value }).then((res)=>{
+        state.staffLoad = false
+        state.list = res.data
+        state.list = [...res.data, ...state.choose]
+      })
+    }
+
+    if(['NxOABank','NxOACity'].includes(props.item.type)) {
+      setTimeout(() => {
+        if(!props.formData[props.id]) { selectSearch() } else {
+          post(`${process.env.VUE_APP_BASE_URL}${state.typeChoose.url}`,{ city: props.formData[props.id] }).then((res)=>{
+            state.choose = res.data
+          })
+          selectSearch()
+        }
+      }, 0)
+    }
     
+    // 选择员工的接口
     const handleSearch = (value)=>{
       value && (state.choose = [])
       state.staffLoad = true
+      urlList
       post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: value }).then((res)=>{
         state.staffLoad = false
         state.list = res.data.map(item=>{
@@ -66,7 +116,6 @@ export default defineComponent({
     if(props.item.type === 'NxStaff') {
       setTimeout(() => {
         if(!props.formData[props.id]) { handleSearch() } else {
-          // let URL = window.location.hostname === '127.0.0.1' ? '/api' : window.location.origin
           post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
             state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
           })
@@ -75,12 +124,18 @@ export default defineComponent({
       }, 0)
     }
 
+    function changeData (val) {
+      props.formData[props.id] = val
+      console.log('val: ', val)
+    }
+
     route.query.info && changeApply()
 
     return {
       ...toRefs(state),
       handleSearch,
       changeApply,
+      changeData,
     }
   },
   mounted () {

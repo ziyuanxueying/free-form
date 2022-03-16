@@ -9,7 +9,6 @@ export const setting = [
       label:'字段标识',
       fileId:'fileId'
     }
-    
   },
   {
     type: 'NxInput',

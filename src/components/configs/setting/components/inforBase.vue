@@ -57,7 +57,7 @@
                   v-model="data[record.id].fileId"
                   allow-clear
                 />
-                <span style="color:red;font-size:12px" v-if="formConfig.delList.includes(data[record.id].fileId)">
+                <span style="font-size: 12px; color: red;" v-if="formConfig.delList.includes(data[record.id].fileId)">
                   节点已经被删除，请重新选择
                 </span>
               </template>
@@ -141,9 +141,9 @@ export default {
     }
     function init () {
       getInforBase()
-      state.data = formConfig.moduleList
-      state.informationBase = formConfig.informationBase
-      state.type = formConfig.type
+      state.data = formConfig.infobaseSet.moduleList
+      state.informationBase = formConfig.infobaseSet.informationBase
+      state.type = formConfig.infobaseSet.type
     }
     // function change (val,record) {
     //   let nodePathArray = getNodeRoute(treeData,val)
@@ -167,11 +167,12 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.form-item{
-    margin-bottom:20px;
-    .form-label{
-        margin-bottom: 5px;
-        margin-right: 10px;
-    }
+.form-item {
+  margin-bottom: 20px;
+
+  .form-label {
+    margin-right: 10px;
+    margin-bottom: 5px;
+  }
 }
 </style>

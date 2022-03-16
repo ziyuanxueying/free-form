@@ -13,7 +13,6 @@
 </template>
 <script>
 export { default as setting } from './setting'
-import { watch } from 'vue'
 export default {
   name: 'NxStaff',
   nameCN: '选择员工',
@@ -35,15 +34,5 @@ export default {
       }
     },
   },
-  setup (props) {
-    console.log('props: ', props)
-    watch(()=>props.columns,()=>{
-      console.log(props)
-      let colCount = props.columns.length
-      console.log('colCount: ', colCount)
-    },{
-      deep:true
-    })
-  }
 }
 </script>

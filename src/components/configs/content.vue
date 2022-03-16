@@ -142,6 +142,13 @@ export default {
       }
       return true
     }
+    
+    // 初始化时自动滚动到底部
+    setTimeout(() => {
+      let msg = document.getElementsByClassName('nxf-layout-content-form')[0] 
+      msg.scrollTop = msg.scrollHeight
+    }, 500)
+
     return {
       checkElement,
       formConfig,

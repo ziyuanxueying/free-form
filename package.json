@@ -1,6 +1,6 @@
 {
   "name": "nx-free-form",
-  "version": "0.2.42",
+  "version": "0.2.45",
   "private": false,
   "main": "lib/nx-free-from.common.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "@naxions/nax-common": "^0.0.26",
     "axios": "^0.25.0",
     "core-js": "^3.6.5",
+    "crypto-js": "^4.1.1",
     "less": "4",
     "less-loader": "7.3.0",
     "lodash": "^4.17.21",
@@ -29,7 +30,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@arco-design/web-vue": "2.18.0",
+    "@arco-design/web-vue": "2.19.0",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@vue/cli-plugin-babel": "~4.5.0",

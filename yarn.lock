@@ -16,10 +16,10 @@
   dependencies:
     color "^3.1.3"
 
-"@arco-design/web-vue@2.18.0":
-  version "2.18.0"
-  resolved "http://npm.naxions.com/@arco-design/web-vue/-/web-vue-2.18.0.tgz#c704a9b2e9b1f7477768df496b2a0c1fb87f0832"
-  integrity sha512-0DjQSvxkim7K6XYqhaV0VC/TXwr16R+++0Od5ZcNFP/QLEiuhEBqasvZZ+CrUyLF+PgVd1iLVIs003JEWZK1ag==
+"@arco-design/web-vue@2.19.0":
+  version "2.19.0"
+  resolved "http://npm.naxions.com/@arco-design/web-vue/-/web-vue-2.19.0.tgz#d4fe78947df5d710181ec1c4053b69e17a6038b0"
+  integrity sha512-FTMOrNsuFfC+zgncJquAsWkgjuWA/nkvUv11ahnYmRnavbQ3MHpU5T4v5g+t5SE28knz7iEWhP7BuXE1eD0ZIA==
   dependencies:
     "@arco-design/color" "^0.4.0"
     b-tween "^0.3.3"

@@ -1,5 +1,5 @@
 
-export const settingName = 'NxInput'
+export const settingName = 'NxOABank'
 
 export const setting = [
   {
@@ -15,18 +15,12 @@ export const setting = [
       label:'标签名称',
       fileId:'label',
     }
-  },{
-    type: 'NxInput',
-    configList:{
-      label:'提示文字',
-      fileId:'placeholder',
-    }
   },
   {
     type: 'NxInput',
     configList:{
-      label:'默认值',
-      fileId:'defaultVal',
+      label:'提示文字',
+      fileId:'placeholder',
     }
   },
   {
@@ -50,18 +44,4 @@ export const setting = [
       fileId:'hideLabel',
     }
   },
-//   {
-//     type: 'NxInput',
-//     configList:{
-//       label:'正则匹配',
-//       fileId:'match',
-//     }
-//   },
-//   {
-//     type: 'NxInput',
-//     configList:{
-//       label:'正则错误提示',
-//       fileId:'matchMsg',
-//     }
-//   },
 ]
