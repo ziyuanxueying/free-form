@@ -22,7 +22,7 @@ export const useFormConfigStore = defineStore('formConfig', {
       //读写类型
       type:'',
       delList:[], //被删除的组件列表
-      databaseSet:{
+      infobaseSet:{
         type: 0 ,// 新增，更新，停用
         informationBase: '' ,// 关联信息库ID
         moduleList:[],
@@ -37,7 +37,7 @@ export const useFormConfigStore = defineStore('formConfig', {
         formItemList: this.formItemList,
         formSet: this.formSet,
         pathSet: this.pathSet,
-        databaseSet: this.databaseSet,
+        infobaseSet: this.infobaseSet,
       }
     }, 
     getPreview () {
@@ -50,17 +50,17 @@ export const useFormConfigStore = defineStore('formConfig', {
       this.formItemList = json.formItemList || []
       this.formSet = json.formSet  || {}
       this.pathSet = json.pathSet  || []
-      this.databaseSet = json.databaseSet || {}
+      this.infobaseSet = json.infobaseSet || {}
     },
     setPreview (val) {
       this.isPreview = val
     },
     setModuleList (val) {
-      this.moduleList = val
+      this.infobaseSet.moduleList = val
     },
     setInformationBase (informationBase,type) {
-      this.informationBase = informationBase
-      this.type = type
+      this.infobaseSet.informationBase = informationBase
+      this.infobaseSet.type = type
     }
   }
 })
