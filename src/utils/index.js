@@ -79,14 +79,16 @@ export function getComponentsObj (arr,componentId) {
  * @param {*} formItemList 组件列表
  * @returns 
  */
-export function getTree (formItemList,disabled,tip = '') {
+export function getTree (formItemList,disabled,tip = '',nodePathArray = ['root']) {
   let treeData = []
   formItemList.forEach(item=>{
     // console.log(1111,toRaw(item.configList))
     let obj = null
     if(item.configList.layout) {
       let mtip = tip
-      if(item.type === 'NxTable') {
+      //重复表的判断条件
+      let condition = item.type === 'NxTable' || (item.type === 'NxCard' && item.configList.layout.ifAdd)
+      if(condition) {
         mtip = '(重复表)'
       }
       obj =  {
@@ -94,20 +96,28 @@ export function getTree (formItemList,disabled,tip = '') {
         key: item.componentId,
         children:[],
         disabled: disabled,
+        nodePathArray:[].concat(nodePathArray,item.componentId)
       }
+      // eslint-disable-next-line no-unused-vars
       item.configList.layout.colContent.forEach((citem,index)=>{
-        obj.children.push({
-          title: `容器${index + 1}`,
-          key: `${item.componentId}-${index}`,
-          children:getTree(citem,disabled,mtip),
-          disabled: disabled,
-        })
+        //重复表需要把当前节点添加进去
+        let _parentId = condition ? [].concat(nodePathArray,item.componentId) : [].concat(nodePathArray)
+        let _childNode = getTree(citem,disabled,mtip,_parentId)
+        console.log(citem,1111111111111111111111111111111)
+        obj.children = obj.children.concat(_childNode)
+        // obj.children.push({
+        //   title: `容器${index + 1}`,
+        //   key: `${item.componentId}-${index}`,
+        //   children:getTree(citem,disabled,mtip,_parentId),
+        //   disabled: disabled,
+        // })
       })
     }else{
       if(item.configList.label === '文本框') return
       obj =  {
         title: item.configList ? item.configList.label + tip : undefined,
         key: item.configList ? item.componentId : undefined,
+        nodePathArray:[].concat(nodePathArray,item.componentId)
       }
     }
     treeData.push(obj)
@@ -202,4 +212,21 @@ export function ifExist () {
     res,
     delList // 被删除的节点列表
   }
+}
+
+export function getNodeRoute (tree, targetId) {
+  let nodePathArray = []
+  // eslint-disable-next-line consistent-return
+  function fn (tree, targetId) {
+    for (let index = 0; index < tree.length; index++) {
+      if (tree[index].children) {
+        fn(tree[index].children, targetId)
+      }
+      if (tree[index].key === targetId) {
+        nodePathArray = tree[index].nodePathArray
+      }
+    }
+  }
+  fn(tree, targetId)
+  return nodePathArray
 }

@@ -15,13 +15,13 @@
           设置读写类型
         </span>
         <a-radio-group v-model="type">
-          <a-radio value="A">
+          <a-radio value="0">
             新增
           </a-radio>
-          <a-radio value="B">
+          <a-radio value="1">
             更新
           </a-radio>
-          <a-radio value="C">
+          <a-radio value="2">
             停用
           </a-radio>
         </a-radio-group>
@@ -46,9 +46,13 @@
         <div class="form-label">
           设置组件
         </div>
-        <a-table :data="data" row-key="id">
+        <a-table :data="data" row-key="id" :loading="loading">
           <template #columns>
-            <a-table-column title="信息库列表项" data-index="moduleName"/>
+            <a-table-column title="信息库列表项" data-index="moduleName">
+              <template #cell="{record }">
+                {{ record.moduleName }} {{ record.tagTableId?`--${record.tagTableId}`:'' }}
+              </template>
+            </a-table-column>
             <a-table-column title="模板标签" data-index="fileId">
               <template #cell="{record }">
                 <a-tree-select
@@ -81,7 +85,8 @@ export default {
       data:[],
       inforBaseList:[],
       informationBase:'',
-      type:''
+      type:'',
+      loading:false
     })
     ifExist()
     const formConfig  = useFormConfigStore()
@@ -119,6 +124,7 @@ export default {
       if(!val) {
         return 
       }
+      state.loading = true
       post(`/oa-platform/infoMeta/columnList/${val}`).then(res=>{
         let data = res || []
         state.data = data.map((item,index)=>{
@@ -130,8 +136,11 @@ export default {
             rule:item.validRule,
             uiType:item.uiType ,
             id:index,
+            nodePathArray:[],
           }
         })
+      }).finally(()=>{
+        state.loading = false
       })
     }
     function init () {
@@ -140,6 +149,14 @@ export default {
       state.informationBase = formConfig.infobaseSet.informationBase
       state.type = formConfig.infobaseSet.type
     }
+    // function change (val,record) {
+    //   let nodePathArray = getNodeRoute(treeData,val)
+    //   state.data.forEach(item=>{
+    //     if(item.id === record.id) {
+    //       item.nodePathArray = nodePathArray
+    //     }
+    //   })
+    // }
     init()
     return{
       getInforBase,
@@ -148,7 +165,7 @@ export default {
       handleOk,
       treeData,
       changeInforBase,
-      formConfig
+      formConfig,
     }
   },
 }

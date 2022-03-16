@@ -46,7 +46,7 @@ export default {
       }
     },
   },
-  setup () {
+  setup (props) {
     const state = reactive({
       inforBaseList:[],
       dataItemList:[],
@@ -61,6 +61,8 @@ export default {
       if(!val) {
         return 
       }
+      props.form.oaChooseDataitem = []
+      state.dataItemList = []
       post(`/oa-platform/infoMeta/columnList/${val}`).then(res=>{
         state.dataItemList = res || []
       })
