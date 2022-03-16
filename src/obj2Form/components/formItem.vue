@@ -63,15 +63,6 @@
         {{ citem.value }}
       </a-option>
     </a-select>
-    <itemOa
-      v-if="['NxStaff','NxOAName','NxOADepart','NxOABank','NxOACity','NxOALinkForm'].includes(item.type)"
-      :item="item"
-      :formData="formData"
-      :pathSetObj="pathSetObj"
-      :proxyOptions="proxyOptions"
-      :id="item.configList.fileId||item.componentId"
-      :ifDisabled="ifDisabled"
-    />
     <a-space v-if="item.type=='NxCheckbox'" direction="vertical" size="large">
       <a-checkbox-group v-model="formData[item.configList.fileId]" :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))">
         <a-checkbox v-for="(citem,index) in proxyOptions[item.configList.fileId]" :key="index" :value="citem.key || citem.value">
@@ -148,6 +139,24 @@
         </a-table-column>
       </template>
     </a-table>
+    <itemOa
+      v-if="['NxStaff','NxOAName','NxOADepart','NxOABank','NxOACity','NxOALinkForm'].includes(item.type)"
+      :item="item"
+      :formData="formData"
+      :pathSetObj="pathSetObj"
+      :proxyOptions="proxyOptions"
+      :id="item.configList.fileId||item.componentId"
+      :ifDisabled="ifDisabled"
+    />
+    <ItemOaInfo
+      v-if="['NxOAInfo'].includes(item.type)"
+      :item="item"
+      :formData="formData"
+      :pathSetObj="pathSetObj"
+      :proxyOptions="proxyOptions"
+      :id="item.configList.fileId||item.componentId"
+      :ifDisabled="ifDisabled"
+    />
   </a-form-item>
   <template v-if="item.type=== 'NxCard'">
     <div v-if="item.configList.layout.ifAdd" v-show="!hide" class="card-view">
@@ -213,9 +222,10 @@
 import { reactive, toRefs, watch } from 'vue-demi'
 import{ getForm } from '../utils'
 import itemOa from './itemOa.vue'
+import ItemOaInfo from './itemOaInfo.vue'
 import { NUpload } from '@naxions/nax-common'
 export default {
-  components:{ itemOa, NUpload },
+  components:{ itemOa, NUpload,ItemOaInfo },
   name:'FormItem',
   setup (props) {
     const config = reactive({

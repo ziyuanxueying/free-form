@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, } from 'vue'
+import { reactive, toRefs,watch, } from 'vue'
 import { post } from '../utils/request'
 import _ from 'lodash'
 const applys = [{ key: 1, value:'本人申请' },{ key:2, value:'他人申请' }]
@@ -132,16 +132,13 @@ export default {
   setup (props,{ emit }) { 
     const state = reactive({
       linkShow: false,
+      loading: false,
       form: { type:1 , search:1 },
       pagination: { current: 1, total: 0, },
       tableList:[],
       rowSelection: { type: 'radio' },
       chooseItem: {}
     })
-
-    setTimeout(() => {
-      state.chooseItem = props.data
-    }, 10)
 
     const selectChange = (vals) => {
       state.chooseItem = _.find(state.tableList, ['id',vals[0]])
@@ -154,6 +151,11 @@ export default {
 
     getInitData({ state })
     const pageInteractionFun = pageInteraction({ state })
+
+    watch(()=>props.data,()=>{ 
+      state.chooseItem = props.data
+    })
+
     return {
       ...pageInteractionFun,
       ...toRefs(state),
