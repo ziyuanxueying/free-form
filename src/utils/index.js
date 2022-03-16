@@ -98,15 +98,19 @@ export function getTree (formItemList,disabled,tip = '',nodePathArray = ['root']
         disabled: disabled,
         nodePathArray:[].concat(nodePathArray,item.componentId)
       }
+      // eslint-disable-next-line no-unused-vars
       item.configList.layout.colContent.forEach((citem,index)=>{
         //重复表需要把当前节点添加进去
         let _parentId = condition ? [].concat(nodePathArray,item.componentId) : [].concat(nodePathArray)
-        obj.children.push({
-          title: `容器${index + 1}`,
-          key: `${item.componentId}-${index}`,
-          children:getTree(citem,disabled,mtip,_parentId),
-          disabled: disabled,
-        })
+        let _childNode = getTree(citem,disabled,mtip,_parentId)
+        console.log(citem,1111111111111111111111111111111)
+        obj.children = obj.children.concat(_childNode)
+        // obj.children.push({
+        //   title: `容器${index + 1}`,
+        //   key: `${item.componentId}-${index}`,
+        //   children:getTree(citem,disabled,mtip,_parentId),
+        //   disabled: disabled,
+        // })
       })
     }else{
       if(item.configList.label === '文本框') return

@@ -15,13 +15,13 @@
           设置读写类型
         </span>
         <a-radio-group v-model="type">
-          <a-radio value="A">
+          <a-radio value="0">
             新增
           </a-radio>
-          <a-radio value="B">
+          <a-radio value="1">
             更新
           </a-radio>
-          <a-radio value="C">
+          <a-radio value="2">
             停用
           </a-radio>
         </a-radio-group>
@@ -48,7 +48,11 @@
         </div>
         <a-table :data="data" row-key="id" :loading="loading">
           <template #columns>
-            <a-table-column title="信息库列表项" data-index="moduleName"/>
+            <a-table-column title="信息库列表项" data-index="moduleName">
+              <template #cell="{record }">
+                {{ record.moduleName }} {{ record.tagTableId?`--${record.tagTableId}`:'' }}
+              </template>
+            </a-table-column>
             <a-table-column title="模板标签" data-index="fileId">
               <template #cell="{record }">
                 <a-tree-select
