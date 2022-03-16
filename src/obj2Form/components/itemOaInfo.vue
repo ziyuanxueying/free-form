@@ -1,41 +1,33 @@
 <template>
   <div>
-    <a-table
-      :columns="columns"
+    <ItemOaInfoTable
+      :columns="[...columns, ...[{
+        title: '操作',
+        dataIndex: 'operate',
+        width: 110
+      }]]"
       :data="data"
-      :bordered="{wrapper: true, cell: true}"
-    >
-      <template #columns>
-        <a-table-column
-          v-for="(column, index) in columns"
-          :key="index"
-          :title="column.title"
-          :data-index="column.dataIndex"
-          :width="column.width"
-          :fixed="column.fixed"
-          :align="column.align ? column.align : 'center'"
-          ellipsis
-        >
-          <template v-if="column.dataIndex === '收款信息'" #cell="{ record }">
-            <div class="cell-item" v-for="(info,key) in record[column.dataIndex]" :key="key">
-              <div class="flex-row " v-for="(citem,cindex) in info" :key="cindex">
-                <span>
-                  {{ cindex }} : {{ citem }}
-                </span>
-              </div>
-            </div>
-            <template/>
-          </template>
-        </a-table-column>
-      </template>
-    </a-table>
+      @btnClick="btnClick"
+    />
 
     <a-modal v-model:visible="linkShow" @ok="handleOk" width="800px">
       <template #title>
-        关联表单
+        选择信息库数据
       </template>
-      <a-table
-        row-key="id"
+      <a-form-item
+        label="搜索类型"
+        hideLabel
+      >
+        <a-input
+          v-model="form.find"
+          :style="{ width: '300px' }"
+          placeholder="输入供应商名称"
+          allow-clear
+          @clear="conditionChange('inputClear')"
+          @input="inputDebounce"
+        />
+      </a-form-item>
+      <ItemOaInfoTable
         :columns="columns"
         :data="tableList"
         :loading="loading"
@@ -43,37 +35,7 @@
         @pageChange="pageChange"
         @selectionChange="selectChange"
         :row-selection="rowSelection"
-      >
-        <template #columns>
-          <a-table-column
-            v-for="(column, index) in columns"
-            :key="index"
-            :title="column.title"
-            :data-index="column.dataIndex"
-            :width="column.width"
-            :fixed="column.fixed"
-            :align="column.align ? column.align : 'center'"
-          >
-            <template
-              v-if=" column.dataIndex === 'operate' || column.dataIndex === 'title' "
-              #cell="{ record }"
-            >
-              <div v-if="column.dataIndex === 'title'">
-                <a-trigger class="demo-basic">
-                  <span>
-                    {{ record.title }}
-                  </span>
-                  <template v-if="record.title.length > 12" #content>
-                    <div class="white-tip">
-                      {{ record.title }}
-                    </div>
-                  </template>
-                </a-trigger>
-              </div>
-            </template>
-          </a-table-column>
-        </template>
-      </a-table>
+      />
     </a-modal>
   </div>
 </template>
@@ -82,35 +44,9 @@
 import { reactive, toRefs, } from 'vue'
 import { post } from '../utils/request'
 import _ from 'lodash'
+import ItemOaInfoTable from './itemOaInfoTable.vue'
 export default {
-  data () { 
-    return {
-      data: [{
-        '联系人': 'Jane Doe',
-        '供应商编码': 23000,
-        '收款信息': [
-          {
-            '账号': '12313213213',
-            '收款人': '张三',
-          },
-          {
-            '账号': '623548951235452',
-            '收款人': '李四',
-          }
-        ],
-      }, 
-      {
-        '联系人': 'Ed Hellen',
-        '供应商编码': 17000,
-        '收款信息': [
-          {
-            '账号': '623548951235452',
-            '收款人': '王五',
-          }
-        ]
-      }]
-    }
-  },
+  components:{ ItemOaInfoTable },
   props:{
     item:{ type:Object,default :()=>{}  },
     formData:{ type:Object,default :()=>{}  },
@@ -120,49 +56,44 @@ export default {
     ifDisabled:{ type:Boolean, default:()=>false },
     id:{ type: null, }
   },
-  emits:['changeData'],
-  setup (props,{ emit }) { 
-    console.log('props: ', props)
+  //   emits:['changeData'],
+  setup (props) { 
     const state = reactive({ 
-      columns:[],
-      linkShow: true,
+      columns: [],
+      linkShow: false,
       loading: true,
       form: { type:1 , search:1 },
       pagination: { current: 1, total: 0, },
       tableList:[],
       rowSelection: { type: 'radio' },
-      chooseItem: {}
+      chooseItem: {},
+      data: [{}]
     })
 
     function setColumns () {
-      state.columns = [
-        {
-          title: '联系人',
-          dataIndex: '联系人',
-        },{
-          title: '供应商编码',
-          dataIndex: '供应商编码',
-        },
-        {
-          title: '收款信息',
-          dataIndex: '收款信息',
-          width:400
-        },
-      ]
-    }
-    function getModels () {
-      post(`${process.env.VUE_APP_BASE_URL}/oa-platform/infoMeta/dataList`, {
-        tableName:1
-      }).then((res)=> {
-        console.log('res: ', res)
-      })
+      setTimeout(() => {
+        state.columns = _.map(props.item.configList.oaChooseDataitem,(item)=>{ return { title:item, dataIndex:item } })
+        console.log('state.columns: ', state.columns)
+      }, 0)
     }
 
     function handleOk () {
-      emit('changeData', state.chooseItem)
+      if(JSON.stringify(state.data[0]) === '{}') {
+        state.data[0] = state.chooseItem
+        return
+      }
+      state.data.push(state.chooseItem)
+    }
+
+    function btnClick (val,index) {
+      if(val === 'add') {
+        state.linkShow = true
+      }else {
+        state.data.splice(index,1)
+      }
     }
     // getInitData({ state })
-    const { getInitData, ...pageInteractionFun } = pageInteraction({ state })
+    const { getInitData, ...pageInteractionFun } = pageInteraction({ props,state })
 
     setColumns()
     getInitData()
@@ -171,17 +102,19 @@ export default {
       setColumns,
       getInitData,
       handleOk,
+      btnClick,
       ...pageInteractionFun
     }
   },
 }
 //页面消费函数
-function pageInteraction ({ state }) {
+function pageInteraction ({ props, state }) {
   const getInitData = ()=>{
     console.log(123)
     state.loading = true
     post(`${process.env.VUE_APP_BASE_URL}/oa-platform/infoMeta/dataList`, {
-      tableName:1
+      infoMetaId:1,
+      colShowList: _.map(props.item.configList.oaChooseDataitem,(item)=>{ return { colName:item } }) 
     }).then((res)=> {
       state.loading = false
       if(res.code !== 200) return state.tableList = []
@@ -212,8 +145,10 @@ function pageInteraction ({ state }) {
   const inputDebounce = _.debounce(() => conditionChange(), 300)
 
   const selectChange = (vals) => {
-    state.chooseItem = _.find(state.tableList, ['id',vals[0]])
-    state.chooseItem.link = `/myApply/applyForm?type=apply&preId=${vals[0]}`
+    console.log('vals: ', vals)
+    state.chooseItem = _.find(state.tableList, ['联系人',vals[0]])
+    console.log('state.chooseItem: ', state.chooseItem)
+    // state.chooseItem.link = `/myApply/applyForm?type=apply&preId=${vals[0]}`
   }
   return {
     getInitData,
@@ -241,5 +176,4 @@ function pageInteraction ({ state }) {
     border: none;
   }
 }
-
 </style>

@@ -132,7 +132,6 @@ export default {
   setup (props,{ emit }) { 
     const state = reactive({
       linkShow: false,
-      loading: false,
       form: { type:1 , search:1 },
       pagination: { current: 1, total: 0, },
       tableList:[],
@@ -178,6 +177,7 @@ function getInitData ({ state }) {
     type:1
   }
   state.loading = true
+  // eslint-disable-next-line consistent-return
   post(`${process.env.VUE_APP_BASE_URL}/oa-platform/procInstAuthRel/pageList`, params).then((res)=> {
     state.loading = false
     if(res.code !== 200) return state.tableList = []
