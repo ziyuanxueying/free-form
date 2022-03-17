@@ -71,10 +71,16 @@ export default {
     })
 
     function setColumns () {
-      setTimeout(() => {
-        state.columns = _.map(props.item.configList.oaChooseDataitem,(item)=>{ return { title:item, dataIndex:item } })
-        console.log('state.columns: ', state.columns)
-      }, 0)
+      state.columns = _.chain(props.item.configList.oaChooseDataitem)
+        .map((item)=>{ 
+          return { 
+            title:item.colName, 
+            dataIndex:item.tableName || item.colName,
+            tableName :item.tableName ,
+            width :item.tableName ? 200 : 120
+          } 
+        })
+        .uniqBy('dataIndex').value()
     }
 
     function handleOk () {
@@ -114,7 +120,8 @@ function pageInteraction ({ props, state }) {
     state.loading = true
     post(`${process.env.VUE_APP_BASE_URL}/oa-platform/infoMeta/dataList`, {
       infoMetaId:1,
-      colShowList: _.map(props.item.configList.oaChooseDataitem,(item)=>{ return { colName:item } }) 
+      colShowList: props.item.configList.oaChooseDataitem
+    //   colShowList: _.map(props.item.configList.oaChooseDataitem,(item)=>{ return { colName:item } }) 
     }).then((res)=> {
       state.loading = false
       if(res.code !== 200) return state.tableList = []
@@ -146,7 +153,7 @@ function pageInteraction ({ props, state }) {
 
   const selectChange = (vals) => {
     console.log('vals: ', vals)
-    state.chooseItem = _.find(state.tableList, ['联系人',vals[0]])
+    state.chooseItem = _.find(state.tableList, ['id',vals[0]])
     console.log('state.chooseItem: ', state.chooseItem)
     // state.chooseItem.link = `/myApply/applyForm?type=apply&preId=${vals[0]}`
   }

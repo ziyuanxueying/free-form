@@ -26,9 +26,12 @@
         v-model="form.oaChooseDataitem"
         multiple
       >
-        <a-option v-for="(item,index) in dataItemList" :key="index" :value="item.colName">
-          {{ item.colName }}
-        </a-option>
+        <a-option
+          v-for="item in dataItemList"
+          :key="item.colName"
+          :value="item"
+          :label="item.colName"
+        />
       </a-select>
     </a-form-item>
   </div>
@@ -36,6 +39,7 @@
 <script>
 import{ post } from '@/tools/request'
 import { reactive, toRefs } from 'vue-demi'
+import _ from 'lodash'
 export default {
   name: 'NxBS',
   props:{
@@ -47,6 +51,7 @@ export default {
     },
   },
   setup (props) {
+    console.log('props: ', props)
     const state = reactive({
       inforBaseList:[],
       dataItemList:[],
@@ -57,16 +62,18 @@ export default {
         state.inforBaseList = res || []
       })
     }
-    function changeInforBase (val) {
-      if(!val) {
-        return 
+    function changeInforBase (val,init) {
+      if(!init) {
+        props.form.oaChooseDataitem = []
+        state.dataItemList = []
       }
-      props.form.oaChooseDataitem = []
-      state.dataItemList = []
       post(`/oa-platform/infoMeta/columnList/${val}`).then(res=>{
-        state.dataItemList = res || []
+        state.dataItemList = _.map(res,(item)=>{ return { ...item ,value:item.colName } })
       })
     }
+
+    props.form.oaChooseInfobase && changeInforBase(props.form.oaChooseInfobase, true) 
+
     return {
       ...toRefs(state),
       getInforBase,

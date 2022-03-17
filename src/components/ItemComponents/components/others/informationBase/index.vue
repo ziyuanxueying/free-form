@@ -24,7 +24,7 @@ export default {
     required:{ type: Boolean, },
     hideLabel:{ type: Boolean, },
     disabled:{ type: Boolean, },
-    oaChooseInfobase:{ type:String },
+    oaChooseInfobase:{ type: Number },
     oaChooseDataitem:{ type:Array }
   }
 }

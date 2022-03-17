@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-table
-      row-key="联系人"
+      row-key="id"
       :columns="columns"
       :data="data"
       :bordered="{wrapper: true, cell: true}"
@@ -11,14 +11,15 @@
         <a-table-column
           v-for="(column, index) in columns"
           :key="index"
-          :title="column.title"
+          :title="column.title || column.tableName"
           :data-index="column.dataIndex"
           :width="column.width"
           :fixed="column.fixed"
           :align="column.align ? column.align : 'center'"
           ellipsis
         >
-          <template v-if="['operate','收款信息'].includes(column.dataIndex)" #cell="{ record,rowIndex }">
+          <template v-if="['operate',column.tableName].includes(column.dataIndex)" #cell="{ record,rowIndex }">
+            <!-- <template v-if="['operate','收款信息'].includes(column.dataIndex)" #cell="{ record,rowIndex }"> -->
             <div class="cell-item" v-for="(info,key) in record[column.dataIndex]" :key="key">
               <div class="flex-row " v-for="(citem,cindex) in info" :key="cindex">
                 <span>

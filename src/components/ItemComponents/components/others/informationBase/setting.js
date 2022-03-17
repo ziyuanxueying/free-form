@@ -4,7 +4,7 @@ let userSetting = {
   required: false,
   disabled:false,
   hideLabel:false,
-  oaChooseInfobase:'',
+  oaChooseInfobase:undefined,
   oaChooseDataitem:[]
 }
 export default userSetting
