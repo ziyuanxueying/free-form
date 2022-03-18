@@ -34,9 +34,15 @@
       :precision="item.configList.precision" 
     />
     <template v-if="item.type=='NxInputNum'" #extra>
-      {{ item.configList.min ? (item.configList.max?`限制输入${item.configList.min}`:`限制输入大于${item.configList.min}的数字`):'' }}
-      -
-      {{ item.configList.max ? `${item.configList.max}范围内的数字`:'' }}
+      <span v-if="(typeof item.configList.min === 'number')&&(typeof item.configList.max === 'number')">
+        {{ `限制输入${item.configList.min}-${item.configList.max}范围内的数字` }}
+      </span>
+      <span v-if="typeof item.configList.min == 'number'&&(typeof item.configList.max !== 'number')">
+        {{ `限制输入大于${item.configList.min}的数字` }}
+      </span>
+      <span v-if="(typeof item.configList.min !== 'number')&&typeof item.configList.max === 'number'">
+        {{ `限制输入小于${item.configList.max}的数字` }}
+      </span>
     </template>
     <a-typography-paragraph v-if="item.type=='NxText'" :style="`width: 100%; text-align:${item.configList.position||'left'};`">
       {{ item.configList.defaultVal }}
