@@ -9,6 +9,7 @@
     :hideLabel="item.hideLabel"
     :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},] "
   >
+    {{ id }}
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
       v-if="item.type=='NxUpload'"
@@ -148,6 +149,7 @@
       :id="item.configList.fileId||item.componentId"
       :ifDisabled="ifDisabled"
     />
+ 
     <ItemOaInfo
       v-if="['NxOAInfo'].includes(item.type)"
       :item="item"

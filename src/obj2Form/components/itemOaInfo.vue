@@ -19,10 +19,11 @@
       @modalChoose="modalChoose"
     />
   </div>
+  {{ item.configList.fileId }}
 </template>
 
 <script>
-import { reactive, toRefs, } from 'vue'
+import { reactive, toRefs, watch } from 'vue'
 import _ from 'lodash'
 import ItemOaInfoTable from './itemOaInfoTable.vue'
 import ItemOaInfoModal from './itemOaInfoModal.vue'
@@ -77,7 +78,10 @@ export default {
         state.data.splice(index,1)
       }
     }
-
+    watch(()=>props.formData[props.item.configList.fileId],(val)=>{
+      console.log('val: ', val)
+      if(val) return
+    },{ immediate:true })
     setColumns()
     return {
       ...toRefs(state),

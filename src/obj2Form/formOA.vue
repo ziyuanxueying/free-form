@@ -20,7 +20,7 @@
         </a-button>
         <FormItem
           v-for="item in formObj"
-          :key="item.configList.fileId"
+          :key="item.configList.fileId ||item.componentId"
           :item="item"
           :formData="formData"
           :proxyOptions="proxyOptions"
@@ -30,6 +30,7 @@
         />
       </a-form>
     </div>
+    {{ formData }}
     <ItemOaInfoModal
       v-model:linkShow="linkShow"
       v-model:ifDisabled="ifDisabled"
@@ -144,9 +145,6 @@ export default {
     }
 
     const handleOk = () => {
-      formConfig.formRef.validate().then((res)=>{
-        console.log('validate: ', res)
-      })
       return formConfig.formRef.validate()
     }
     
