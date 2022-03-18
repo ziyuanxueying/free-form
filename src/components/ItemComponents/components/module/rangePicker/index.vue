@@ -8,6 +8,7 @@
     <a-range-picker
       :showTime="showTime"
       :format="format"
+      readonly
       v-model="form[proto]"
       :disabled="pageFrom === 'content'"
     />

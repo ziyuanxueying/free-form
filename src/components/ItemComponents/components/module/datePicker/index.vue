@@ -9,6 +9,7 @@
     <a-date-picker
       v-model="form[proto]"
       :placeholder="placeholder"
+      readonly
       allow-clear 
       :format="format"
       :value-format="format"
