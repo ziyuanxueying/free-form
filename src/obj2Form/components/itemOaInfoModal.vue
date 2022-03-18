@@ -1,16 +1,6 @@
 <template>
   <div>
-    <ItemOaInfoTable
-      :columns="[...columns, ...[{
-        title: '操作',
-        dataIndex: 'operate',
-        width: 110
-      }]]"
-      :data="data"
-      @btnClick="btnClick"
-    />
-
-    <!-- <a-modal v-model:visible="linkShow" @ok="handleOk" width="800px">
+    <a-modal v-model:visible="linkShow" @ok="handleOk" width="800px">
       <template #title>
         选择信息库数据
       </template>
@@ -36,88 +26,83 @@
         @selectionChange="selectChange"
         :row-selection="rowSelection"
       />
-    </a-modal> -->
-
-    <ItemOaInfoModal
-      v-model:linkShow="linkShow"
-      :columns="columns"
-      :formData="formData"
-      :colShowList="item.configList.oaChooseDataitem"
-      :itemUse="`show`"
-    />
+    </a-modal>
   </div>
 </template>
 
 <script>
-import { reactive, toRefs, } from 'vue'
+import { reactive, toRefs, watch } from 'vue'
 import { post } from '../utils/request'
 import _ from 'lodash'
 import ItemOaInfoTable from './itemOaInfoTable.vue'
-import ItemOaInfoModal from './itemOaInfoModal.vue'
+import { useFormConfigStore } from '../../store'
+import { getTagData } from '../../utils'
 export default {
-  components:{ ItemOaInfoTable,ItemOaInfoModal },
+  components:{ ItemOaInfoTable },
   props:{
-    item:{ type:Object,default :()=>{}  },
+    columns:{ type:Array,default :()=>[] },
+    colShowList:{ type:Array,default :()=>[] },
+    linkShow:{ type:Boolean, default:()=>true },
     formData:{ type:Object,default :()=>{}  },
-    proxyOptions:{ type:Object,default :()=>{} },
-    pathSetObj:{ type:Object ,default :()=>{} },
-    ifRequired:{ type:Boolean, default:()=>false },
     ifDisabled:{ type:Boolean, default:()=>false },
-    id:{ type: null, }
+    itemUse:{ type:String, default:'oa' },
   },
-  //   emits:['changeData'],
-  setup (props) { 
+  emits: ['update:linkShow','update:ifDisabled'],
+  setup (props,{ emit }) { 
+    console.log('props: ', props)
+    const store = useFormConfigStore()
     const state = reactive({ 
-      columns: [],
-      linkShow: false,
       loading: true,
       form: { type:1 , search:1 },
       pagination: { current: 1, total: 0, },
       tableList:[],
-      rowSelection: { type: 'radio' },
+      rowSelection: { type: 'radio',selectedRowKeys:[] },
       chooseItem: {},
       data: [{}]
     })
 
-    function setColumns () {
-      state.columns = _.chain(props.item.configList.oaChooseDataitem)
-        .map((item)=>{ 
-          return { 
-            title:item.colName, 
-            dataIndex:item.tableName || item.colName,
-            tableName :item.tableName ,
-            width :item.tableName ? 150 : 120
-          } 
-        })
-        .uniqBy('dataIndex').value()
-    }
-
-    function handleOk () {
-      if(JSON.stringify(state.data[0]) === '{}') {
-        state.data[0] = state.chooseItem
-        return
-      }
-      state.data.push(state.chooseItem)
-    }
-
-    function btnClick (val,index) {
-      if(val === 'add') {
-        state.linkShow = true
-      }else {
-        state.data.splice(index,1)
-      }
-    }
     // getInitData({ state })
     const { getInitData, ...pageInteractionFun } = pageInteraction({ props,state })
 
-    setColumns()
-    getInitData()
+    // setColumns()
+    // getInitData()
+
+    function handleOk () {
+      if(props) return
+      let { tagFormLink } =  getTagData({},store.infobaseSet,store.formItemList)
+      tagFormLink = _.invert(tagFormLink)
+      for (let i in state.chooseItem) {
+        if(Array.isArray(state.chooseItem[i])) {
+          if (!tagFormLink[i]) continue
+          let arr = []
+          for(let item of state.chooseItem[i]) {
+            let params = { }
+            for(let child in item) {
+              if (!tagFormLink[child]) continue
+              params[tagFormLink[child]] = item[child]
+            }
+            arr.push(params)
+          }
+          props.formData[tagFormLink[i]] = arr
+        } else {
+          tagFormLink[i] && (props.formData[tagFormLink[i]] = state.chooseItem[i])
+        }
+      }
+      state.chooseItem = {}
+      state.rowSelection.selectedRowKeys = []
+      emit('update:ifDisabled', false)
+    }
+    watch(()=>props.colShowList,()=>{
+      getInitData()
+    },{ immediate:true })
+
+    watch(()=>props.linkShow,(val)=>{
+      emit('update:linkShow', val)
+    })
     return {
       ...toRefs(state),
-      setColumns,
       getInitData,
       handleOk,
-      btnClick,
       ...pageInteractionFun
     }
   },
@@ -125,12 +110,10 @@ export default {
 //页面消费函数
 function pageInteraction ({ props, state }) {
   const getInitData = ()=>{
-    console.log(123)
     state.loading = true
     post(`${process.env.VUE_APP_BASE_URL}/oa-platform/infoMeta/dataList`, {
       infoMetaId:1,
-      colShowList: props.item.configList.oaChooseDataitem
-    //   colShowList: _.map(props.item.configList.oaChooseDataitem,(item)=>{ return { colName:item } }) 
+      colShowList: props.colShowList
     }).then((res)=> {
       state.loading = false
       if(res.code !== 200) return state.tableList = []
@@ -161,9 +144,8 @@ function pageInteraction ({ props, state }) {
   const inputDebounce = _.debounce(() => conditionChange(), 300)
 
   const selectChange = (vals) => {
-    console.log('vals: ', vals)
+    state.rowSelection.selectedRowKeys = vals
     state.chooseItem = _.find(state.tableList, ['id',vals[0]])
-    console.log('state.chooseItem: ', state.chooseItem)
   }
   return {
     getInitData,
