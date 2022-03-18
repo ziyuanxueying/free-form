@@ -30,7 +30,6 @@
         />
       </a-form>
     </div>
-    {{ formData }}
     <ItemOaInfoModal
       v-model:linkShow="linkShow"
       v-model:ifDisabled="ifDisabled"
@@ -51,6 +50,7 @@ import 'vue-json-pretty/lib/styles.css'
 import { useFormConfigStore } from '../store'
 import { getTagData } from '../utils'
 import ItemOaInfoModal from './components/itemOaInfoModal.vue'
+import { useRoute } from 'vue-router'
 export default {
   components: {
     FormItem,
@@ -77,12 +77,13 @@ export default {
     let resetFromData = {}
     let componentId2fileId = {}
     let pathSetObj = {}
+    const route = useRoute()
     //初始化，获取表单结构及数据
     async function init () {
       getFormObj()
       getPathObj()
       if(formStore.infobaseSet?.type && formStore.infobaseSet.type !== '0') {
-        formConfig.infoBtn = true
+        formConfig.infoBtn = ['copy','edit'].includes(route.query.type)
         getInfoTablColumns()
       }
     }

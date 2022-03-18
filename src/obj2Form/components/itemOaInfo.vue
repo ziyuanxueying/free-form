@@ -6,7 +6,7 @@
         dataIndex: 'operate',
         width: 110
       }]]"
-      :data="data"
+      :data="formData[item.configList.fileId]"
       @btnClick="btnClick"
     />
 
@@ -19,7 +19,6 @@
       @modalChoose="modalChoose"
     />
   </div>
-  {{ item.configList.fileId }}
 </template>
 
 <script>
@@ -36,6 +35,7 @@ export default {
     pathSetObj:{ type:Object ,default :()=>{} },
     ifRequired:{ type:Boolean, default:()=>false },
     ifDisabled:{ type:Boolean, default:()=>false },
+    id:{ type:null, },
   },
   //   emits:['changeData'],
   setup (props) { 
@@ -64,23 +64,24 @@ export default {
     }
 
     function modalChoose (val) {
-      if(JSON.stringify(state.data[0]) === '{}') {
-        state.data[0] = val
+      if(JSON.stringify(props.formData[props.item.configList.fileId][0]) === '{}') {
+        props.formData[props.item.configList.fileId][0] = val
         return
       }
-      state.data.push(val)
+      props.formData[props.item.configList.fileId].push(val)
     }
 
     function btnClick (val,index) {
       if(val === 'add') {
         state.linkShow = true
       }else {
-        state.data.splice(index,1)
+        props.formData[props.item.configList.fileId].splice(index,1)
       }
     }
     watch(()=>props.formData[props.item.configList.fileId],(val)=>{
       console.log('val: ', val)
-      if(val) return
+      !val && (props.formData[props.item.configList.fileId] = [{}])
+    //   if(val) return
     },{ immediate:true })
     setColumns()
     return {
