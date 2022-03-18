@@ -2,7 +2,7 @@
   <div>
     <ItemOaInfoTable
       :columns="[...columns, ...[{
-        title: '操作',
+        colName: '操作',
         dataIndex: 'operate',
         width: 110
       }]]"
@@ -10,47 +10,19 @@
       @btnClick="btnClick"
     />
 
-    <!-- <a-modal v-model:visible="linkShow" @ok="handleOk" width="800px">
-      <template #title>
-        选择信息库数据
-      </template>
-      <a-form-item
-        label="搜索类型"
-        hideLabel
-      >
-        <a-input
-          v-model="form.find"
-          :style="{ width: '300px' }"
-          placeholder="输入供应商名称"
-          allow-clear
-          @clear="conditionChange('inputClear')"
-          @input="inputDebounce"
-        />
-      </a-form-item>
-      <ItemOaInfoTable
-        :columns="columns"
-        :data="tableList"
-        :loading="loading"
-        :pagination="pagination"
-        @pageChange="pageChange"
-        @selectionChange="selectChange"
-        :row-selection="rowSelection"
-      />
-    </a-modal> -->
-
     <ItemOaInfoModal
       v-model:linkShow="linkShow"
       :columns="columns"
       :formData="formData"
       :colShowList="item.configList.oaChooseDataitem"
       :itemUse="`show`"
+      @modalChoose="modalChoose"
     />
   </div>
 </template>
 
 <script>
 import { reactive, toRefs, } from 'vue'
-import { post } from '../utils/request'
 import _ from 'lodash'
 import ItemOaInfoTable from './itemOaInfoTable.vue'
 import ItemOaInfoModal from './itemOaInfoModal.vue'
@@ -63,7 +35,6 @@ export default {
     pathSetObj:{ type:Object ,default :()=>{} },
     ifRequired:{ type:Boolean, default:()=>false },
     ifDisabled:{ type:Boolean, default:()=>false },
-    id:{ type: null, }
   },
   //   emits:['changeData'],
   setup (props) { 
@@ -75,7 +46,6 @@ export default {
       pagination: { current: 1, total: 0, },
       tableList:[],
       rowSelection: { type: 'radio' },
-      chooseItem: {},
       data: [{}]
     })
 
@@ -83,7 +53,7 @@ export default {
       state.columns = _.chain(props.item.configList.oaChooseDataitem)
         .map((item)=>{ 
           return { 
-            title:item.colName, 
+            colName:item.colName, 
             dataIndex:item.tableName || item.colName,
             tableName :item.tableName ,
             width :item.tableName ? 150 : 120
@@ -92,12 +62,12 @@ export default {
         .uniqBy('dataIndex').value()
     }
 
-    function handleOk () {
+    function modalChoose (val) {
       if(JSON.stringify(state.data[0]) === '{}') {
-        state.data[0] = state.chooseItem
+        state.data[0] = val
         return
       }
-      state.data.push(state.chooseItem)
+      state.data.push(val)
     }
 
     function btnClick (val,index) {
@@ -107,71 +77,15 @@ export default {
         state.data.splice(index,1)
       }
     }
-    // getInitData({ state })
-    const { getInitData, ...pageInteractionFun } = pageInteraction({ props,state })
 
     setColumns()
-    getInitData()
     return {
       ...toRefs(state),
       setColumns,
-      getInitData,
-      handleOk,
+      modalChoose,
       btnClick,
-      ...pageInteractionFun
     }
   },
-}
-//页面消费函数
-function pageInteraction ({ props, state }) {
-  const getInitData = ()=>{
-    console.log(123)
-    state.loading = true
-    post(`${process.env.VUE_APP_BASE_URL}/oa-platform/infoMeta/dataList`, {
-      infoMetaId:1,
-      colShowList: props.item.configList.oaChooseDataitem
-    //   colShowList: _.map(props.item.configList.oaChooseDataitem,(item)=>{ return { colName:item } }) 
-    }).then((res)=> {
-      state.loading = false
-      if(res.code !== 200) return state.tableList = []
-      state.tableList = res.data.content
-      return state.pagination.total = res.data.totalElements
-      
-    })
-  }
-  //条件变更需刷新表格数据
-  const conditionChange = (str) => {
-    if(str === 'draftTimeChange') {
-      if(!state.form.draftTime) {
-        state.form.draftTime = []
-      }
-    }
-    if(str === 'inputClear') {
-      state.form.draftName = ''
-    }
-    state.pagination.current = 1
-    getInitData({ state })
-  }
-  //分页改变时
-  const pageChange = (page) => {
-    state.pagination.current = page
-    getInitData({ state })
-  }
-  //搜索防抖
-  const inputDebounce = _.debounce(() => conditionChange(), 300)
-
-  const selectChange = (vals) => {
-    console.log('vals: ', vals)
-    state.chooseItem = _.find(state.tableList, ['id',vals[0]])
-    console.log('state.chooseItem: ', state.chooseItem)
-  }
-  return {
-    getInitData,
-    conditionChange,
-    pageChange,
-    inputDebounce,
-    selectChange,
-  }
 }
 </script>
 

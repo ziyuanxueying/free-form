@@ -47,7 +47,7 @@ export default {
     ifDisabled:{ type:Boolean, default:()=>false },
     itemUse:{ type:String, default:'oa' },
   },
-  emits: ['update:linkShow','update:ifDisabled'],
+  emits: ['update:linkShow','update:ifDisabled','modalChoose'],
   setup (props,{ emit }) { 
     console.log('props: ', props)
     const store = useFormConfigStore()
@@ -68,7 +68,12 @@ export default {
     // getInitData()
 
     function handleOk () {
-      if(props) return
+      if(props.itemUse === 'show') {
+        emit('modalChoose', state.chooseItem)
+        state.chooseItem = {}
+        state.rowSelection.selectedRowKeys = []
+        return
+      }
       let { tagFormLink } =  getTagData({},store.infobaseSet,store.formItemList)
       tagFormLink = _.invert(tagFormLink)
       for (let i in state.chooseItem) {

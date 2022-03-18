@@ -11,7 +11,7 @@
         <a-table-column
           v-for="(column, index) in columns"
           :key="index"
-          :title="column.title || column.tableName"
+          :title="column.colName || column.tableName"
           :data-index="column.dataIndex"
           :width="column.width"
           :fixed="column.fixed"
