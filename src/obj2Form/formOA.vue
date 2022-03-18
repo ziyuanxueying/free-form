@@ -19,6 +19,7 @@
           :pathSetObj="pathSetObj"
           :id="item.configList.fileId||item.componentId"
           :ifDisabled="ifDisabled"
+          :formRef="formRef"
         />
       </a-form>
     </div>

@@ -73,3 +73,73 @@ export function getField (data,fields) {
   let result = getField(value,arr.join('.'))
   return result
 }
+
+
+//根据信息库映射和提交数据获取传入信息库数据
+export function getFormData (tagData,mapList,formItemList) {
+  let _mapList = mapList.moduleList.filter(item=>item.fileId)
+  let CidToFid = getComponentIdbyFileId(formItemList)
+  let _obj = {}
+  //遍历生成tagId-field的对应关系
+  for(let p in CidToFid) {
+    _mapList.forEach(citem=>{
+      if(CidToFid[p].id === citem.fileId) {
+        _obj[citem.tagId] = p
+        if(citem.tagTableId) {
+          _obj[citem.tagTableId] = CidToFid[p].parentId
+        }
+      }
+    })
+  }
+  //遍历formData，获取fieldId data
+  let fileFormData = _getTagForm(tagData)
+  function _getTagForm (tagData) {
+    let _fileFormData = {}
+    for(let p in tagData) {
+      if(Array.isArray(tagData[p])) {
+        _fileFormData[_obj[p]] = []
+        tagData[p].forEach(citem=>{
+          let res = _getTagForm(citem)
+          _fileFormData[_obj[p]].push(res)
+        })
+      }else{
+        if(_obj[p]) {
+          _fileFormData[_obj[p]] = tagData[p]
+        }
+      }
+    }
+    return _fileFormData
+  }
+  console.log(fileFormData,11111111111111111111111111111111)
+  return {
+    fileFormData
+  }
+}
+
+//根据FileId获取componentId
+export function getComponentIdbyFileId (formItemList) {
+  let _obj = {}
+  _getCIdbyFId(formItemList)
+  function _getCIdbyFId (formItemList,parentId = '') {
+    formItemList.forEach(item=>{
+      
+      //布局类型组件
+      if(item.configList.layout) {
+        _obj[item.configList.layout.fileId || item.componentId] = { id:item.componentId,parentId:parentId }
+        item.configList.layout.colContent.forEach(citem=>{
+          //重复表需要插入父节点字段
+          if(item.configList.layout.ifAdd) {
+            let _pId =  item.configList.layout.fileId || item.componentId
+            _getCIdbyFId(citem,_pId)
+          }
+          else{
+            _getCIdbyFId(citem)
+          }
+        })
+      }else{
+        _obj[item.configList.fileId || item.componentId] = { id:item.componentId,parentId:parentId }
+      }
+    })
+  }
+  return _obj
+}

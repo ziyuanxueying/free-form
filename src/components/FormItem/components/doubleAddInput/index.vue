@@ -16,9 +16,9 @@
         allow-clear
         v-model="item.value"
       />
-      <!-- <a-button type="outline">
+      <a-button type="outline" @click="()=>del(form[fileId],index)">
         <icon-delete/>
-      </a-button> -->
+      </a-button>
     </a-form-item>
     <a-button type="outline" style="width: 100%;" @click="()=>add(form[fileId])">
       <IconPlus/>
@@ -66,8 +66,13 @@ export default {
         id:Math.random()
       })
     }
+    const del = (arr,index)=>{
+      console.log(index)
+      arr.splice(index, 1)
+    }
     return {
-      add
+      add,
+      del
     }
   }
 }
