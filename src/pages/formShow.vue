@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="nxf-layout-content">
     <a-form :model="formConfig.formSet" class="nxf-layout-content-form preview-form">
       <FormItem
         v-for="(element,index) in formConfig.formItemList "
@@ -91,5 +91,10 @@ export default defineComponent({
 .preview-form {
   margin: 20px auto;
   //   width: 600px;
+  :deep(.arco-table-cell) {
+    display: flex;
+  }
+  :deep(.nxf-table-td) {
+  }
 }
 </style>

@@ -3,6 +3,8 @@
     :field="fileId"
     :label="label"
     :hideLabel="true"
+    :label-col-props="{span:4}"
+    :wrapper-col-props="{span:20}"
   >
     <a-typography-paragraph :style="`width: 100%; text-align:${position};`">
       {{ defaultVal }}
