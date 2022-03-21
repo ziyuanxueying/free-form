@@ -42,14 +42,13 @@ export default {
   props:{
     columns:{ type:Array,default :()=>[] },
     colShowList:{ type:Array,default :()=>[] },
-    linkShow:{ type:Boolean, default:()=>true },
+    linkShow:{ type:Boolean, default:()=>false },
     formData:{ type:Object,default :()=>{}  },
     ifDisabled:{ type:Boolean, default:()=>false },
     itemUse:{ type:String, default:'oa' },
   },
   emits: ['update:linkShow','update:ifDisabled','modalChoose'],
   setup (props,{ emit }) { 
-    console.log('props: ', props)
     const store = useFormConfigStore()
     const state = reactive({ 
       loading: true,
@@ -102,6 +101,7 @@ export default {
     },{ immediate:true })
 
     watch(()=>props.linkShow,(val)=>{
+      console.log('val: ', val)
       emit('update:linkShow', val)
     })
     return {

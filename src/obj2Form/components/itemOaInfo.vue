@@ -1,6 +1,7 @@
 <template>
   <div>
     <ItemOaInfoTable
+      v-if="columns.length>1"
       :columns="[...columns, ...[{
         colName: '操作',
         dataIndex: 'operate',
@@ -9,7 +10,18 @@
       :data="formData[item.configList.fileId]"
       @btnClick="btnClick"
     />
-
+    <a-form-item
+      v-else
+      :label="columns[0].dataIndex"
+    >
+      <a-input
+        v-model="formData[item.configList.fileId][0][columns[0].dataIndex]"
+        placeholder="请点击选择"
+        :style="{ width: '300px' }"
+        readonly
+        @click="linkShow = true"
+      />
+    </a-form-item>
     <ItemOaInfoModal
       v-model:linkShow="linkShow"
       :columns="columns"
@@ -64,7 +76,8 @@ export default {
     }
 
     function modalChoose (val) {
-      if(JSON.stringify(props.formData[props.item.configList.fileId][0]) === '{}') {
+      if(JSON.stringify(props.formData[props.item.configList.fileId][0]) === '{}' 
+         || state.columns.length === 1) {
         props.formData[props.item.configList.fileId][0] = val
         return
       }
@@ -74,12 +87,12 @@ export default {
     function btnClick (val,index) {
       if(val === 'add') {
         state.linkShow = true
-      }else {
+      } else {
         props.formData[props.item.configList.fileId].splice(index,1)
       }
     }
+
     watch(()=>props.formData[props.item.configList.fileId],(val)=>{
-      console.log('val: ', val)
       !val && (props.formData[props.item.configList.fileId] = [{}])
     //   if(val) return
     },{ immediate:true })

@@ -51,7 +51,6 @@ export default {
     },
   },
   setup (props) {
-    console.log('props: ', props)
     const state = reactive({
       inforBaseList:[],
       dataItemList:[],

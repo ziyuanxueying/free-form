@@ -63,6 +63,7 @@ export default {
     const state = reactive({ 
     })
     function btnClick (type,index) {
+      console.log('type: ', type)
       emit('btnClick',type,index)
     }
     return {

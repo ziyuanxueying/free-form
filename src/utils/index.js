@@ -263,8 +263,6 @@ export function getTagData (formData,mapList,formItemList) {
         }
       }
     }
-    console.log('_obj: ', _obj)
-    console.log('_tagFormData: ', _tagFormData)
     return _tagFormData
   }
   
