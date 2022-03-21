@@ -5,7 +5,13 @@
     :required="required"
     :hideLabel="hideLabel"
   >
-    <a-range-picker :showTime="showTime" :format="format"/>
+    <a-range-picker
+      :showTime="showTime"
+      :format="format"
+      readonly
+      v-model="form[proto]"
+      :disabled="pageFrom === 'content'"
+    />
   </a-form-item>
 </template>
 <script>
@@ -32,10 +38,21 @@ export default {
       type: String,
       default: 'YYYY-MM-DD'
     },
+    defaultVal:{
+      type: Array,
+    },
     hideLabel:{ type: Boolean, },
     showTime:{
       type: Boolean,
       default: false
+    },
+    proto:{ type: String, },
+    pageFrom:{ type: String, },
+    form:{
+      type:Object,
+      default () {
+        return null
+      }
     },
   },
 }

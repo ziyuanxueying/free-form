@@ -85,7 +85,7 @@ export default {
       data:[],
       inforBaseList:[],
       informationBase:'',
-      type:'',
+      type:'0',
       loading:false
     })
     ifExist()

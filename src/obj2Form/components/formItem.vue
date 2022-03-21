@@ -11,12 +11,14 @@
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
-      v-if="item.type=='NxUpload'"
+      v-if="item.type=='NxUpload'&&!(ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false)))"
       :default-files="deafultList"
       v-model:files="formData[id]"
       :limit="item.configList.maxCount"
       :state="$route.query.type === 'edit' ? 'edit' :'detail'"
+      @change="changeFileList(field&&id?`${field}${id}`:field||id)"
     />
+    <a-upload action="/" disabled v-if="item.type=='NxUpload'&&(ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false)))"/>
     <a-textarea
       v-if="item.type=='NxTextarea'"
       v-model="formData[id]"
@@ -31,9 +33,16 @@
       :max="item.configList.max"
       :precision="item.configList.precision" 
     />
-    <template v-if="item.type=='NxInput'" #extra>
-      {{ item.configList.min ? `限制最小输入值为${item.configList.min},`:'' }}
-      {{ item.configList.max ? `限制最大输入值为${item.configList.max}`:'' }}
+    <template v-if="item.type=='NxInputNum'" #extra>
+      <span v-if="(typeof item.configList.min === 'number')&&(typeof item.configList.max === 'number')">
+        {{ `限制输入${item.configList.min}-${item.configList.max}范围内的数字` }}
+      </span>
+      <span v-if="typeof item.configList.min == 'number'&&(typeof item.configList.max !== 'number')">
+        {{ `限制输入大于${item.configList.min}的数字` }}
+      </span>
+      <span v-if="(typeof item.configList.min !== 'number')&&typeof item.configList.max === 'number'">
+        {{ `限制输入小于${item.configList.max}的数字` }}
+      </span>
     </template>
     <a-typography-paragraph v-if="item.type=='NxText'" :style="`width: 100%; text-align:${item.configList.position||'left'};`">
       {{ item.configList.defaultVal }}
@@ -44,12 +53,14 @@
       allow-clear
       v-model="formData[id]"
       :format="item.configList.format"
+      :showTime="item.configList.showTime"
       :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     />
     <a-range-picker
       v-if="item.type=='NxRangePicker'"
       v-model="formData[id]"
       allow-clear
+      :showTime="item.configList.showTime"
       :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     />
     <a-switch v-if="item.type=='NxSwitch'" v-model="formData[id]"/>
@@ -123,12 +134,11 @@
               />
             </div>
             <a-space v-if="citem.key === 'operate'">
-              <a-button class="add-btn" type="outline" @click="tableAdd(rowIndex)">
+              <a-button type="outline" @click="tableAdd(rowIndex)">
                 添加
               </a-button>
               <a-button
                 v-show="rowIndex"
-                class="add-btn"
                 type="outline"
                 @click="cardDelete(rowIndex)"
               >
@@ -184,6 +194,7 @@
           <a-button
             v-if="!ifDisabled"
             :style="!dindex&&'visibility:hidden'"
+            class="card-del"
             type="outline"
             status="danger"
             shape="circle"
@@ -242,6 +253,9 @@ export default {
     if(props.item.type === 'NxDatePicker') {
       props.item.configList.showToday && (props.formData[props.id] = Date.now())
     }
+    if(props.item.type === 'NxRangePicker') {
+      props.item.configList.showToday && (props.formData[props.id] = [Date.now(),Date.now()])
+    }
     const cardAdd = ()=> {
       let formCard = getForm(props.item.configList.layout.colContent[0],{})
       props.formData[props.item.configList.layout.fileId].push(formCard.form)
@@ -253,7 +267,9 @@ export default {
     const cardDelete = (dindex)=>{
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
     }
-
+    const changeFileList = (id)=>{
+      props.formRef.validateField(id)
+    }
     watch(()=>props.formData,()=>{
       if(props.item.type === 'NxUpload' && !config.deafultList.length) {
         let val = JSON.stringify(props.formData[props.id] || [])
@@ -261,7 +277,6 @@ export default {
           config.deafultList = JSON.parse(val)
         }
       }
-
       if(props.pathSetObj[props.id]) {
         let actArr = ['disabled','hide','required']
         actArr.forEach(item=>{
@@ -285,6 +300,7 @@ export default {
       cardAdd,
       cardDelete,
       tableAdd,
+      changeFileList
     }
   },
   props:{
@@ -312,13 +328,14 @@ export default {
       type:null,
     },
     // 校验是否必填增加的字段
-    field:{ type: String, default:'' }
+    field:{ type: String, default:'' },
+    formRef:{ type:Object }
   }
 }
 </script>
 <style lang="less" scoped>
 .card-view {
-  margin: 10px 0;
+  //   margin: 10px 0;
 
   .card-item {
     margin: 10px 0;
@@ -335,7 +352,7 @@ export default {
   .add-btn {
     display: block;
     margin: auto;
-    width: 400px;
+    width: 300px;
   }
 }
 
