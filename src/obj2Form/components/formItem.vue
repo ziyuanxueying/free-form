@@ -134,12 +134,11 @@
               />
             </div>
             <a-space v-if="citem.key === 'operate'">
-              <a-button class="add-btn" type="outline" @click="tableAdd(rowIndex)">
+              <a-button type="outline" @click="tableAdd(rowIndex)">
                 添加
               </a-button>
               <a-button
                 v-show="rowIndex"
-                class="add-btn"
                 type="outline"
                 @click="cardDelete(rowIndex)"
               >
@@ -194,6 +193,7 @@
           <a-button
             v-if="!ifDisabled"
             :style="!dindex&&'visibility:hidden'"
+            class="card-del"
             type="outline"
             status="danger"
             shape="circle"
@@ -334,7 +334,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .card-view {
-  margin: 10px 0;
+  //   margin: 10px 0;
 
   .card-item {
     margin: 10px 0;
@@ -351,7 +351,7 @@ export default {
   .add-btn {
     display: block;
     margin: auto;
-    width: 400px;
+    width: 300px;
   }
 }
 
