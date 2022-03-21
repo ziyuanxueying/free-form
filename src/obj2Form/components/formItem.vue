@@ -159,6 +159,7 @@
       :id="item.configList.fileId||item.componentId"
       :ifDisabled="ifDisabled"
     />
+ 
     <ItemOaInfo
       v-if="['NxOAInfo'].includes(item.type)"
       :item="item"

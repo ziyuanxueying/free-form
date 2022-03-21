@@ -10,9 +10,17 @@
         <div class="form-title">
           {{ formTitle }}
         </div>
+        <a-button
+          v-if="infoBtn"
+          class="info-choose"
+          type="primary"
+          @click="linkShow=true"
+        >
+          选择供应商库
+        </a-button>
         <FormItem
           v-for="item in formObj"
-          :key="item.configList.fileId"
+          :key="item.configList.fileId ||item.componentId"
           :item="item"
           :formData="formData"
           :proxyOptions="proxyOptions"
@@ -23,6 +31,13 @@
         />
       </a-form>
     </div>
+    <ItemOaInfoModal
+      v-model:linkShow="linkShow"
+      v-model:ifDisabled="ifDisabled"
+      :columns="columns"
+      :formData="formData"
+      :colShowList="colShowList"
+    />
   </div>
 </template>
 <script>
@@ -34,10 +49,14 @@ import _ from 'lodash'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import { useFormConfigStore } from '../store'
+import { getTagData } from '../utils'
+import ItemOaInfoModal from './components/itemOaInfoModal.vue'
+import { useRoute } from 'vue-router'
 export default {
   components: {
     FormItem,
     VueJsonPretty,
+    ItemOaInfoModal,
   },
   setup () {
     const config = useFormConfigStore()
@@ -49,16 +68,25 @@ export default {
       formData:{},  //表单数据
       formTitle:'',  //表单标题
       formRef: ref('formRef'),
-      ifDisabled:false
+      ifDisabled:false,
+      columns:[],
+      colShowList:[],
+      linkShow: false,
+      infoBtn: false
     })
     //存放原始表单数据，用于重置
     let resetFromData = {}
     let componentId2fileId = {}
     let pathSetObj = {}
+    const route = useRoute()
     //初始化，获取表单结构及数据
     async function init () {
       getFormObj()
       getPathObj()
+      if(formStore.infobaseSet?.type && formStore.infobaseSet.type !== '0') {
+        formConfig.infoBtn = ['copy','edit'].includes(route.query.type)
+        getInfoTablColumns()
+      }
     }
     //获取表单绑定数据的数据结构
     async function getFormObj () {
@@ -119,14 +147,28 @@ export default {
     }
 
     const handleOk = () => {
-      formConfig.formRef.validate().then((res)=>{
-        console.log('validate: ', res)
-      })
       return formConfig.formRef.validate()
     }
     
     function reset () {
       formConfig.formData = _.cloneDeep(resetFromData)
+    }
+
+    function getInfoTablColumns () {
+      let { tagFormLink } =  getTagData({},config.infobaseSet,config.formItemList)
+      tagFormLink = Object.values(tagFormLink)
+      formConfig.colShowList = _.chain(formStore.infobaseSet.moduleList)
+        .map((item)=>{ 
+          if (!tagFormLink.includes(item.moduleName)) return null
+          return { 
+            colName:item.moduleName, 
+            dataIndex:item.tagTableId || item.moduleName,
+            tableName :item.tagTableId ,
+            width :item.tagTableId ? 150 : 120
+          } 
+        }).compact().value()
+      formConfig.columns = _.uniqBy(formConfig.colShowList,'dataIndex')
+      formConfig.ifDisabled = true
     }
 
     config.$onAction(({ store, })=>{
@@ -147,4 +189,9 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url('../style/obg2form.less');
+
+.info-choose {
+  margin-bottom: 10px;
+  width: 150px;
+}
 </style>

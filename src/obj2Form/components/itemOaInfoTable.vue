@@ -11,7 +11,7 @@
         <a-table-column
           v-for="(column, index) in columns"
           :key="index"
-          :title="column.title || column.tableName"
+          :title="column.colName || column.tableName"
           :data-index="column.dataIndex"
           :width="column.width"
           :fixed="column.fixed"
@@ -19,7 +19,6 @@
           ellipsis
         >
           <template v-if="['operate',column.tableName].includes(column.dataIndex)" #cell="{ record,rowIndex }">
-            <!-- <template v-if="['operate','收款信息'].includes(column.dataIndex)" #cell="{ record,rowIndex }"> -->
             <div class="cell-item" v-for="(info,key) in record[column.dataIndex]" :key="key">
               <div class="flex-row " v-for="(citem,cindex) in info" :key="cindex">
                 <span>
@@ -58,23 +57,17 @@ export default {
   props:{
     columns:{ type:Array,default :()=>[] }, 
     data:{ type:Array,default :()=>[] }, 
-    tableOps:{ type:Object,default :()=>{} }, 
   },
   emits:['btnClick'],
   setup (props,{ emit }) { 
     const state = reactive({ 
-      pagination: { current: 1, total: 0, },
     })
     function btnClick (type,index) {
       emit('btnClick',type,index)
     }
-    // const pageInteractionFun = pageInteraction({ state })
-
-    // getInitData()
     return {
       ...toRefs(state),
       btnClick,
-    //   ...pageInteractionFun,
     }
   },
   mounted () {

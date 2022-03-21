@@ -103,7 +103,6 @@ export function getTree (formItemList,disabled,tip = '',nodePathArray = ['root']
         //重复表需要把当前节点添加进去
         let _parentId = condition ? [].concat(nodePathArray,item.componentId) : [].concat(nodePathArray)
         let _childNode = getTree(citem,disabled,mtip,_parentId)
-        console.log(citem,1111111111111111111111111111111)
         obj.children = obj.children.concat(_childNode)
         // obj.children.push({
         //   title: `容器${index + 1}`,
@@ -229,4 +228,75 @@ export function getNodeRoute (tree, targetId) {
   }
   fn(tree, targetId)
   return nodePathArray
+}
+
+//根据信息库映射和提交数据获取传入信息库数据
+export function getTagData (formData,mapList,formItemList) {
+  let _mapList = mapList.moduleList.filter(item=>item.fileId)
+  let CidToFid = getComponentIdbyFileId(formItemList)
+  let _obj = {}
+  //遍历生成field-tagId的对应关系
+  for(let p in CidToFid) {
+    _mapList.forEach(citem=>{
+      if(CidToFid[p].id === citem.fileId) {
+        _obj[p] = citem.tagId
+        if(citem.tagTableId) {
+          _obj[CidToFid[p].parentId] = citem.tagTableId
+        }
+      }
+    })
+  }
+  //遍历formData，获取tagId formData
+  let tagFormData = _getTagForm(formData)
+  function _getTagForm (formData) {
+    let _tagFormData = {}
+    for(let p in formData) {
+      if(Array.isArray(formData[p])) {
+        _tagFormData[_obj[p]] = []
+        formData[p].forEach(citem=>{
+          let res = _getTagForm(citem)
+          _tagFormData[_obj[p]].push(res)
+        })
+      }else{
+        if(_obj[p]) {
+          _tagFormData[_obj[p]] = formData[p]
+        }
+      }
+    }
+    console.log('_obj: ', _obj)
+    console.log('_tagFormData: ', _tagFormData)
+    return _tagFormData
+  }
+  
+  return {
+    tagFormData,tagFormLink:_obj
+  }
+}
+
+//根据FileId获取componentId
+export function getComponentIdbyFileId (formItemList) {
+  let _obj = {}
+  _getCIdbyFId(formItemList)
+  function _getCIdbyFId (formItemList,parentId = '') {
+    formItemList.forEach(item=>{
+      
+      //布局类型组件
+      if(item.configList.layout) {
+        _obj[item.configList.layout.fileId || item.componentId] = { id:item.componentId,parentId:parentId }
+        item.configList.layout.colContent.forEach(citem=>{
+          //重复表需要插入父节点字段
+          if(item.configList.layout.ifAdd) {
+            let _pId =  item.configList.layout.fileId || item.componentId
+            _getCIdbyFId(citem,_pId)
+          }
+          else{
+            _getCIdbyFId(citem)
+          }
+        })
+      }else{
+        _obj[item.configList.fileId || item.componentId] = { id:item.componentId,parentId:parentId }
+      }
+    })
+  }
+  return _obj
 }
