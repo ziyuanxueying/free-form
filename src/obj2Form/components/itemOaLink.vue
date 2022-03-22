@@ -29,6 +29,7 @@
             v-model="form.type"
             :style="{width:'150px'}"
             placeholder="申请类型"
+            @change="typeChange"
           >
             <a-option v-for="item in applys" :key="item.key" :value="item.key">
               {{ item.value }}
@@ -40,6 +41,7 @@
             v-model="form.search"
             :style="{width:'150px'}"
             placeholder="请选择搜索类型"
+            @change="searchChange"
           >
             <a-option v-for="item in searchs" :key="item.key" :value="item.key">
               {{ item.value }}
@@ -132,7 +134,7 @@ export default {
   setup (props,{ emit }) { 
     const state = reactive({
       linkShow: false,
-      form: { type:1 , search:1 },
+      form: { type:1 , search:1, draftTime:[] },
       pagination: { current: 1, total: 0, },
       tableList:[],
       rowSelection: { type: 'radio' },
@@ -146,6 +148,18 @@ export default {
 
     function handleOk () {
       emit('changeData', state.chooseItem)
+    }
+
+    function typeChange () {
+      state.pagination.current = 1
+      getInitData({ state })
+    }
+
+    function searchChange () {
+      state.form.find = ''
+      state.form.draftTime = []
+      state.pagination.current = 1
+      getInitData({ state })
     }
 
     getInitData({ state })
@@ -163,18 +177,20 @@ export default {
       columns,
       handleOk,
       selectChange,
+      typeChange,
+      searchChange,
     }
   },
 }
 //初始化表格数据
 function getInitData ({ state }) {
   const params = {
-    // title:state.form.draftName,
-    // startTime:state.form.draftTime[0] ? state.form.draftTime[0] + ' 00:00:00' : '',
-    // endTime:state.form.draftTime[1] ? state.form.draftTime[1] + ' 23:59:59' : '',
+    title: state.form.search === 1 ? state.form.find : '',
+    applyUserName: state.form.search === 2 ? state.form.find : '',
+    startTime: state.form.draftTime[0] ? state.form.draftTime[0] + ' 00:00:00' : '',
+    endTime: state.form.draftTime[1] ? state.form.draftTime[1] + ' 23:59:59' : '',
     page: state.pagination.current,
-    userId: 25756,
-    type:1
+    type: state.form.type
   }
   state.loading = true
   // eslint-disable-next-line consistent-return
@@ -195,7 +211,7 @@ function pageInteraction ({ state }) {
       }
     }
     if(str === 'inputClear') {
-      state.form.draftName = ''
+      state.form.find = ''
     }
     state.pagination.current = 1
     getInitData({ state })
