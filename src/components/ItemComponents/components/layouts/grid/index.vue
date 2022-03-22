@@ -1,6 +1,11 @@
 <template>
   <a-row :class="pageFrom==='content'?'nxf-grid-row':''">
-    <a-col :span="Math.floor(24 / layout.colCount)" v-for="(item,index ) in layout.colContent" :key="index">
+    <a-col
+      :span="layout.colCount[index].key"
+      :offset="layout.colCount[index].value"
+      v-for="(item,index ) in layout.colContent"
+      :key="index"
+    >
       <div class="nxf-grid-col">
         <draggable
           v-model="layout.colContent[index]"
@@ -47,7 +52,7 @@ export default {
       formConfig.componentId = element.componentId
     }
     watch(()=>props.layout.colCount,()=>{
-      let colCount = props.layout.colCount
+      let colCount = props.layout.colCount.length
       if(colCount > props.layout.colContent.length) {
         for(let i = 0; i < colCount; i++) {
           if(!props.layout.colContent[i]) {

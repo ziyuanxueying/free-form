@@ -83,7 +83,8 @@
     </a-space>
     <a-row v-if="item.type=='NxGrid'" style="width: 100%;">
       <a-col
-        :span="Math.floor(24 / item.configList.layout.colCount)"
+        :span="item.configList.layout.colCount[cindex].key"
+        :offset="item.configList.layout.colCount[cindex].value"
         v-for="(citem,cindex ) in item.configList.layout.colContent"
         :key="cindex"
         :xs="24"
