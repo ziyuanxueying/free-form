@@ -23,6 +23,9 @@ export const setting = [
       label:'列',
       fileId:'colCount',
       columns:[],
+      placeholder:'请输入1-4',
+      min: 1,
+      max: 10,
     }
   }
 ]
