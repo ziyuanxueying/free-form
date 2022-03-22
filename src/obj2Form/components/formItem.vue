@@ -8,6 +8,8 @@
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
     :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},] "
+    :label-col-props="{span:4}"
+    :wrapper-col-props="{span:20}"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
@@ -135,12 +137,11 @@
               />
             </div>
             <a-space v-if="citem.key === 'operate'">
-              <a-button class="add-btn" type="outline" @click="tableAdd(rowIndex)">
+              <a-button type="outline" @click="tableAdd(rowIndex)">
                 添加
               </a-button>
               <a-button
                 v-show="rowIndex"
-                class="add-btn"
                 type="outline"
                 @click="cardDelete(rowIndex)"
               >
@@ -196,6 +197,7 @@
           <a-button
             v-if="!ifDisabled"
             :style="!dindex&&'visibility:hidden'"
+            class="card-del"
             type="outline"
             status="danger"
             shape="circle"
@@ -336,7 +338,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .card-view {
-  margin: 10px 0;
+  //   margin: 10px 0;
 
   .card-item {
     margin: 10px 0;
@@ -353,7 +355,7 @@ export default {
   .add-btn {
     display: block;
     margin: auto;
-    width: 400px;
+    width: 300px;
   }
 }
 

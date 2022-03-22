@@ -5,7 +5,6 @@
         :model="formData"
         class="nxf-layout-form-pc"
         ref="formRef"
-        auto-label-width
       >
         <div class="form-title">
           {{ formTitle }}
@@ -189,9 +188,4 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url('../style/obg2form.less');
-
-.info-choose {
-  margin-bottom: 10px;
-  width: 150px;
-}
 </style>

@@ -25,12 +25,12 @@
     }
 
     .nxf-layout-item {
+
       .nxf-layout-item-title {
         margin-top: 10px;
         padding: 0 30px;
         font-size: 16px;
         font-weight: bold;
-        background-color: #eaeaea;
         line-height: 34px;
       }
 
@@ -76,6 +76,7 @@
 
       .nxf-layout-content-draggable {
         height: 100%;
+      }
 
         .nxf-layout-content-form-item {
           position: relative;
@@ -89,12 +90,18 @@
           &:hover {
             border: 1px dashed #64b4fe;
           }
+
+
+          .arco-form-item-label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
         }
 
         .nxf-layout-content-form-item-active {
           border: 1px solid #1890ff;
         }
-      }
     }
 
     .tabs-btn {

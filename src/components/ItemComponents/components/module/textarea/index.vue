@@ -4,7 +4,8 @@
     :label="label"
     :required="required"
     :disabled="disabled"
-    :hideLabel="hideLabel"
+    :label-col-props="{span:4}"
+    :wrapper-col-props="{span:20}"
   >
     <a-textarea
       :placeholder="placeholder"

@@ -5,6 +5,8 @@
     :required="required"
     :disabled="disabled"
     :hideLabel="hideLabel"
+    :label-col-props="{span:4}"
+    :wrapper-col-props="{span:20}"
   >
     <a-input-number
       :placeholder="placeholder"
