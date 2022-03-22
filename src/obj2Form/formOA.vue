@@ -36,6 +36,7 @@
       :columns="columns"
       :formData="formData"
       :colShowList="colShowList"
+      :infoMetaId="infoMetaId"
     />
   </div>
 </template>
@@ -71,7 +72,8 @@ export default {
       columns:[],
       colShowList:[],
       linkShow: false,
-      infoBtn: false
+      infoBtn: false,
+      infoMetaId: undefined
     })
     //存放原始表单数据，用于重置
     let resetFromData = {}
@@ -84,6 +86,7 @@ export default {
       getPathObj()
       if(formStore.infobaseSet?.type && formStore.infobaseSet.type !== '0') {
         formConfig.infoBtn = ['copy','edit'].includes(route.query.type)
+        formConfig.infoMetaId = formStore.infobaseSet.oaChooseDataitem
         getInfoTablColumns()
       }
     }

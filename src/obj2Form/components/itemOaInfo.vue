@@ -26,6 +26,7 @@
       v-model:linkShow="linkShow"
       :columns="columns"
       :formData="formData"
+      :infoMetaId="item.configList.oaChooseInfobase"
       :colShowList="item.configList.oaChooseDataitem"
       :itemUse="`show`"
       @modalChoose="modalChoose"
@@ -63,13 +64,14 @@ export default {
     })
 
     function setColumns () {
+      console.log('props.item.configList: ', props.item.configList)
       state.columns = _.chain(props.item.configList.oaChooseDataitem)
         .map((item)=>{ 
           return { 
             colName:item.colName, 
             dataIndex:item.tableName || item.colName,
             tableName :item.tableName ,
-            width :item.tableName ? 150 : 120
+            width :item.tableName ? 150 : 120,
           } 
         })
         .uniqBy('dataIndex').value()

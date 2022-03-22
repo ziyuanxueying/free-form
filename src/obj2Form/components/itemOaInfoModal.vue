@@ -46,6 +46,7 @@ export default {
     formData:{ type:Object,default :()=>{}  },
     ifDisabled:{ type:Boolean, default:()=>false },
     itemUse:{ type:String, default:'oa' },
+    infoMetaId:{ type:Number, default:1 },
   },
   emits: ['update:linkShow','update:ifDisabled','modalChoose'],
   setup (props,{ emit }) { 
@@ -101,7 +102,6 @@ export default {
     },{ immediate:true })
 
     watch(()=>props.linkShow,(val)=>{
-      console.log('val: ', val)
       emit('update:linkShow', val)
     })
     return {
@@ -117,7 +117,7 @@ function pageInteraction ({ props, state }) {
   const getInitData = ()=>{
     state.loading = true
     post(`${process.env.VUE_APP_BASE_URL}/oa-platform/infoMeta/dataList`, {
-      infoMetaId:1,
+      infoMetaId:props.infoMetaId,
       colShowList: props.colShowList
     }).then((res)=> {
       state.loading = false

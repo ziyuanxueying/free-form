@@ -15,15 +15,11 @@
           :data-index="column.dataIndex"
           :width="column.width"
           :fixed="column.fixed"
-          :align="column.align ? column.align : 'center'"
-          ellipsis
         >
           <template v-if="['operate',column.tableName].includes(column.dataIndex)" #cell="{ record,rowIndex }">
             <div class="cell-item" v-for="(info,key) in record[column.dataIndex]" :key="key">
-              <div class="flex-row " v-for="(citem,cindex) in info" :key="cindex">
-                <span>
-                  {{ cindex }} : {{ citem }}
-                </span>
+              <div v-for="(citem,cindex) in info" :key="cindex">
+                {{ cindex }} : {{ citem }} 
               </div>
             </div>
             <div v-if="column.dataIndex === 'operate'">
@@ -63,7 +59,6 @@ export default {
     const state = reactive({ 
     })
     function btnClick (type,index) {
-      console.log('type: ', type)
       emit('btnClick',type,index)
     }
     return {
