@@ -5,13 +5,24 @@
   :deep(.arco-row-justify-start) {
     align-items: flex-start;
 
-    .arco-form-item-label-col {
-      margin-top: 8px;
-      padding-right: 6px;
-      padding-left: 4px;
-      line-height: 16px;
-      flex: 0 0 80px !important;
-    }
+    // .arco-form-item-label-col {
+    //   margin-top: 8px;
+    //   padding-right: 6px;
+    //   padding-left: 4px;
+    //   line-height: 16px;
+    //   flex: 0 0 80px !important;
+    // }
+  }
+
+  :deep(.arco-form-item-label) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :deep(.arco-input:disabled),
+  :deep(.arco-select-view-single.arco-select-view-disabled) {
+    -webkit-text-fill-color: #1c212a;
   }
 }
 

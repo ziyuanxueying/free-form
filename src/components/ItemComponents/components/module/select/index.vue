@@ -4,6 +4,8 @@
     :label="label"
     :hideLabel="hideLabel"
     :disabled="disabled"
+    :label-col-props="{span:4}"
+    :wrapper-col-props="{span:20}"
   >
     <a-select v-model="form[proto]" :placeholder="placeholder">
       <span v-if="!remote">

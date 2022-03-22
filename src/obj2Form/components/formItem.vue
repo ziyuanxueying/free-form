@@ -8,6 +8,8 @@
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
     :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},] "
+    :label-col-props="{span:4}"
+    :wrapper-col-props="{span:20}"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload

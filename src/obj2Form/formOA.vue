@@ -5,7 +5,6 @@
         :model="formData"
         class="nxf-layout-form-pc"
         ref="formRef"
-        auto-label-width
       >
         <div class="form-title">
           {{ formTitle }}
