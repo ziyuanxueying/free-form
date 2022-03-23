@@ -6,6 +6,8 @@
     :disabled="disabled"
     :hideLabel="hideLabel"
     :validate-trigger="['change','input']"
+    :label-col-props="{span:6}"
+    :wrapper-col-props="{span:12}"
   >
     <a-input
       :placeholder="placeholder"

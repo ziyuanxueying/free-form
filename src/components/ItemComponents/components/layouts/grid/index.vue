@@ -77,8 +77,6 @@ export default {
 <style lang="less" scoped>
 .nxf-grid-row {
   margin-bottom: 14px;
-  border: 1px dashed #ccc;
-  padding: 4px;
   min-height: 100px;
 
   .nxf-grid-col {
@@ -88,6 +86,11 @@ export default {
     .nxf-grid-col-draggable {
       width: 100%;
       min-height: 100px;
+
+      :deep(.arco-col-12) {
+        flex: 0 0 75%;
+        width: 75%;
+      }
     }
   }
 }
