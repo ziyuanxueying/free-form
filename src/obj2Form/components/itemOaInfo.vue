@@ -10,10 +10,7 @@
       :data="formData[item.configList.fileId]"
       @btnClick="btnClick"
     />
-    <a-form-item
-      v-else
-      :label="columns[0].dataIndex"
-    >
+    <a-form-item v-else hide-label>
       <a-input
         v-model="formData[item.configList.fileId][0][columns[0].dataIndex]"
         placeholder="请点击选择"
@@ -71,10 +68,9 @@ export default {
             colName:item.colName, 
             dataIndex:item.tableName || item.colName,
             tableName :item.tableName ,
-            width :item.tableName ? 150 : 120,
           } 
         })
-        .uniqBy('dataIndex').value()
+        .uniqBy('dataIndex').slice([0],[6]).value()
     }
 
     function modalChoose (val) {

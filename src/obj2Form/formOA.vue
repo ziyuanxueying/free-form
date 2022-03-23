@@ -166,9 +166,8 @@ export default {
             colName:item.moduleName, 
             dataIndex:item.tagTableId || item.moduleName,
             tableName :item.tagTableId ,
-            width :item.tagTableId ? 150 : 120
           } 
-        }).compact().value()
+        }).compact().slice([0],[6]).value()
       formConfig.columns = _.uniqBy(formConfig.colShowList,'dataIndex')
       formConfig.ifDisabled = true
     }

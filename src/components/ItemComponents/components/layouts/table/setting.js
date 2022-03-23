@@ -16,7 +16,6 @@ let tableSetting = {
     fileId: 'table',
     pageFrom: '',
     ifAdd:true,
-    hideLabel:true ,
   },
 }
 export default tableSetting
