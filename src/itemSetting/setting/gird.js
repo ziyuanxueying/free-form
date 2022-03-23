@@ -18,13 +18,13 @@ export const setting = [
     
   },
   {
-    type: 'NxInputNum',
+    type: 'NxDoubleInput',
     configList:{
-      label:'列数量',
+      label:'列',
       fileId:'colCount',
-      placeholder:'请输入1-4',
-      min: 1,
-      max: 4,
+      columns:[],
+      placeholderLeft:'span',
+      placeholderRight:'offset',
     }
   }
 ]

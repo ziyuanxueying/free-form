@@ -2,17 +2,17 @@
   <div style="margin-top: 10px;" v-if="!form.remote">
     <a-form-item
       :field="fileId+index"
-      :label="label+index"
+      :label="label+(index+1)"
       v-for="(item,index) in form[fileId]"
       :key="index"
     >
       <a-input
-        placeholder="请输入key"
+        :placeholder="placeholderLeft||'请输入key'"
         allow-clear
         v-model="item.key"
       />
       <a-input
-        placeholder="请输入value"
+        :placeholder="placeholderRight||'请输入value'"
         allow-clear
         v-model="item.value"
       />
@@ -57,6 +57,18 @@ export default {
     remote:{
       type:Boolean
     },
+    placeholderLeft:{
+      type:String,
+      default () {
+        return '请输入key'
+      }
+    },
+    placeholderRight:{
+      type:String,
+      default () {
+        return '请输入value'
+      }
+    }
   },
   setup () {
     const add = (arr)=>{
