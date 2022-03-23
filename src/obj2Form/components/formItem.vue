@@ -8,8 +8,8 @@
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
     :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},] "
-    :label-col-props="{span:4}"
-    :wrapper-col-props="{span:20}"
+    :label-col-props="item.type=='NxGrid'?{span:0}:{xs:4,lg:span?span:4}"
+    :wrapper-col-props="item.type=='NxGrid'?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
@@ -85,14 +85,14 @@
     </a-space>
     <a-row v-if="item.type=='NxGrid'" style="width: 100%;">
       <a-col
-        :span="item.configList.layout.colCount[cindex].key"
-        :offset="item.configList.layout.colCount[cindex].value"
         v-for="(citem,cindex ) in item.configList.layout.colContent"
         :key="cindex"
         :xs="24"
         :sm="24"
         :md="12"
-        :lg="8"
+        :lg="{
+          span:Array.isArray(item.configList.layout.colCount)?item.configList.layout.colCount[cindex].key:Math.floor(24 / item.configList.layout.colCount),
+          offset:(Array.isArray(item.configList.layout.colCount)?item.configList.layout.colCount[cindex].value:0)}"
       >
         <FormItem
           v-for="(ccitem,ccindex) in citem"
@@ -105,6 +105,7 @@
           :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
           :id="ccitem.configList.fileId||ccitem.componentId"
           :field="field"
+          :span="Array.isArray(item.configList.layout.colCount)? (24/item.configList.layout.colCount[cindex].key)*4:(24/item.configList.layout.colCount)*4"  
         />
       </a-col>
     </a-row>
@@ -307,6 +308,12 @@ export default {
     }
   },
   props:{
+    span:{
+      type:Number,
+      default () {
+        return 0
+      }
+    },
     item:{
       type:Object
     },

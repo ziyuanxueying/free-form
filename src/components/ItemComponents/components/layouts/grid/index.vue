@@ -1,8 +1,8 @@
 <template>
   <a-row :class="pageFrom==='content'?'nxf-grid-row':''">
     <a-col
-      :span="layout.colCount[index].key"
-      :offset="layout.colCount[index].value"
+      :span="Array.isArray(layout.colCount)?layout.colCount[index].key:Math.floor(24 / layout.colCount)"
+      :offset="Array.isArray(layout.colCount)?layout.colCount[index].value:0"
       v-for="(item,index ) in layout.colContent"
       :key="index"
     >

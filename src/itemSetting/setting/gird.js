@@ -23,6 +23,8 @@ export const setting = [
       label:'列',
       fileId:'colCount',
       columns:[],
+      placeholderLeft:'span',
+      placeholderRight:'offset',
     }
   }
 ]
