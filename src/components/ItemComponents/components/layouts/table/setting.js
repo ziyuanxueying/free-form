@@ -4,10 +4,14 @@ let tableSetting = {
       {
         value: 'Name',
         key: 'name',
-      }
+      },
+      {
+        value: 'Name1',
+        key: 'name1',
+      },
     ],
     label:'表格',
-    colContent:[[]],
+    colContent:[[],[]],
     remote: false,
     fileId: 'table',
     pageFrom: '',
