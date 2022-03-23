@@ -1,22 +1,35 @@
 <template>
   <div>
-    <a-modal v-model:visible="linkShow" @ok="handleOk" width="800px">
+    <a-modal v-model:visible="linkShow" @ok="handleOk" width="820px">
       <template #title>
         选择信息库数据
       </template>
-      <a-form-item
-        label="搜索类型"
-        hideLabel
-      >
-        <a-input
-          v-model="form.find"
-          :style="{ width: '300px' }"
-          placeholder="输入供应商名称"
-          allow-clear
-          @clear="conditionChange('inputClear')"
-          @input="inputDebounce"
-        />
-      </a-form-item>
+      <a-form :model="{}" layout="inline">
+        <a-form-item v-for="(search,key) in searchList" :key="key" :label="search.colName">
+          <a-input
+            v-if="search.uiType ==='NxInput'"
+            v-model="search.colValue"
+            :style="{ width: '160px' }"
+            :placeholder="`请输入`"
+            allow-clear
+            @clear="conditionChange('inputClear')"
+            @input="inputDebounce"
+          />
+          <a-select
+            v-if="search.uiType=='NxSelect'"
+            v-model="search.colValue"
+            :style="{ width: '160px' }"
+            :placeholder="'请选择'"
+            allow-clear
+            @change="selectChage"
+          >
+            <a-option v-for="(citem,index) in search.colOptionList" :key="index" :value="citem.key">
+              {{ citem.value }}
+            </a-option>
+          </a-select>
+        </a-form-item>
+      </a-form>
+    
       <ItemOaInfoTable
         :columns="columns"
         :data="tableList"
@@ -32,7 +45,7 @@
 
 <script>
 import { reactive, toRefs, watch } from 'vue'
-import { post } from '../utils/request'
+import { post } from '../../tools/request'
 import _ from 'lodash'
 import ItemOaInfoTable from './itemOaInfoTable.vue'
 import { useFormConfigStore } from '../../store'
@@ -58,14 +71,10 @@ export default {
       tableList:[],
       rowSelection: { type: 'radio',selectedRowKeys:[] },
       chooseItem: {},
-      data: [{}]
+      searchList: [{}]
     })
 
-    // getInitData({ state })
     const { getInitData, ...pageInteractionFun } = pageInteraction({ props,state })
-
-    // setColumns()
-    // getInitData()
 
     function handleOk () {
       if(props.itemUse === 'show') {
@@ -97,8 +106,18 @@ export default {
       state.rowSelection.selectedRowKeys = []
       emit('update:ifDisabled', false)
     }
+    async function getSearchList () {
+      state.searchList = await  post(`/oa-platform/infoMeta/columnQuery/${props.infoMetaId}`)
+      console.log('state.searchList: ', state.searchList)
+    }
+    function selectChage () {
+      state.pagination.current = 1
+      getInitData()
+    }
+
     watch(()=>props.colShowList,()=>{
       getInitData()
+      props.infoMetaId && getSearchList()
     },{ immediate:true })
 
     watch(()=>props.linkShow,(val)=>{
@@ -107,6 +126,8 @@ export default {
     return {
       ...toRefs(state),
       getInitData,
+      getSearchList,
+      selectChage,
       handleOk,
       ...pageInteractionFun
     }
@@ -116,24 +137,19 @@ export default {
 function pageInteraction ({ props, state }) {
   const getInitData = ()=>{
     state.loading = true
-    post(`${process.env.VUE_APP_BASE_URL}/oa-platform/infoMeta/dataList`, {
+    post('/oa-platform/infoMeta/dataList', {
       infoMetaId:props.infoMetaId,
-      colShowList: props.colShowList
+      colShowList: props.colShowList,
+      colSearchList: state.searchList,
     }).then((res)=> {
       state.loading = false
-      if(res.code !== 200) return state.tableList = []
-      state.tableList = res.data.content
-      return state.pagination.total = res.data.totalElements
+      state.tableList = res.content
+      return state.pagination.total = res.totalElements
       
     })
   }
   //条件变更需刷新表格数据
   const conditionChange = (str) => {
-    if(str === 'draftTimeChange') {
-      if(!state.form.draftTime) {
-        state.form.draftTime = []
-      }
-    }
     if(str === 'inputClear') {
       state.form.draftName = ''
     }
@@ -163,19 +179,4 @@ function pageInteraction ({ props, state }) {
 </script>
 
 <style lang="less" scoped>
-.cell-item {
-  margin: 0 -16px;
-  padding: 0 10px 0;
-
-  &:nth-child(2n-1) {
-    margin-bottom: 4px;
-    border-bottom: 1px solid var(--color-neutral-3);
-    padding-bottom: 4px;
-  }
-
-  &:nth-last-child(2n) {
-    margin-bottom: -2px;
-    border: none;
-  }
-}
 </style>

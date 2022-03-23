@@ -11,7 +11,7 @@
         <a-table-column
           v-for="(column, index) in columns"
           :key="index"
-          :title="column.colName || column.tableName"
+          :title="column.tableName !==''? column.tableName : column.colName"
           :data-index="column.dataIndex"
           :width="column.width"
           :fixed="column.fixed"
@@ -79,13 +79,13 @@ export default {
   margin: 0 -16px;
   padding: 0 10px 0;
 
-  &:nth-child(2n-1) {
+  &:nth-child(n) {
     margin-bottom: 4px;
     border-bottom: 1px solid var(--color-neutral-3);
     padding-bottom: 4px;
   }
 
-  &:nth-last-child(2n) {
+  &:nth-last-child(2) {
     margin-bottom: -2px;
     border: none;
   }
