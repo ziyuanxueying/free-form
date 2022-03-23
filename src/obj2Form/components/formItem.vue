@@ -8,8 +8,8 @@
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
     :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},] "
-    :label-col-props="item.type=='NxGrid'?{span:0}:{xs:4,lg:span?span:4}"
-    :wrapper-col-props="item.type=='NxGrid'?{span:24}:{xs:20,lg:span?(24-span):20}"
+    :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:4,lg:span?span:4}"
+    :wrapper-col-props="['NxGrid','NxTable'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
@@ -83,7 +83,7 @@
         </a-checkbox>
       </a-checkbox-group>
     </a-space>
-    <a-row v-if="item.type=='NxGrid'" style="width: 100%;">
+    <a-row class="nxf-row" v-if="item.type=='NxGrid'" style="width: 100%;">
       <a-col
         v-for="(citem,cindex ) in item.configList.layout.colContent"
         :key="cindex"

@@ -15,14 +15,18 @@
   }
 
   :deep(.arco-form-item-label) {
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   :deep(.arco-input:disabled),
   :deep(.arco-select-view-single.arco-select-view-disabled) {
     -webkit-text-fill-color: #1c212a;
+  }
+
+  :deep(.nxf-row) {
+    margin-bottom: -20px;
   }
 }
 

@@ -4,8 +4,6 @@
     :label="label"
     :required="required"
     :disabled="disabled"
-    :label-col-props="{span:4}"
-    :wrapper-col-props="{span:20}"
   >
     <a-switch v-model="form[proto]"/>
   </a-form-item>
