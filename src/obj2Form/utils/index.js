@@ -50,7 +50,6 @@ export function getForm (formItemList,options) {
         form[configList.fileId] = []
       }else{
         form[configList.fileId] = configList.defaultVal
-        console.log('configList.fileId: ', configList.fileId)
       }
     }
     componentId2fileId[item.componentId] = configList.fileId || item.componentId
@@ -111,7 +110,6 @@ export function getFormData (tagData,mapList,formItemList) {
     }
     return _fileFormData
   }
-  console.log(fileFormData,11111111111111111111111111111111)
   return {
     fileFormData
   }
