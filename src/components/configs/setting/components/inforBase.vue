@@ -100,7 +100,10 @@ export default {
     function handleCancel () {
       emit('closeInforBase')
     }
+
+    // eslint-disable-next-line consistent-return
     function handleOk () {
+      if(ifExist().res) return Message.error('存在节点已经被删除，请重新选择')
       let moduleList = state.data.filter(item=>{
         return item.fileId
       })
@@ -108,12 +111,10 @@ export default {
       let fileIdList = moduleList.map(item=>item.fileId)
       let set = Array.from(new Set(fileIdList))
       if(fileIdList.length !== set.length) {
-        Message.warning('禁止重复绑定')
-        return 
-      }else{
+        return  Message.warning('禁止重复绑定')
+      } else {
         if(state.data.length > 0 && !state.type) {
-          Message.warning('请设置读写类型')
-          return
+          return  Message.warning('请设置读写类型')
         }
         formConfig.setModuleList(state.data)
         formConfig.setInformationBase(state.informationBase,state.type)

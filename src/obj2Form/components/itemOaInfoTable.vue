@@ -1,50 +1,48 @@
 <template>
-  <div>
-    <a-table
-      row-key="id"
-      :columns="columns"
-      :data="data"
-      :bordered="{wrapper: true, cell: true}"
-      v-bind="$attrs"
-    >
-      <template #columns>
-        <a-table-column
-          v-for="(column, index) in columns"
-          :key="index"
-          :title="column.tableName !==''? column.tableName : column.colName"
-          :data-index="column.dataIndex"
-          :width="column.width"
-          :fixed="column.fixed"
-        >
-          <template v-if="['operate',column.tableName].includes(column.dataIndex)" #cell="{ record,rowIndex }">
-            <div class="cell-item" v-for="(info,key) in record[column.dataIndex]" :key="key">
-              <div v-for="(citem,cindex) in info" :key="cindex">
-                {{ cindex }} : {{ citem }} 
-              </div>
+  <a-table
+    row-key="id"
+    :columns="columns"
+    :data="data"
+    :bordered="{wrapper: true, cell: true}"
+    v-bind="$attrs"
+  >
+    <template #columns>
+      <a-table-column
+        v-for="(column, index) in columns"
+        :key="index"
+        :title="column.tableName !==''? column.tableName : column.colName"
+        :data-index="column.dataIndex"
+        :width="column.width"
+        :fixed="column.fixed"
+      >
+        <template v-if="['operate',column.tableName].includes(column.dataIndex)" #cell="{ record,rowIndex }">
+          <div class="cell-item" v-for="(info,key) in record[column.dataIndex]" :key="key">
+            <div v-for="(citem,cindex) in info" :key="cindex">
+              {{ cindex }} : {{ citem }} 
             </div>
-            <div v-if="column.dataIndex === 'operate'">
-              <a-button
-                class="operate-btn"
-                type="text"
-                @click="btnClick('add',rowIndex)"
-              >
-                添加
-              </a-button>
-              <a-button
-                v-if="rowIndex"
-                class="operate-btn"
-                type="text"
-                @click="btnClick('del',rowIndex)"
-              >
-                删除
-              </a-button>
-            </div>
-            <template/>
-          </template>
-        </a-table-column>
-      </template>
-    </a-table>
-  </div>
+          </div>
+          <div v-if="column.dataIndex === 'operate'">
+            <a-button
+              class="operate-btn"
+              type="text"
+              @click="btnClick('add',rowIndex)"
+            >
+              添加
+            </a-button>
+            <a-button
+              v-if="rowIndex"
+              class="operate-btn"
+              type="text"
+              @click="btnClick('del',rowIndex)"
+            >
+              删除
+            </a-button>
+          </div>
+          <template/>
+        </template>
+      </a-table-column>
+    </template>
+  </a-table>
 </template>
 
 <script>

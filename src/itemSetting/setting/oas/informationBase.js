@@ -30,13 +30,13 @@ export const setting = [
       fileId:'disabled',
     }
   },
-  {
-    type: 'NxSwitch',
-    configList:{
-      label:'隐藏标签',
-      fileId:'hideLabel',
-    }
-  },
+  //   {
+  //     type: 'NxSwitch',
+  //     configList:{
+  //       label:'隐藏标签',
+  //       fileId:'hideLabel',
+  //     }
+  //   },
   {
     type: 'NxBS',
     configList:{}

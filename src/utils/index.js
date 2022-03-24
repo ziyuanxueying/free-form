@@ -194,7 +194,7 @@ export function getAllComponentId (arr = formConfig.formItemList,ids = []) {
  */
 export function ifExist () {
   
-  let fieldIdList = formConfig.moduleList.filter(item=>item.fileId)
+  let fieldIdList = formConfig.infobaseSet.moduleList.filter(item=>item.fileId)
   let ids = getAllComponentId()
   let delList = []
   let res = false  //是否有被关联的节点被删除
