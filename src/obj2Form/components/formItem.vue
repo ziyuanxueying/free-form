@@ -26,6 +26,7 @@
       v-model="formData[id]"
       :placeholder="item.configList.placeholder||'请输入'"
       :max-length="item.configList.maxLength"
+      auto-size
     />
     <a-input-number
       v-else-if="item.type=='NxInputNum'"
@@ -123,6 +124,7 @@
           :key="index"
           :title="citem.value"
           :data-index="citem.key"
+          :width="citem.width"
         >
           <template #cell="{ rowIndex }">
             <div class="nxf-table-td" v-for="(ccitem,ccindex) in item.configList.layout.colContent[index]" :key="ccindex">
@@ -138,12 +140,17 @@
               />
             </div>
             <a-space v-if="citem.key === 'operate'">
-              <a-button type="outline" @click="tableAdd(rowIndex)">
+              <a-button
+                class="operate-btn"
+                type="text"
+                @click="tableAdd(rowIndex)"
+              >
                 添加
               </a-button>
               <a-button
                 v-show="rowIndex"
-                type="outline"
+                class="operate-btn"
+                type="text"
                 @click="cardDelete(rowIndex)"
               >
                 删除
@@ -252,7 +259,7 @@ export default {
       deafultList: [],
     })
     if(props.item.type === 'NxTable') {
-      config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作' }]]
+      config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作',width:100 }]]
     }
     if(props.item.type === 'NxDatePicker') {
       props.item.configList.showToday && (props.formData[props.id] = Date.now())

@@ -110,7 +110,6 @@ export function getFormData (tagData,mapList,formItemList) {
     }
     return _fileFormData
   }
-  console.log(fileFormData,11111111111111111111111111111111)
   return {
     fileFormData
   }

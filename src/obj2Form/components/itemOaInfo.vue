@@ -5,7 +5,7 @@
       :columns="[...columns, ...[{
         colName: '操作',
         dataIndex: 'operate',
-        width: 110
+        width: 100
       }]]"
       :data="formData[item.configList.fileId]"
       @btnClick="btnClick"
