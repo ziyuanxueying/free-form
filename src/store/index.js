@@ -48,9 +48,17 @@ export const useFormConfigStore = defineStore('formConfig', {
     initJson (json) {
       this.fieldId = json.fieldId || ''
       this.formItemList = json.formItemList || []
-      this.formSet = json.formSet  || {}
+      this.formSet = json.formSet  || {
+        formTitle: undefined,
+        formId: undefined,
+      }
       this.pathSet = json.pathSet  || []
-      this.infobaseSet = json.infobaseSet || {}
+      this.infobaseSet = json.infobaseSet || {
+        type: 0 ,// 新增，更新，停用
+        informationBase: '' ,// 关联信息库ID
+        moduleList:[],
+        delList:[]
+      }
     },
     setPreview (val) {
       this.isPreview = val
