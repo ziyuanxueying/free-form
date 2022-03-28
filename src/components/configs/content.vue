@@ -69,10 +69,11 @@
     title="查看当前JSON"
   >
     <a-typography class="json-view">
-      <a-typography-paragraph copyable>
-        <vue-json-pretty :data="formConfig.toJSON" :showSelectController="true"/>
+      <vue-json-pretty :data="formConfig.toJSON" :showSelectController="true"/>
+      <!-- <a-typography-paragraph copyable>
         <span class="copy"/>
       </a-typography-paragraph>
+    </a-typography> -->
     </a-typography>
   </a-modal>
 </template>

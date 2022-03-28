@@ -1,14 +1,14 @@
 <template>
   <a-table
     row-key="id"
-    :columns="tabs"
+    :columns="columns"
     :data="data"
     :bordered="{wrapper: true, cell: true}"
     v-bind="$attrs"
   >
     <template #columns>
       <a-table-column
-        v-for="(column, index) in tabs"
+        v-for="(column, index) in columns"
         :key="index"
         :title="column.tableName !==''? column.tableName : column.colName"
         :data-index="column.dataIndex"
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { reactive, toRefs,watch  } from 'vue'
+import { reactive, toRefs,  } from 'vue'
 export default {
   props:{
     columns:{ type:Array,default :()=>[] }, 
@@ -60,9 +60,7 @@ export default {
     function btnClick (type,index) {
       emit('btnClick',type,index)
     }
-    watch(()=>props.columns,(val)=>{
-      state.tabs = props.columns.slice(val.length - 6 > 0 ? val.length - 6 : 0, val.length)
-    },{ immediate:true })
+   
     return {
       ...toRefs(state),
       btnClick,

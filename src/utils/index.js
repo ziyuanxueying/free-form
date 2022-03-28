@@ -193,7 +193,6 @@ export function getAllComponentId (arr = formConfig.formItemList,ids = []) {
  * 校验信息库中的绑定字段是否都存在
  */
 export function ifExist () {
-  
   let fieldIdList = formConfig.infobaseSet.moduleList.filter(item=>item.fileId)
   let ids = getAllComponentId()
   let delList = []

@@ -31,7 +31,7 @@
       </a-form>
     
       <ItemOaInfoTable
-        :columns="columns"
+        :columns="tabs"
         :data="tableList"
         :loading="loading"
         :pagination="pagination"
@@ -68,10 +68,11 @@ export default {
       loading: true,
       form: { type:1 , search:1 },
       pagination: { current: 1, total: 0, },
+      tabs: [{}],
       tableList:[],
       rowSelection: { type: 'radio',selectedRowKeys:[] },
       chooseItem: {},
-      searchList: [{}]
+      searchList: [{}],
     })
 
     const { getInitData, ...pageInteractionFun } = pageInteraction({ props,state })
@@ -107,7 +108,11 @@ export default {
       emit('update:ifDisabled', false)
     }
     async function getSearchList () {
-      state.searchList = await  post(`/oa-platform/infoMeta/columnQuery/${props.infoMetaId}`)
+      state.searchList = await  post('/oa-platform/infoMeta/columnQueryList',
+        {
+          infoMetaId:props.infoMetaId,
+          colShowList:props.colShowList,
+        })
       console.log('state.searchList: ', state.searchList)
     }
     function selectChage () {
@@ -123,6 +128,10 @@ export default {
     watch(()=>props.linkShow,(val)=>{
       emit('update:linkShow', val)
     })
+
+    watch(()=>props.columns,(val)=>{
+      state.tabs = val.length > 6 ? val.slice(0,6) : val
+    },{ immediate:true })
     return {
       ...toRefs(state),
       getInitData,

@@ -46,7 +46,8 @@ export const useFormConfigStore = defineStore('formConfig', {
   },
   actions: {
     initJson (json) {
-      this.fieldId = json.fieldId || ''
+      json.infobaseSet = JSON.stringify(json.infobaseSet) === '{}' ? undefined : json.infobaseSet
+      this.componentId = json.componentId || ''
       this.formItemList = json.formItemList || []
       this.formSet = json.formSet  || {
         formTitle: undefined,
