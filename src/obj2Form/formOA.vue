@@ -167,7 +167,7 @@ export default {
             dataIndex:item.tagTableId || item.moduleName,
             tableName :item.tagTableId ,
           } 
-        }).compact().slice([0],[6]).value()
+        }).compact().value()
       formConfig.columns = _.uniqBy(formConfig.colShowList,'dataIndex')
       formConfig.ifDisabled = true
     }

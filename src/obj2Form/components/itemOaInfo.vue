@@ -71,7 +71,7 @@ export default {
             tableName :item.tableName ,
           } 
         })
-        .uniqBy('dataIndex').slice([0],[6]).value()
+        .uniqBy('dataIndex').value()
     }
 
     function modalChoose (val) {
