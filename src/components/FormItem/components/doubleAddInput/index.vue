@@ -1,6 +1,7 @@
 <template>
   <div style="margin-top: 10px;" v-if="!form.remote">
     <a-form-item
+      :label-col-props="{ span: 6 }"
       :field="fileId+index"
       :label="label+(index+1)"
       v-for="(item,index) in form[fileId]"

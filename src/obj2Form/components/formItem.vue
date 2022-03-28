@@ -8,8 +8,8 @@
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
     :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},] "
-    :label-col-props="item.type=='NxGrid'?{span:0}:{xs:4,lg:span?span:4}"
-    :wrapper-col-props="item.type=='NxGrid'?{span:24}:{xs:20,lg:span?(24-span):20}"
+    :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:4,lg:span?span:4}"
+    :wrapper-col-props="['NxGrid','NxTable'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
     <n-upload
@@ -26,6 +26,7 @@
       v-model="formData[id]"
       :placeholder="item.configList.placeholder||'请输入'"
       :max-length="item.configList.maxLength"
+      auto-size
     />
     <a-input-number
       v-else-if="item.type=='NxInputNum'"
@@ -83,7 +84,7 @@
         </a-checkbox>
       </a-checkbox-group>
     </a-space>
-    <a-row v-if="item.type=='NxGrid'" style="width: 100%;">
+    <a-row class="nxf-row" v-if="item.type=='NxGrid'" style="width: 100%;">
       <a-col
         v-for="(citem,cindex ) in item.configList.layout.colContent"
         :key="cindex"
@@ -123,6 +124,7 @@
           :key="index"
           :title="citem.value"
           :data-index="citem.key"
+          :width="citem.width"
         >
           <template #cell="{ rowIndex }">
             <div class="nxf-table-td" v-for="(ccitem,ccindex) in item.configList.layout.colContent[index]" :key="ccindex">
@@ -138,12 +140,17 @@
               />
             </div>
             <a-space v-if="citem.key === 'operate'">
-              <a-button type="outline" @click="tableAdd(rowIndex)">
+              <a-button
+                class="operate-btn"
+                type="text"
+                @click="tableAdd(rowIndex)"
+              >
                 添加
               </a-button>
               <a-button
                 v-show="rowIndex"
-                type="outline"
+                class="operate-btn"
+                type="text"
                 @click="cardDelete(rowIndex)"
               >
                 删除
@@ -252,7 +259,7 @@ export default {
       deafultList: [],
     })
     if(props.item.type === 'NxTable') {
-      config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作' }]]
+      config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作',width:100 }]]
     }
     if(props.item.type === 'NxDatePicker') {
       props.item.configList.showToday && (props.formData[props.id] = Date.now())

@@ -22,8 +22,8 @@ export const setting = [
     type: 'NxDoubleInput',
     configList:{
       columns:[{
-        value: '',
-        key: '',
+        value: '1',
+        key: '1',
       }],
       label:'表格头',
       fileId:'columns'
