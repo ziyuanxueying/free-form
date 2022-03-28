@@ -113,7 +113,6 @@ export default {
           infoMetaId:props.infoMetaId,
           colShowList:props.colShowList,
         })
-      console.log('state.searchList: ', state.searchList)
     }
     function selectChage () {
       state.pagination.current = 1
@@ -150,6 +149,7 @@ function pageInteraction ({ props, state }) {
       infoMetaId:props.infoMetaId,
       colShowList: props.colShowList,
       colSearchList: state.searchList,
+      page: state.pagination.current,
     }).then((res)=> {
       state.loading = false
       state.tableList = res.content
