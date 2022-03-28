@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%;">
     <ItemOaInfoTable
-      v-if="columns.length>1"
+      v-if="item.configList.oaChooseDataitem.length>1"
       :columns="[...columns, ...[{
         colName: '操作',
         tableName: '',

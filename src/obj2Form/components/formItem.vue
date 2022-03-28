@@ -12,15 +12,17 @@
     :wrapper-col-props="['NxGrid','NxTable','NxOAInfo'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
+    <!-- v-if="item.type=='NxUpload'&&!(ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false)))" -->
     <n-upload
-      v-if="item.type=='NxUpload'&&!(ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false)))"
+      v-if="item.type=='NxUpload'"
       :default-files="deafultList"
       v-model:files="formData[id]"
       :limit="item.configList.maxCount"
-      :state="$route.query.type === 'edit' ? 'edit' :'detail'"
+      :state="['copy','edit'].includes($route.query.type) ? 'edit' :'detail'"
       @change="changeFileList(field&&id?`${field}${id}`:field||id)"
+      :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     />
-    <a-upload action="/" disabled v-if="item.type=='NxUpload'&&(ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false)))"/>
+    <!-- <a-upload action="/" disabled v-if="item.type=='NxUpload'&&(ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false)))"/> -->
     <a-textarea
       v-if="item.type=='NxTextarea'"
       v-model="formData[id]"
@@ -106,6 +108,7 @@
           :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
           :id="ccitem.configList.fileId||ccitem.componentId"
           :field="field"
+          :formRef="formRef"
           :span="Array.isArray(item.configList.layout.colCount)? (24/item.configList.layout.colCount[cindex].key)*4:(24/item.configList.layout.colCount)*4"  
         />
       </a-col>
@@ -125,6 +128,7 @@
           :title="citem.value"
           :data-index="citem.key"
           :width="citem.width"
+          :align="citem.align?citem.align:''"
         >
           <template #cell="{ rowIndex }">
             <div class="nxf-table-td" v-for="(ccitem,ccindex) in item.configList.layout.colContent[index]" :key="ccindex">
@@ -137,6 +141,7 @@
                 :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
                 :id="`${ccitem.configList.fileId||ccitem.componentId}`"
                 :field="`${item.configList.layout.fileId}.${rowIndex}.`"
+                :formRef="formRef"
               />
             </div>
             <a-space v-if="citem.key === 'operate'">
@@ -199,6 +204,7 @@
               :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
               :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
               :id="ccitem.configList.fileId||ccitem.componentId"
+              :formRef="formRef"
               :field="id.indexOf('NxGrid') === -1 ?`${item.configList.layout.fileId}.${dindex}.`:`${item.configList.layout.fileId}.${dindex}.${ccitem.configList.fileId||ccitem.componentId}`"
             />
           </div>
@@ -236,6 +242,7 @@
           :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
           :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
           :id="ccitem.configList.fileId||ccitem.componentId"
+          :formRef="formRef"
         />
       </div>
     </template>
@@ -259,7 +266,7 @@ export default {
       deafultList: [],
     })
     if(props.item.type === 'NxTable') {
-      config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作',width:100 }]]
+      config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作',width:100 ,align:'center' }]]
     }
     if(props.item.type === 'NxDatePicker') {
       props.item.configList.showToday && (props.formData[props.id] = Date.now())
@@ -279,6 +286,7 @@ export default {
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
     }
     const changeFileList = (id)=>{
+    //   console.log('props.formRef: ', props.formRef, id)
       props.formRef.validateField(id)
     }
     watch(()=>props.formData,()=>{
