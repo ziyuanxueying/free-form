@@ -6,7 +6,8 @@
         colName: '操作',
         tableName: '',
         dataIndex: 'operate',
-        width: 100
+        width: 110,
+        align:'center'
       }]]"
       :data="formData[item.configList.fileId]"
       @btnClick="btnClick"
@@ -58,7 +59,8 @@ export default {
       pagination: { current: 1, total: 0, },
       tableList:[],
       rowSelection: { type: 'radio' },
-      data: [{}]
+      data: [{}],
+      itemIndex: 0,
     })
 
     function setColumns () {
@@ -75,17 +77,19 @@ export default {
     }
 
     function modalChoose (val) {
+      if(_.isEmpty(val)) return
       if(JSON.stringify(props.formData[props.item.configList.fileId][0]) === '{}' 
          || state.columns.length === 1) {
         props.formData[props.item.configList.fileId][0] = val
         return
       }
-      props.formData[props.item.configList.fileId].push(val)
+      props.formData[props.item.configList.fileId].splice(state.itemIndex + 1, 0, val)
     }
 
     function btnClick (val,index) {
       if(val === 'add') {
         state.linkShow = true
+        state.itemIndex = index
       } else {
         props.formData[props.item.configList.fileId].splice(index,1)
       }

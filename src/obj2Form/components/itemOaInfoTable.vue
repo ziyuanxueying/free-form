@@ -14,6 +14,7 @@
         :data-index="column.dataIndex"
         :width="column.width"
         :fixed="column.fixed"
+        :align="column.align ? column.align : 'left'"
       >
         <template v-if="['operate',column.tableName].includes(column.dataIndex)" #cell="{ record,rowIndex }">
           <div class="cell-item" v-for="(info,key) in record[column.dataIndex]" :key="key">
@@ -46,7 +47,7 @@
 </template>
 
 <script>
-import { reactive, toRefs,  } from 'vue'
+import { reactive, toRefs, } from 'vue'
 export default {
   props:{
     columns:{ type:Array,default :()=>[] }, 
