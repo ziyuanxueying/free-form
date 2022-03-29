@@ -21,7 +21,7 @@
       :placeholder="item.configList.placeholder||'请选择'"
       :allow-search="true"
     >
-      <a-option v-for="(citem,index) in list" :key="index" :value="citem.key || citem.value">
+      <a-option v-for="(citem,index) in list" :key="index" :value="citem.value">
         {{ citem.value }}
       </a-option>
     </a-select>

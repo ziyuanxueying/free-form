@@ -119,11 +119,11 @@ import { reactive, toRefs,watch, } from 'vue'
 import { post } from '../utils/request'
 import _ from 'lodash'
 const applys = [{ key: 1, value:'本人发起' },{ key:2, value:'他人发起' }]
-const searchs = [{ key: 1, value:'表单标题' },{ key:2, value:'申请人' },{ key:3, value:'申请时间' }]
+const searchs = [{ key: 1, value:'表单标题' },{ key:2, value:'发起人' },{ key:3, value:'申请时间' }]
 const columns = [  
   { title: '表单类型', dataIndex: 'tplClassifyName',  width: 80, align: 'left', },
   { title: '表单标题', dataIndex: 'title', width: 180 ,align:'left' },
-  { title: '申请人', dataIndex: 'applyUserName', width: 120, align: 'left' },
+  { title: '发起人', dataIndex: 'applyUserName', width: 120, align: 'left' },
   { title: '申请时间', dataIndex: 'submitTime', width: 150, align: 'left' }]
 export default {
   props:{
