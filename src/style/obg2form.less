@@ -47,6 +47,23 @@
   border-right: 1px solid var(--color-neutral-3);
 }
 
+:deep(.arco-form-item-content-wrapper) {
+  display: block;
+}
+
+:deep(.arco-table) {
+  overflow: auto;
+
+  .arco-table-cell {
+    // min-width: 100px;
+
+    .arco-select-view-single {
+      // display: block;
+      width: 120px;
+    }
+  }
+}
+
 .form-title {
   margin: 10px;
   font-size: 20px;
@@ -70,7 +87,7 @@
 
     :deep(.arco-table) {
       overflow: auto;
-      width: calc(100vw - 50px) !important;
+      width: calc(100vw - 20px) !important;
 
       .arco-table-container {
         overflow-x: auto;

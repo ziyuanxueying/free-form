@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, watch } from 'vue'
+import { reactive, toRefs, watch , } from 'vue'
 import { post } from '../../tools/request'
 import _ from 'lodash'
 import ItemOaInfoTable from './itemOaInfoTable.vue'
@@ -76,7 +76,6 @@ export default {
     })
 
     const { getInitData, ...pageInteractionFun } = pageInteraction({ props,state })
-
     function handleOk () {
       if(props.itemUse === 'show') {
         emit('modalChoose', state.chooseItem)
@@ -93,8 +92,18 @@ export default {
           for(let item of state.chooseItem[i]) {
             let params = { }
             for(let child in item) {
+              console.log('child: ', item[child])
               if (!tagFormLink[child]) continue
-              params[tagFormLink[child]] = item[child]
+              if(tagFormLink[child].indexOf('upload') !== -1) {
+                params[tagFormLink[child]] = item[child].indexOf('[{}]') !== -1 || item[child] === '' ? [] : JSON.parse(item[child]) 
+              } 
+              //   if(item[child].indexOf('[{') !== -1) { 
+              //     params[tagFormLink[child]] = item[child].indexOf('[{}]') !== -1 ? [] : JSON.parse(item[child]) 
+              //     console.log('item[child]: ', params[tagFormLink[child]])
+              //   }
+              else{
+                params[tagFormLink[child]] = item[child]
+              }
             }
             arr.push(params)
           }

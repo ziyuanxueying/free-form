@@ -94,7 +94,5 @@ export default defineComponent({
   :deep(.arco-table-cell) {
     display: flex;
   }
-  :deep(.nxf-table-td) {
-  }
 }
 </style>

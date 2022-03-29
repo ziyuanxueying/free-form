@@ -290,7 +290,8 @@ export default {
       props.formRef.validateField(id)
     }
     watch(()=>props.formData,()=>{
-      if(props.item.type === 'NxUpload' && !config.deafultList.length) {
+    //   if(props.item.type === 'NxUpload' && !config.deafultList.length) {
+      if(props.item.type === 'NxUpload') {
         let val = JSON.stringify(props.formData[props.id] || [])
         if(val !== JSON.stringify(config.deafultList)) {
           config.deafultList = JSON.parse(val)
