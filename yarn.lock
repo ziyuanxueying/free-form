@@ -1308,10 +1308,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@naxions/nax-common@^0.2.14":
-  version "0.2.19"
-  resolved "http://npm.naxions.com/@naxions/nax-common/-/nax-common-0.2.19.tgz#3fcaf69bf3416ffa3e0e2daa9e7931368fc76855"
-  integrity sha512-fGNFPyOHpbi5QCKPbSkAJJ3gM9U1ofgAsn/sYxUZ5MndEJpgbJsfRPG7cH4xvnmIQ03I4ds++0XNbshWv3cA1A==
+"@naxions/nax-common@^0.2.21":
+  version "0.2.21"
+  resolved "http://npm.naxions.com/@naxions/nax-common/-/nax-common-0.2.21.tgz#7ccd2b84ab85c926072f1639a7516f44a833972e"
+  integrity sha512-ssALOsXL4jZVmuDqNt2zL7ArflLfeq+8eMgslujOXsTHNZn6CLXQZooxAI25dFfEE1Y2jeYa8CdWQi+BOXQ+Gg==
   dependencies:
     "@babel/preset-typescript" "^7.16.7"
     "@css-render/plugin-bem" "^0.15.8"
