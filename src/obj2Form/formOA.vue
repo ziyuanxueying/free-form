@@ -5,6 +5,7 @@
         :model="formData"
         class="nxf-layout-form-pc"
         ref="formRef"
+        :layout="innerWidth > 480 ? 'horizontal': 'vertical'"
       >
         <div class="form-title">
           {{ formTitle }}
@@ -73,8 +74,10 @@ export default {
       colShowList:[],
       linkShow: false,
       infoBtn: false,
-      infoMetaId: undefined
+      infoMetaId: undefined,
+      innerWidth:0
     })
+    formConfig.innerWidth =  window.innerWidth
     //存放原始表单数据，用于重置
     let resetFromData = {}
     let componentId2fileId = {}

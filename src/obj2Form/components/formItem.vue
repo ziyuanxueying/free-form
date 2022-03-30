@@ -8,7 +8,7 @@
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
     :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},] "
-    :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:4,lg:span?span:4}"
+    :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:20,lg:span?span:4}"
     :wrapper-col-props="['NxGrid','NxTable','NxOAInfo'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="ifDisabled?'':item.configList.placeholder"/>
