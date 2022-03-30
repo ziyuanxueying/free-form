@@ -3,7 +3,7 @@
     <a-select
       v-if="item.type=='NxStaff'"
       v-model="formData[id]"
-      :placeholder="item.configList.placeholder||'请选择'"
+      :placeholder="ifDisabled?'':item.configList.placeholder"
       @search="handleSearch"
       :filter-option="false"
       :allow-search="true"
@@ -18,7 +18,7 @@
     <a-select
       v-if="['NxOABank','NxOACity'].includes(item.type)"
       v-model="formData[id]"
-      :placeholder="item.configList.placeholder||'请选择'"
+      :placeholder="ifDisabled?'':item.configList.placeholder"
       :allow-search="true"
     >
       <a-option v-for="(citem,index) in list" :key="index" :value="citem.key || citem.value">
