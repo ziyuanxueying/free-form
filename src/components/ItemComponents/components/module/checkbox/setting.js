@@ -6,7 +6,7 @@ let checkboxSetting = {
   hideLabel:false,
   defaultVal:[],
   remote: false,
-  columns: [{ value: 'value', key: 'key', }],
+  columns: [{ value: 'value', key: 'key', id:Math.random() }],
   remoteUrl:'/',
   keys: {  key:'', value:'' },
   remotePath:''
