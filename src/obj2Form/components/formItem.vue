@@ -11,8 +11,7 @@
     :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:4,lg:span?span:4}"
     :wrapper-col-props="['NxGrid','NxTable','NxOAInfo'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
-    <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="item.configList.placeholder||'请输入'"/>
-    <!-- v-if="item.type=='NxUpload'&&!(ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false)))" -->
+    <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="ifDisabled?'':item.configList.placeholder"/>
     <n-upload
       v-if="item.type=='NxUpload'"
       :default-files="deafultList"
@@ -26,35 +25,24 @@
     <a-textarea
       v-if="item.type=='NxTextarea'"
       v-model="formData[id]"
-      :placeholder="item.configList.placeholder||'请输入'"
+      :placeholder="ifDisabled?'':item.configList.placeholder"
       :max-length="item.configList.maxLength"
       auto-size
     />
     <a-input-number
       v-else-if="item.type=='NxInputNum'"
       v-model="formData[id]"
-      :placeholder="item.configList.placeholder||'请输入'"
+      :placeholder="ifDisabled?'':item.configList.placeholder"
       :min="item.configList.min"
       :max="item.configList.max"
       :precision="item.configList.precision" 
     />
-    <template v-if="item.type=='NxInputNum'" #extra>
-      <span v-if="(typeof item.configList.min === 'number')&&(typeof item.configList.max === 'number')">
-        {{ `限制输入${item.configList.min}-${item.configList.max}范围内的数字` }}
-      </span>
-      <span v-if="typeof item.configList.min == 'number'&&(typeof item.configList.max !== 'number')">
-        {{ `限制输入大于${item.configList.min}的数字` }}
-      </span>
-      <span v-if="(typeof item.configList.min !== 'number')&&typeof item.configList.max === 'number'">
-        {{ `限制输入小于${item.configList.max}的数字` }}
-      </span>
-    </template>
     <a-typography-paragraph v-if="item.type=='NxText'" :style="`width: 100%; text-align:${item.configList.position||'left'};`">
       {{ item.configList.defaultVal }}
     </a-typography-paragraph>
     <a-date-picker
       v-if="item.type=='NxDatePicker'"
-      :placeholder="item.configList.placeholder||'请输入'"
+      :placeholder="ifDisabled?' ':item.configList.placeholder"
       allow-clear
       v-model="formData[id]"
       :format="item.configList.format"
@@ -65,6 +53,7 @@
       v-if="item.type=='NxRangePicker'"
       v-model="formData[id]"
       allow-clear
+      :placeholder="ifDisabled?' ':''"
       :showTime="item.configList.showTime"
       :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     />
@@ -72,7 +61,7 @@
     <a-select
       v-if="item.type=='NxSelect'"
       v-model="formData[id]"
-      :placeholder="item.configList.placeholder||'请选择'"
+      :placeholder="ifDisabled?'':item.configList.placeholder"
       :multiple="item.configList.multiple"
     >
       <a-option v-for="(citem,index) in proxyOptions[id]" :key="index" :value="citem.key || citem.value">
@@ -108,8 +97,7 @@
           :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
           :id="ccitem.configList.fileId||ccitem.componentId"
           :field="field"
-          :formRef="formRef"
-          :span="Array.isArray(item.configList.layout.colCount)? (24/item.configList.layout.colCount[cindex].key)*4:(24/item.configList.layout.colCount)*4"  
+          :span="Array.isArray(item.configList.layout.colCount)? (24/item.configList.layout.colCount[cindex].key)*4:item.configList.layout.colCount*4"  
         />
       </a-col>
     </a-row>

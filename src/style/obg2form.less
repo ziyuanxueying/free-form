@@ -3,8 +3,8 @@
   min-width: 750px;
 
   :deep(.operate-btn) {
-    margin-left: -8px;
-    padding: 0 8px;
+    margin-right: -8px;
+    padding: 0;
     color: #0089ff;
   }
 
@@ -21,7 +21,7 @@
   :deep(.arco-input:disabled),
   :deep(.arco-textarea:disabled),
   :deep(.arco-checkbox-label),
-  :deep(.arco-select-view-single.arco-select-view-disabled), {
+  :deep(.arco-select-view-single.arco-select-view-disabled) {
     -webkit-text-fill-color: #1c212a;
   }
 
@@ -43,7 +43,7 @@
 }
 
 :deep(.arco-table-th-resizing),
-:deep(.arco-table-td-resizing:not(.arco-table-tr-expand)), {
+:deep(.arco-table-td-resizing:not(.arco-table-tr-expand)) {
   border-right: 1px solid var(--color-neutral-3);
 }
 
@@ -73,6 +73,22 @@
 
 .json-view {
   width: 400px;
+}
+
+/deep/ input::-webkit-input-placeholder {
+  color: #c9cdd4;
+}
+
+/deep/ input::-moz-placeholder {   /* Mozilla Firefox 19+ */
+  color: #c9cdd4;
+}
+
+/deep/ input:-moz-placeholder {    /* Mozilla Firefox 4 to 18 */
+  color: #c9cdd4;
+}
+
+/deep/ input:-ms-input-placeholder {  /* Internet Explorer 10-11 */
+  color: #c9cdd4;
 }
 
 @media screen and (max-width: 480px) {
