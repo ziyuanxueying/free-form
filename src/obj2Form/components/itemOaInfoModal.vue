@@ -78,6 +78,7 @@ export default {
     const { getInitData, ...pageInteractionFun } = pageInteraction({ props,state })
     function handleOk () {
       if(props.itemUse === 'show') {
+        console.log('state.chooseItem: ', state.chooseItem)
         emit('modalChoose', state.chooseItem)
         state.chooseItem = {}
         state.rowSelection.selectedRowKeys = []
@@ -95,7 +96,8 @@ export default {
               console.log('child: ', item[child])
               if (!tagFormLink[child]) continue
               if(tagFormLink[child].indexOf('upload') !== -1) {
-                params[tagFormLink[child]] = item[child].indexOf('[{}]') !== -1 || item[child] === '' ? [] : JSON.parse(item[child]) 
+                params[tagFormLink[child]] = item[child].indexOf('[{}]') !== -1 || item[child] === '' ? [] : item[child]
+                // params[tagFormLink[child]] = item[child].indexOf('[{}]') !== -1 || item[child] === '' ? [] : JSON.parse(item[child]) 
               } 
               //   if(item[child].indexOf('[{') !== -1) { 
               //     params[tagFormLink[child]] = item[child].indexOf('[{}]') !== -1 ? [] : JSON.parse(item[child]) 

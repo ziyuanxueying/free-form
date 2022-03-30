@@ -19,7 +19,22 @@
         <template v-if="['operate',column.tableName].includes(column.dataIndex)" #cell="{ record,rowIndex }">
           <div class="cell-item" v-for="(info,key) in record[column.dataIndex]" :key="key">
             <div v-for="(citem,cindex) in info" :key="cindex">
-              {{ cindex }} : {{ citem }} 
+              <template v-if="Array.isArray(citem)">
+                <div v-for="(file,i) in citem" :key="i">
+                  <a-link class="file-view" :href="file.url" :download="file.name">
+                    <div class="flex-between">
+                      <div class="file-text">
+                        <IconFile/>
+                        {{ file.name }}
+                      </div>
+                      <IconDownload/>
+                    </div>
+                  </a-link>
+                </div>
+              </template>
+              <template v-else>
+                {{ cindex }} : {{ citem }} 
+              </template>
             </div>
           </div>
           <div v-if="column.dataIndex === 'operate'">
@@ -89,6 +104,18 @@ export default {
   &:nth-last-child(2) {
     margin-bottom: -2px;
     border: none;
+  }
+}
+// 上传文件回显的样式
+.file-view {
+  margin-bottom: 4px;
+  padding: 4px 10px;
+  width: 220px;
+  background-color: #fafafa;
+
+  .file-text {
+    width: 200px;
+    word-break: break-all;
   }
 }
 
