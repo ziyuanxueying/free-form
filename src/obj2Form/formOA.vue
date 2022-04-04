@@ -139,7 +139,9 @@ export default {
     //拼接流程对象
     function getPathObj () {
       formStore.pathSet.forEach(item=>{
+        // console.log('item: ', item)
         let prop = componentId2fileId[item.childProp]
+        // console.log('componentId2fileId: ', componentId2fileId)
         if(!pathSetObj[prop]) {
           pathSetObj[prop] = {}
         }

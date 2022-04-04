@@ -4,10 +4,8 @@
  * @param {Object} options options对象
  * @returns 
  */
-// import { toRaw } from '@vue/reactivity'
 import { post } from './request'
 export function getForm (formItemList,options) {
-//   console.log('formItemList: ', formItemList)
   let form = {}
   let componentId2fileId = {}
   formItemList.forEach(item=>{
@@ -39,8 +37,8 @@ export function getForm (formItemList,options) {
         Object.assign(componentId2fileIdObj,res.componentId2fileId)
       })
       if(configList.layout.ifAdd) {
+        item.type === 'NxTable' ? Object.assign(componentId2fileId,componentId2fileIdObj) : (componentId2fileId[item.componentId] = configList.layout.fileId)
         form[configList.layout.fileId] = [obj]
-        componentId2fileId[item.componentId] = configList.layout.fileId
       }else{
         Object.assign(form,obj)
         Object.assign(componentId2fileId,componentId2fileIdObj)
