@@ -37,7 +37,7 @@ export function getForm (formItemList,options) {
         Object.assign(componentId2fileIdObj,res.componentId2fileId)
       })
       if(configList.layout.ifAdd) {
-        item.type === 'NxTable' ? Object.assign(componentId2fileId,componentId2fileIdObj) : (componentId2fileId[item.componentId] = configList.layout.fileId)
+        componentId2fileId[item.componentId] = configList.layout.fileId
         form[configList.layout.fileId] = [obj]
       }else{
         Object.assign(form,obj)

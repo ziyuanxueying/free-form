@@ -3,11 +3,10 @@
     v-show="!hide&&item.type!=='NxCard'"
     :field="field&&id?`${field}${id}`:field||id"
     :label="item.configList.label|| item.moduleName"
-    :required="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
     :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
-    :rules="[{required:ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false)),message:'请完善当前项'},] "
+    :rules="[{required:isRequired(),message:'请完善当前项'},] "
     :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:20,lg:span?span:4}"
     :wrapper-col-props="['NxGrid','NxTable','NxOAInfo'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
@@ -125,11 +124,12 @@
                 :formData="formData[item.configList.layout.fileId][rowIndex]"
                 :proxyOptions="proxyOptions"
                 :pathSetObj="pathSetObj"
-                :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
+                :ifRequired="isRequired()"
                 :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
                 :id="`${ccitem.configList.fileId||ccitem.componentId}`"
                 :field="`${item.configList.layout.fileId}.${rowIndex}.`"
                 :formRef="formRef"
+                :hidden="hide"
               />
             </div>
             <a-space v-if="citem.key === 'operate'">
@@ -274,8 +274,13 @@ export default {
       props.formData[props.item.configList.layout.fileId].splice(dindex,1)
     }
     const changeFileList = (id)=>{
-    //   console.log('props.formRef: ', props.formRef, id)
       props.formRef.validateField(id)
+    }
+    function isRequired () {
+      if(props.hidden) {
+        return false
+      }
+      return props.ifRequired || (props.pathSetObj[props.id]?.required ? config.required : (props.item.configList.required || false))
     }
     watch(()=>props.formData,()=>{
     //   if(props.item.type === 'NxUpload' && !config.deafultList.length) {
@@ -308,7 +313,8 @@ export default {
       cardAdd,
       cardDelete,
       tableAdd,
-      changeFileList
+      changeFileList,
+      isRequired,
     }
   },
   props:{
@@ -343,7 +349,11 @@ export default {
     },
     // 校验是否必填增加的字段
     field:{ type: String, default:'' },
-    formRef:{ type:Object }
+    formRef:{ type:Object },
+    hidden:{
+      type:Boolean,
+    //   default:()=>false
+    },
   }
 }
 </script>
