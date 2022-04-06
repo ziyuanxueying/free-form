@@ -6,7 +6,7 @@
     :disabled="disabled"
     :hideLabel="hideLabel"
     :label-col-props="{span:4}"
-    :wrapper-col-props="{span:20}"
+    :wrapper-col-props="{span:10}"
   >
     <a-input-number
       :placeholder="placeholder"

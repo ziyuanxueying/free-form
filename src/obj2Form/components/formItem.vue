@@ -1,6 +1,7 @@
 <template>
+  <!-- v-show="!hide&&item.type!=='NxCard'" -->
   <a-form-item
-    v-show="!hide&&item.type!=='NxCard'"
+    v-show="!hide&&item.type!=='NxCard'" 
     :field="field&&id?`${field}${id}`:field||id"
     :label="item.configList.label|| item.moduleName"
     :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
@@ -92,10 +93,11 @@
           :key="ccindex"
           :proxyOptions="proxyOptions"
           :pathSetObj="pathSetObj"
-          :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
+          :ifRequired="isRequired()"
           :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
           :id="ccitem.configList.fileId||ccitem.componentId"
           :field="field"
+          :hidden="hide"
           :span="Array.isArray(item.configList.layout.colCount)? (24/item.configList.layout.colCount[cindex].key)*4:item.configList.layout.colCount*4"  
         />
       </a-col>
@@ -189,7 +191,8 @@
               :formData="ditem"
               :proxyOptions="proxyOptions"
               :pathSetObj="pathSetObj"
-              :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
+              :ifRequired="isRequired()"
+              :hidden="hide"
               :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
               :id="ccitem.configList.fileId||ccitem.componentId"
               :formRef="formRef"
@@ -227,7 +230,8 @@
           :formData="formData"
           :proxyOptions="proxyOptions"
           :pathSetObj="pathSetObj"
-          :ifRequired="ifRequired||(pathSetObj[id]?.required?required:(item.configList.required||false))"
+          :ifRequired="isRequired()"
+          :hidden="hide"
           :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
           :id="ccitem.configList.fileId||ccitem.componentId"
           :formRef="formRef"
@@ -278,6 +282,7 @@ export default {
     }
     function isRequired () {
       if(props.hidden) {
+        console.log(props.item.type)
         return false
       }
       return props.ifRequired || (props.pathSetObj[props.id]?.required ? config.required : (props.item.configList.required || false))
