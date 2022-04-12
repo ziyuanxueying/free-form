@@ -93,16 +93,10 @@ export default {
           for(let item of state.chooseItem[i]) {
             let params = { }
             for(let child in item) {
-              console.log('child: ', item[child])
               if (!tagFormLink[child]) continue
               if(tagFormLink[child].indexOf('upload') !== -1) {
                 params[tagFormLink[child]] = item[child].indexOf('[{}]') !== -1 || item[child] === '' ? [] : item[child]
-                // params[tagFormLink[child]] = item[child].indexOf('[{}]') !== -1 || item[child] === '' ? [] : JSON.parse(item[child]) 
               } 
-              //   if(item[child].indexOf('[{') !== -1) { 
-              //     params[tagFormLink[child]] = item[child].indexOf('[{}]') !== -1 ? [] : JSON.parse(item[child]) 
-              //     console.log('item[child]: ', params[tagFormLink[child]])
-              //   }
               else{
                 params[tagFormLink[child]] = item[child]
               }

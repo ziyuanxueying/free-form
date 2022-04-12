@@ -101,7 +101,6 @@ export default {
   }
 }
 
-
 .line {
   margin-top: 10px;
   border-bottom: 1px solid #f0f0f0;

@@ -15,18 +15,24 @@ export const useFormConfigStore = defineStore('formConfig', {
       },
       //流程控制
       pathSet:[],
-      isPreview:false,
-      moduleList:[],
-      //关联信息库
-      informationBase:'',
-      //读写类型
-      type:'',
-      delList:[], //被删除的组件列表
+      isPreview:false, // 是否预览
       infobaseSet:{
         type: '0' ,// 新增，更新，停用
         informationBase: '' ,// 关联信息库ID
         moduleList:[],
         delList:[]
+      },
+      relationSet:{
+        templates:[],//关联模板
+        components:[ //设置组件
+          {
+            orgComponent:'',// 原组件
+            relationType:'',// 关联类型 相等/统计
+            relationTem:'',// 关联模板
+            relationCompo:'',// 关联组件
+            relationFunc:'',// 关联函数
+          }
+        ],
       }
     }
   },
