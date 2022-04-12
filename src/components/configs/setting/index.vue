@@ -1,8 +1,12 @@
 <template>
-  <a-button type="primary" style="margin-bottom:10px" @click="showInforBase=true">
+  <a-button type="primary" style="margin-bottom: 10px;" @click="showInforBase=true">
     设置读写信息库
   </a-button>
+  <a-button type="primary" class="link-btn" @click="linkShow=true">
+    关联模板设置
+  </a-button>
   <InforBase @closeInforBase="closeInforBase" v-if="showInforBase"/>
+  <RelationSet v-model:linkShow="linkShow"/>
   <a-radio-group class="set-view" v-model="settingType" type="button">
     <a-radio value="item">
       组件设置
@@ -20,20 +24,19 @@ import { reactive, toRefs } from 'vue'
 import Setting from './setItem'
 import SetForm from './setForm'
 import InforBase from './components/inforBase.vue'
+import RelationSet from './components/relationSet.vue'
 export default {
   components:{
     Setting,
     SetForm,
-    InforBase
-  },
-  data () { 
-    return {
-      settingType:'item'
-    }
+    InforBase,
+    RelationSet,
   },
   setup () { 
     const state = reactive({
-      showInforBase:false
+      showInforBase:false,
+      settingType:'item',
+      linkShow:true,
     })
     function closeInforBase () {
       state.showInforBase = false
@@ -64,4 +67,7 @@ export default {
   }
 }
 
+.link-btn {
+  margin-left: 10px;
+}
 </style>

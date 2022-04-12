@@ -16,8 +16,11 @@
           type="primary"
           @click="linkShow=true"
         >
-          选择供应商库
+          选择信息库
         </a-button>
+        <a-form-item :label="`选择信息库`" :label-col-props="{xs:20,lg:span?span:4}" @click="linkShow=true">
+          <a-input :placeholder="`请选择`" readonly/>
+        </a-form-item>
         <FormItem
           v-for="item in formObj"
           :key="item.configList.fileId ||item.componentId"

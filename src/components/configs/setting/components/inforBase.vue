@@ -137,7 +137,7 @@ export default {
             rule:item.validRule,
             uiType:item.uiType ,
             id:index,
-            nodePathArray:[],
+            // nodePathArray:[],
           }
         })
       }).finally(()=>{

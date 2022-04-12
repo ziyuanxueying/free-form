@@ -82,15 +82,12 @@ export function getComponentsObj (arr,componentId) {
 export function getTree (formItemList,disabled,tip = '',nodePathArray = ['root']) {
   let treeData = []
   formItemList.forEach(item=>{
-    // console.log(1111,toRaw(item.configList))
     let obj = null
     if(item.configList.layout) {
       let mtip = tip
       //重复表的判断条件
       let condition = item.type === 'NxTable' || (item.type === 'NxCard' && item.configList.layout.ifAdd)
-      if(condition) {
-        mtip = '(重复表)'
-      }
+      if(condition) { mtip = `(${item.configList.layout.label})` }
       obj =  {
         title: item.configList.layout.label || item.moduleName,
         key: item.componentId,
@@ -296,4 +293,16 @@ export function getComponentIdbyFileId (formItemList) {
     })
   }
   return _obj
+}
+
+// 拍平数组中的对象
+export function  trsfromData (data, chidlren) {
+  const targetData = data
+  function flat (dataObj) {
+    return dataObj.reduce((result, item) => {
+      item[chidlren] ? result = result.concat(flat(item[chidlren])) : result.push(item)
+      return result
+    }, [])
+  }
+  return flat(targetData)
 }
