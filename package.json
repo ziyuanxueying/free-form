@@ -13,6 +13,7 @@
     "prepublish": "npm version patch"
   },
   "dependencies": {
+    "@babel/preset-typescript": "^7.16.7",
     "@naxions/nax-common": "^0.2.21",
     "axios": "^0.25.0",
     "core-js": "^3.6.5",
