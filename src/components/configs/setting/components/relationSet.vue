@@ -1,82 +1,100 @@
 <template>
-  <a-modal
-    v-model:visible="linkShow"
-    @ok="handleOk"
-    title-align="start"
-    width="800px"
-  >
-    <template #title>
-      关联模板设置
-    </template>
-    <div>
-      <div class="model-title">
-        选择关联模板
+  <div>
+    <a-modal
+      v-model:visible="linkShow"
+      @ok="handleOk"
+      title-align="start"
+      width="700px"
+    >
+      <template #title>
+        关联模板设置
+      </template>
+      <div>
+        <span class="model-title">
+          关联模板：
+        </span>
+        <a-select :style="{width:'480px'}" placeholder="请选择" multiple>
+          <a-option>
+            Beijing
+          </a-option>
+          <a-option>
+            Shanghai
+          </a-option>
+          <a-option>
+            Guangzhou
+          </a-option>
+        </a-select>
       </div>
-      <a-select :style="{width:'750px'}" placeholder="请选择" multiple>
-        <a-option>
-          Beijing
-        </a-option>
-        <a-option>
-          Shanghai
-        </a-option>
-        <a-option>
-          Guangzhou
-        </a-option>
-      </a-select>
-    </div>
-    <div style="margin-top: 20px;">
-      <div class="model-title">
-        设置组件
+      <div style="margin-top: 20px;">
+        <a-table
+          :columns="columns"
+          :data="data"
+          :bordered="{wrapper: true, cell: true}"
+        >
+          <template #columns>
+            <a-table-column
+              v-for="(column, index) in columns"
+              :key="index"
+              :title="column.title"
+              :data-index="column.dataIndex"
+              :width="column.width"
+              :fixed="column.fixed"
+              :align="column.align ? column.align : 'center'"
+            >
+              <template #cell="{ record,rowIndex }">
+                <div v-if="column.dataIndex === 'orgComponent'" class="org-view">
+                  <span class="flex-column" style="justify-content: center; height: 50px;">
+                    {{ record.orgComponent }}
+                  </span>
+                </div>
+                <div v-if="column.dataIndex === 'relationType'">
+                  <a-select
+                    v-model="record.relationType"
+                    :style="{width:'100px'}"
+                    placeholder="请选择"
+                    @change="typeChange($event,rowIndex,'relationType')"
+                  >
+                    <!-- :bordered="false" -->
+                    <a-option :value="0">
+                      相等
+                    </a-option>
+                    <a-option :value="1">
+                      统计
+                    </a-option>
+                  </a-select>
+                </div>
+                <div v-if="column.dataIndex === 'relationTem'">
+                  <a-select
+                    v-model="record.relationTem"
+                    :style="{width:'100px'}"
+                    placeholder="请选择"
+                    @change="typeChange($event,rowIndex,'relationTem')"
+                    allow-clear
+                  >
+                    <!-- :bordered="false" -->
+                    <a-option :value="0">
+                      本表
+                    </a-option>
+                    <a-option :value="1">
+                      表单1
+                    </a-option>
+                    <a-option :value="2">
+                      表单2
+                    </a-option>
+                  </a-select>
+                </div>
+                <template/>
+              </template>
+            </a-table-column>
+          </template>
+        </a-table>
+        {{ data }}
       </div>
-      <a-table
-        :columns="columns"
-        :data="data"
-        :bordered="{wrapper: true, cell: true}"
-      >
-        <template #columns>
-          <a-table-column
-            v-for="(column, index) in columns"
-            :key="index"
-            :title="column.title"
-            :data-index="column.dataIndex"
-            :width="column.width"
-            :fixed="column.fixed"
-            :align="column.align ? column.align : 'left'"
-          >
-            <template #cell="{ record,rowIndex }">
-              {{ record }}
-              <div v-if="column.dataIndex === 'orgComponent'">
-                {{ record.orgComponent }}
-              </div>
-              <div v-if="column.dataIndex === 'relationType'">
-                <a-select
-                  v-model="record.relationType"
-                  :style="{width:'200px'}"
-                  placeholder="请选择"
-                  @change="typeChange($event,rowIndex)"
-                >
-                  <a-option :value="0">
-                    本表
-                  </a-option>
-                  <a-option :value="1">
-                    表单1
-                  </a-option>
-                  <a-option :value="2">
-                    表单2
-                  </a-option>
-                </a-select>
-              </div>
-              <template/>
-            </template>
-          </a-table-column>
-        </template>
-      </a-table>
-      {{ data }}
-    </div>
-  </a-modal>
+    </a-modal>
+  </div>
 </template>
 <script lang="ts">
-// import{ post } from '@/tools/request'
+// <script lang="ts">
 import { reactive, toRefs, watch } from 'vue-demi'
 import { useFormConfigStore } from '../../../../store'
 import { getTree,trsfromData } from '../../../../utils'
@@ -95,10 +113,10 @@ export default {
       type:'0',
       loading:false,
       columns : [
-        { title: '原组件', dataIndex: 'orgComponent', },
-        { title: '关联类型', dataIndex: 'relationType', },
+        { title: '原组件', dataIndex: 'orgComponent',width:140 },
         { title: '关联模板', dataIndex: 'relationTem', },
         { title: '关联组件', dataIndex: 'relationCompo', },
+        { title: '关联类型', dataIndex: 'relationType', },
         { title: '关联函数', dataIndex: 'relationFunc', },
       ],
       data:[]
@@ -128,12 +146,9 @@ export default {
       })
     }
 
-    function typeChange (val,index) {
-      state.data[index].relationType = val
+    function typeChange (val,index,param) {
+      state.data[index][param] = val
       console.log('name,index: ', val,index)
-    //   post('/oa-platform/infoMeta/selectList',{ name }).then(res=>{
-    //     state.inforBaseList = res || []
-    //   })
     }
 
     // eslint-disable-next-line consistent-return
@@ -158,5 +173,16 @@ export default {
 .model-title {
   margin-bottom: 10px;
   font-weight: bold;
+}
+
+:deep(.arco-table-td .arco-table-cell) {
+  padding: 8px 0;
+}
+
+.org-view {
+  margin: -8px 0;
+  width: 140px;
+  height: 50px;
+  background-color: var(--color-neutral-2);
 }
 </style>

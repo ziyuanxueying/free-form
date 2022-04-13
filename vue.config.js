@@ -10,6 +10,35 @@ module.exports = {
       .set('@request', resolve('src/tools/request.js'))
       .set('@store', resolve('src/store'))
   },
+
+  configureWebpack: config => {
+    // config.entry = './src/main.ts'
+    config.resolve = {
+      extensions: ['.ts', '.tsx', '.js', '.vue']
+    }
+    config.module.rules.push(
+      ...[
+        {
+          test: /\.ts$/,
+          exclude: /node_modules/,
+          enforce: 'pre',
+          loader: 'tslint-loader'
+        },
+        {
+          test: /\.tsx?$/,
+          loader: 'ts-loader',
+          exclude: /node_modules/,
+          options: {
+            appendTsSuffixTo: [/\.vue$/]
+          }
+        }
+      ],
+    )
+    //调试JS
+    // config.devtool = 'source-map'
+    
+  },
+
   // 配置 webpack-dev-server 行为
   devServer: {
     overlay: { // 让浏览器 overlay 同时显示警告和错误

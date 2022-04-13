@@ -24,8 +24,8 @@
   "[vue]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint" // 格式规范由prettier改为eslint
   },
-  //   "[typescript]": {
-  //     "editor.defaultFormatter": "esbenp.prettier-vscode" // 格式规范由prettier改为eslint
-  //   },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode" // 格式规范由prettier改为eslint
+  },
   "vetur.format.options.tabSize": 2
 }

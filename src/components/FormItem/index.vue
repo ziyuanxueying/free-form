@@ -1,5 +1,6 @@
 <template>
-  <div :class="pageFrom==='setting'&&proto!=='columns'?'line':''">
+  <!-- <div :class="pageFrom==='setting'&&proto!=='columns'?'line':''"> -->
+  <div>
     <component
       :is="item"
       v-bind="{...element.configList,pageFrom}"
@@ -100,13 +101,13 @@ export default {
     color: #0089ff;
   }
 }
-
+// 右侧设置的form样式
 .line {
-  margin-top: 10px;
-  border-bottom: 1px solid #f0f0f0;
+  //   margin-top: 10px;
+  //   border-bottom: 1px solid #f0f0f0;
 
   .arco-row {
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
   }
 
   &:last-child {

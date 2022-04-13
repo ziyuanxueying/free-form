@@ -25,7 +25,6 @@
     }
 
     .nxf-layout-item {
-
       .nxf-layout-item-title {
         margin-top: 10px;
         padding: 0 30px;
@@ -47,8 +46,8 @@
             margin: 4px;
             border: 1px solid @border-color;
             border-radius: 2px;
+            padding-left: 14px;
             width: 120px;
-            text-align: center;
             background-color: white;
             line-height: 30px;
             box-sizing: border-box;
@@ -78,38 +77,37 @@
         height: 100%;
       }
 
-        .nxf-layout-content-form-item {
-          position: relative;
-          margin-bottom: 12px;
-          border: 1px solid transparent;
+      .nxf-layout-content-form-item {
+        position: relative;
+        margin-bottom: 12px;
+        border: 1px solid transparent;
+        width: 100%;
+        box-sizing: border-box;
+        cursor: move;
+
+        &:hover {
+          border: 1px dashed #64b4fe;
+        }
+
+        .arco-form-item-content-flex {
           width: 100%;
-          box-sizing: border-box;
-          cursor: move;
-
-          &:hover {
-            border: 1px dashed #64b4fe;
-          }
-
-          .arco-form-item-content-flex {
-            width: 100%;
-          }
-
-
-          .arco-form-item-label {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-
-          .arco-typography {
-            padding: 0 16px;
-            line-height: 32px;
-          }
         }
 
-        .nxf-layout-content-form-item-active {
-          border: 1px solid #1890ff;
+        .arco-form-item-label {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
+
+        .arco-typography {
+          padding: 0 16px;
+          line-height: 32px;
+        }
+      }
+
+      .nxf-layout-content-form-item-active {
+        border: 1px solid #1890ff;
+      }
     }
 
     .tabs-btn {
@@ -127,8 +125,8 @@
 
   .nxf-layout-right {
     position: relative;
-    padding: 10px;
-    width: 320px;
+    padding: 10px 20px;
+    width: 300px;
     background-color: white;
 
     .nx-form-setting-title {

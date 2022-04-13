@@ -37,7 +37,7 @@
   </div>
 </template>
 <script>
-import{ post } from '@/tools/request'
+import{ post } from '../../../../tools/request'
 import { reactive, toRefs } from 'vue-demi'
 import _ from 'lodash'
 export default {

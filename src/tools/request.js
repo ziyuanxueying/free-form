@@ -1,7 +1,7 @@
 import { parse } from 'url'
 const SSO_ERR_STATUS = 401
 const AUTH_ERR_CODE = 403
-import { toFeishu } from '@/tools/common'
+import { toFeishu } from '../tools/common'
 
 function convertObjtoUrlSearch (data) {
   let _result = []

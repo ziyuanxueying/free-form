@@ -1,12 +1,15 @@
 <template>
-  <a-button type="primary" style="margin-bottom: 10px;" @click="showInforBase=true">
+  <a-button type="text" style="margin-bottom: 10px;" @click="showInforBase=true">
+    <icon-edit/>
     设置读写信息库
   </a-button>
-  <a-button type="primary" class="link-btn" @click="linkShow=true">
+  <a-button type="text" class="link-btn" @click="linkShow=true">
+    <icon-plus/>
     关联模板设置
   </a-button>
   <InforBase @closeInforBase="closeInforBase" v-if="showInforBase"/>
   <RelationSet v-model:linkShow="linkShow"/>
+  <div class="line-view"/>
   <a-radio-group class="set-view" v-model="settingType" type="button">
     <a-radio value="item">
       组件设置
@@ -56,7 +59,7 @@ export default {
 
 <style lang="less" scoped>
 .set-view {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   width: 100%;
 
   :deep(.arco-radio-button) {
@@ -69,5 +72,11 @@ export default {
 
 .link-btn {
   margin-left: 10px;
+}
+
+.line-view {
+  margin: 0 -20px 20px;
+  height: 10px;
+  background: #f7f8fa;
 }
 </style>
