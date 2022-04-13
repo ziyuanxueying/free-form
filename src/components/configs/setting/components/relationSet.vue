@@ -1,173 +1,231 @@
 <template>
-  <div>
-    <a-modal
-      v-model:visible="linkShow"
-      @ok="handleOk"
-      title-align="start"
-      width="700px"
-    >
-      <template #title>
-        关联模板设置
-      </template>
-      <div>
-        <span class="model-title">
-          关联模板：
-        </span>
-        <a-select :style="{width:'480px'}" placeholder="请选择" multiple>
-          <a-option>
-            Beijing
-          </a-option>
-          <a-option>
-            Shanghai
-          </a-option>
-          <a-option>
-            Guangzhou
-          </a-option>
-        </a-select>
-      </div>
-      <div style="margin-top: 20px;">
-        <a-table
-          :columns="columns"
-          :data="data"
-          :bordered="{wrapper: true, cell: true}"
-        >
-          <template #columns>
-            <a-table-column
-              v-for="(column, index) in columns"
-              :key="index"
-              :title="column.title"
-              :data-index="column.dataIndex"
-              :width="column.width"
-              :fixed="column.fixed"
-              :align="column.align ? column.align : 'center'"
-            >
-              <template #cell="{ record,rowIndex }">
-                <div v-if="column.dataIndex === 'orgComponent'" class="org-view">
-                  <span class="flex-column" style="justify-content: center; height: 50px;">
-                    {{ record.orgComponent }}
-                  </span>
-                </div>
-                <div v-if="column.dataIndex === 'relationType'">
-                  <a-select
-                    v-model="record.relationType"
-                    :style="{width:'100px'}"
-                    placeholder="请选择"
-                    @change="typeChange($event,rowIndex,'relationType')"
-                  >
-                    <!-- :bordered="false" -->
-                    <a-option :value="0">
-                      相等
-                    </a-option>
-                    <a-option :value="1">
-                      统计
-                    </a-option>
-                  </a-select>
-                </div>
-                <div v-if="column.dataIndex === 'relationTem'">
-                  <a-select
-                    v-model="record.relationTem"
-                    :style="{width:'100px'}"
-                    placeholder="请选择"
-                    @change="typeChange($event,rowIndex,'relationTem')"
-                    allow-clear
-                  >
-                    <!-- :bordered="false" -->
-                    <a-option :value="0">
-                      本表
-                    </a-option>
-                    <a-option :value="1">
-                      表单1
-                    </a-option>
-                    <a-option :value="2">
-                      表单2
-                    </a-option>
-                  </a-select>
-                </div>
-                <template/>
-              </template>
-            </a-table-column>
-          </template>
-        </a-table>
-        {{ data }}
-      </div>
-    </a-modal>
-  </div>
+  <a-modal
+    v-model:visible="linkModel"
+    @ok="handleOk"
+    @cancel="handleCancel"
+    title-align="start"
+    width="800px"
+  >
+    <template #title>
+      关联模板设置
+    </template>
+    <div>
+      <span class="model-title">
+        关联模板：
+      </span>
+      <a-select
+        v-model="temChooseList"
+        :style="{width:'480px'}"
+        placeholder="请选择"
+        :max-tag-count="2"
+        multiple
+      >
+        <a-option
+          v-for="item in temList"
+          :key="item.id"
+          :value="item"
+          :label="item.name"
+        />
+      </a-select>
+    </div>
+    <div style="margin-top: 20px;">
+      <a-table
+        :columns="columns"
+        :data="data"
+        :bordered="{wrapper: true, cell: true}"
+      >
+        <template #columns>
+          <a-table-column
+            v-for="(column, index) in columns"
+            :key="index"
+            :title="column.title"
+            :data-index="column.dataIndex"
+            :width="column.width"
+            :fixed="column.fixed"
+            :align="column.align ? column.align : 'center'"
+          >
+            <template #cell="{ record,rowIndex }">
+              <div v-if="column.dataIndex === 'orgComponent'" class="org-view">
+                <span class="flex-column" style="justify-content: center; height: 50px;">
+                  {{ record.orgComponent }}
+                </span>
+              </div>
+              <!-- 关联模板 -->
+              <div v-if="column.dataIndex === 'relationTem'">
+                <a-select
+                  v-model="record.relationTem"
+                  :style="{width:'150px',height:'44px'}"
+                  placeholder="请选择"
+                  @change="typeChange($event,rowIndex,'relationTem')"
+                  allow-clear
+                  :bordered="false"
+                >
+                  <a-option :value="0">
+                    本表
+                  </a-option>
+                  <a-option
+                    v-for="item in temChooseList"
+                    :key="item.id"
+                    :value="item.id"
+                    :label="item.name"
+                  />
+                </a-select>
+              </div>
+              <!-- 关联组件 -->
+              <div v-if="column.dataIndex === 'relationCompo'">
+                <a-select
+                  v-model="record.relationCompo"
+                  :style="{width:'150px'}"
+                  placeholder="请选择"
+                  @change="typeChange($event,rowIndex,'relationCompo')"
+                  :bordered="false"
+                  allow-clear
+                >
+                  <!-- :bordered="false" -->
+                  <a-option
+                    v-for="item in record.relationCompos"
+                    :key="item.fileId"
+                    :value="item.fileId"
+                    :label="item.name"
+                  />
+                </a-select>
+              </div>
+              <!-- 关联类型 -->
+              <div v-if="column.dataIndex === 'relationType'">
+                <a-select
+                  v-model="data[rowIndex].relationType"
+                  :disabled="!record.relationCompo||Boolean(record.relationFunc)"
+                  :style="{width:'100px'}"
+                  placeholder="请选择"
+                  @change="typeChange($event,rowIndex,'relationType')"
+                  allow-clear
+                  :bordered="false"
+                >
+                  <a-option value="0">
+                    相等
+                  </a-option>
+                  <a-option value="1">
+                    统计
+                  </a-option>
+                </a-select>
+              </div>
+
+              <!-- 关联函数 -->
+              <div v-if="column.dataIndex === 'relationFunc'">
+                <a-input
+                  v-model="data[rowIndex].relationFunc"
+                  :disabled="!record.relationCompo||Boolean(record.relationType)"
+                  :style="{width:'190px'}"
+                  placeholder="请输入"
+                  allow-clear
+                />
+              </div>
+              <template/>
+            </template>
+          </a-table-column>
+        </template>
+      </a-table>
+    </div>
+  </a-modal>
 </template>
-<script lang="ts">
+<script>
 // <script lang="ts">
-import { reactive, toRefs, watch } from 'vue-demi'
+import { reactive, toRefs, watch,defineComponent } from 'vue-demi'
 import { useFormConfigStore } from '../../../../store'
 import { getTree,trsfromData } from '../../../../utils'
+import { post } from '@/tools/request'
 // import { Components } from './interface'
-// import _ from 'lodash'
+import _ from 'lodash'
 // import { Message } from '@arco-design/web-vue'
-export default {
-  emits:['update:linkShow'],
+export default defineComponent({
   props:{
     linkShow:{ type:Boolean, default:()=>false },
   },
+  emits:['update:linkShow'],
   setup (props,{ emit }) {
     const state = reactive({
-      inforBaseList:[],
-      informationBase:'',
-      type:'0',
-      loading:false,
+      temList:[],
+      temNames: { value: 'id', label: 'name' },
+      temChooseList:[],
+      loading:true,
+      linkModel:true,
       columns : [
         { title: '原组件', dataIndex: 'orgComponent',width:140 },
-        { title: '关联模板', dataIndex: 'relationTem', },
-        { title: '关联组件', dataIndex: 'relationCompo', },
-        { title: '关联类型', dataIndex: 'relationType', },
-        { title: '关联函数', dataIndex: 'relationFunc', },
+        { title: '关联模板', dataIndex: 'relationTem',width:160 },
+        { title: '关联组件', dataIndex: 'relationCompo',width:150  },
+        { title: '关联类型', dataIndex: 'relationType',width:100 },
+        { title: '关联函数', dataIndex: 'relationFunc',width:200 },
       ],
-      data:[]
+      data:[],
+      curCompos:[],
     //   data:Array as Array<components[]>:[],
     })
     // const tabData = ref<Components[]>([])
     const formConfig  = useFormConfigStore()
-    setTimeout(() => {
-      state.data = getTree(formConfig.formItemList,true)
-      state.data =  trsfromData(state.data,'children').map((item)=>{
-        return { orgComponent:item.title,orgComponentId:item.key , relationType: 0 } 
-      })
-      //   treeData.reduce((result, item) => {
-      //     result.push(item)
-      //     if (item['chidlren']) {
-      //       result = result.concat(flat(item[chidlren]))
-      //     }
-      //     return result
-      //   }, [])
-      console.log('treeData: ', state.data)
-    }, 1000)
+    // setTimeout(() => {
+    //   state.data = getTree(formConfig.formItemList,true)
+    //   state.data =  trsfromData(state.data,'children').map((item)=>{
+    //     return { orgComponent:item.title,orgComponentId:item.key , relationType: 0 } 
+    //   })
+    //   console.log('treeData: ', state.data)
+    // }, 1000)
 
-    function getOrgData () {
+    async function getOrgData () {
+      state.temList = await post('/oa-platform/procTplConfig/selectListFlat') 
+      state.temList = _.map(state.temList,(item)=>{ return { ...item ,value:item.name } })
       state.data = getTree(formConfig.formItemList,true)
-      state.data =  trsfromData(state.data,'children').map((item)=>{
+      state.data = trsfromData(state.data,'children').map((item)=>{
         return { orgComponent:item.title,orgComponentId:item.key } 
       })
+      state.curCompos = state.data.map((item)=>{
+        return { name:item.orgComponent, fileId:item.orgComponentId , procTplConfigId:0 } 
+      })
     }
 
-    function typeChange (val,index,param) {
+    async function typeChange (val,index,param) {
       state.data[index][param] = val
       console.log('name,index: ', val,index)
+      if(param === 'relationTem') {
+        state.data[index].relationCompos = val === 0 ? state.curCompos : await post('/oa-platform/procTplConfig/componentList' ,{ procTplConfigIdList:[val] }) 
+        state.data[index].relationCompo = ''
+        state.data[index].relationType = ''
+        state.data[index].relationFunc = ''
+      }
+      if(param === 'relationCompo') {
+        state.data[index].relationType = val ? '0' : ''
+        
+      }
+      console.log(' state.data: ',  state.data)
     }
 
-    // eslint-disable-next-line consistent-return
     function handleOk () {
+      handleCancel()
     }
+    function handleCancel () {
+      state.linkModel = false
+      emit('update:linkShow', false)
+    }
+    setTimeout(() => {
+      getOrgData()
+    }, 1000)
 
     watch(()=>props.linkShow,(val)=>{
-      emit('update:linkShow', val)
+      console.log('val: ', val)
       val && getOrgData()
+      state.linkModel = val
+      emit('update:linkShow', val)
     })
+
     return{
       ...toRefs(state),
       //   tabData,
       handleOk,
+      handleCancel,
       formConfig,
       typeChange,
     }
   },
-}
+})
 </script>
 <style lang="less" scoped>
 .model-title {
@@ -176,13 +234,43 @@ export default {
 }
 
 :deep(.arco-table-td .arco-table-cell) {
-  padding: 8px 0;
+  padding: 0 0;
+
+  .arco-select-view-input,
+  .arco-select-view-value {
+    position: relative;
+    left: 4px;
+    display: block;
+    text-align: center;
+  }
+
+  .arco-select-view-value-hidden {
+    display: none;
+  }
+
+  .arco-select-view-single {
+    padding: 0 8px;
+  }
+
+  .arco-select-view-suffix {
+    padding-left: 0;
+  }
+
+  .arco-input-wrapper {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+  }
+
+  .arco-input-size-medium {
+    text-align: center;
+  }
 }
 
 .org-view {
-  margin: -8px 0;
-  width: 140px;
-  height: 50px;
+  //   margin: px 0;
+  //   width: 142px;
+  height: 44px;
   background-color: var(--color-neutral-2);
 }
 </style>

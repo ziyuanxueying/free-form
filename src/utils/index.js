@@ -93,7 +93,7 @@ export function getTree (formItemList,disabled,tip = '',nodePathArray = ['root']
         key: item.componentId,
         children:[],
         disabled: disabled,
-        nodePathArray:[].concat(nodePathArray,item.componentId)
+        // nodePathArray:[].concat(nodePathArray,item.componentId)
       }
       // eslint-disable-next-line no-unused-vars
       item.configList.layout.colContent.forEach((citem,index)=>{
@@ -113,7 +113,7 @@ export function getTree (formItemList,disabled,tip = '',nodePathArray = ['root']
       obj =  {
         title: item.configList ? item.configList.label + tip : undefined,
         key: item.configList ? item.componentId : undefined,
-        nodePathArray:[].concat(nodePathArray,item.componentId)
+        // nodePathArray:[].concat(nodePathArray,item.componentId)
       }
     }
     treeData.push(obj)
