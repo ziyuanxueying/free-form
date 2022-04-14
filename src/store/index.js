@@ -22,7 +22,7 @@ export const useFormConfigStore = defineStore('formConfig', {
         moduleList:[],
         delList:[]
       },
-      relationSet:{
+      relationTem:{
         templates:[],//关联模板
         components:[ //设置组件
           {
@@ -76,6 +76,10 @@ export const useFormConfigStore = defineStore('formConfig', {
     setInformationBase (informationBase,type) {
       this.infobaseSet.informationBase = informationBase
       this.infobaseSet.type = type
+    },
+    setRelationTem (tems,list) {
+      this.relationTem.templates = tems
+      this.relationTem.components = list
     }
   }
 })

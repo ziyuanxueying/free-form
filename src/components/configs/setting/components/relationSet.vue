@@ -162,13 +162,6 @@ export default defineComponent({
     })
     // const tabData = ref<Components[]>([])
     const formConfig  = useFormConfigStore()
-    // setTimeout(() => {
-    //   state.data = getTree(formConfig.formItemList,true)
-    //   state.data =  trsfromData(state.data,'children').map((item)=>{
-    //     return { orgComponent:item.title,orgComponentId:item.key , relationType: 0 } 
-    //   })
-    //   console.log('treeData: ', state.data)
-    // }, 1000)
 
     async function getOrgData () {
       state.temList = await post('/oa-platform/procTplConfig/selectListFlat') 
@@ -193,12 +186,13 @@ export default defineComponent({
       }
       if(param === 'relationCompo') {
         state.data[index].relationType = val ? '0' : ''
-        
       }
-      console.log(' state.data: ',  state.data)
+      console.log(' state.data: ', state.data)
     }
 
     function handleOk () {
+      console.log('state.data: ', state.data)
+      formConfig.setRelationTem(state.temChooseList,state.data)
       handleCancel()
     }
     function handleCancel () {
