@@ -18,7 +18,12 @@
         >
           选择信息库
         </a-button>
-        <a-form-item :label="`选择信息库`" :label-col-props="{xs:20,lg:span?span:4}" @click="linkShow=true">
+        <a-form-item
+          v-if="infoBtn"
+          :label="`选择信息库`"
+          :label-col-props="{xs:20,lg:span?span:4}"
+          @click="linkShow=true"
+        >
           <a-input :placeholder="`请选择`" readonly/>
         </a-form-item>
         <FormItem
@@ -35,6 +40,7 @@
       </a-form>
     </div>
     <ItemOaInfoModal
+      v-if="infoBtn"
       v-model:linkShow="linkShow"
       v-model:ifDisabled="ifDisabled"
       :columns="columns"
@@ -142,9 +148,7 @@ export default {
     //拼接流程对象
     function getPathObj () {
       formStore.pathSet.forEach(item=>{
-        // console.log('item: ', item)
         let prop = componentId2fileId[item.childProp]
-        // console.log('componentId2fileId: ', componentId2fileId)
         if(!pathSetObj[prop]) {
           pathSetObj[prop] = {}
         }

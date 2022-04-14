@@ -163,13 +163,25 @@ export default defineComponent({
     // const tabData = ref<Components[]>([])
     const formConfig  = useFormConfigStore()
 
-    async function getOrgData () {
+    async function temInit () {
       state.temList = await post('/oa-platform/procTplConfig/selectListFlat') 
       state.temList = _.map(state.temList,(item)=>{ return { ...item ,value:item.name } })
+    }
+    async function getOrgData () {
       state.data = getTree(formConfig.formItemList,true)
       state.data = trsfromData(state.data,'children').map((item)=>{
         return { orgComponent:item.title,orgComponentId:item.key } 
       })
+      //   formConfig.formItemList
+      let list = _.filter(formConfig.relationTem.components, (item)=> { return item.relationTem || item.relationTem === 0 })
+      list.forEach(item => {
+        console.log('item: ', item.orgComponentId)
+        let index = _.findIndex(state.data,['orgComponentId',item.orgComponentId])
+        
+        index !== undefined && (state.data[index] = item)
+      })
+      console.log('formConfig: ', state.data, list)
+      //   console.log('list: ', _.merge(state.data, list))
       state.curCompos = state.data.map((item)=>{
         return { name:item.orgComponent, fileId:item.orgComponentId , procTplConfigId:0 } 
       })
@@ -201,14 +213,16 @@ export default defineComponent({
     }
     setTimeout(() => {
       getOrgData()
+      console.log(123)
     }, 1000)
-
+    temInit()
     watch(()=>props.linkShow,(val)=>{
       console.log('val: ', val)
       val && getOrgData()
       state.linkModel = val
       emit('update:linkShow', val)
     })
+    // },{ immediate:true })
 
     return{
       ...toRefs(state),

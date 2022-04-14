@@ -84,6 +84,7 @@ export default {
         state.rowSelection.selectedRowKeys = []
         return
       }
+      
       let { tagFormLink } =  getTagData({},store.infobaseSet,store.formItemList)
       tagFormLink = _.invert(tagFormLink)
       for (let i in state.chooseItem) {

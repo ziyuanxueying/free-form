@@ -14,7 +14,11 @@ module.exports = {
   configureWebpack: config => {
     // config.entry = './src/main.ts'
     config.resolve = {
-      extensions: ['.ts', '.tsx', '.js', '.vue']
+      extensions: ['.ts', '.tsx', '.js', '.vue'],
+      alias: {
+        '@': resolve('src'),
+        '@request': resolve('src/tools/request.js'),
+      } 
     }
     config.module.rules.push(
       ...[

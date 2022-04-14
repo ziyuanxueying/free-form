@@ -44,6 +44,7 @@ export const useFormConfigStore = defineStore('formConfig', {
         formSet: this.formSet,
         pathSet: this.pathSet,
         infobaseSet: this.infobaseSet,
+        relationTem: this.relationTem,
       }
     }, 
     getPreview () {
@@ -55,16 +56,17 @@ export const useFormConfigStore = defineStore('formConfig', {
       json.infobaseSet = JSON.stringify(json.infobaseSet) === '{}' ? undefined : json.infobaseSet
       this.componentId = json.componentId || ''
       this.formItemList = json.formItemList || []
-      this.formSet = json.formSet  || {
-        formTitle: undefined,
-        formId: undefined,
-      }
+      this.formSet = json.formSet  || { formTitle: undefined, formId: undefined, }
       this.pathSet = json.pathSet  || []
       this.infobaseSet = json.infobaseSet || {
         type: '0' ,// 新增，更新，停用
         informationBase: '' ,// 关联信息库ID
         moduleList:[],
         delList:[]
+      }
+      this.relationTem = json.relationTem || {
+        templates:[],
+        components:[]
       }
     },
     setPreview (val) {
