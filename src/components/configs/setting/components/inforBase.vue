@@ -73,7 +73,7 @@
   </a-modal>
 </template>
 <script>
-import{ post } from '../../../../tools/request'
+import{ post } from '@/tools/request'
 import { reactive, toRefs } from 'vue-demi'
 import { getTree,ifExist } from '../../../../utils'
 import { useFormConfigStore } from '../../../../store'

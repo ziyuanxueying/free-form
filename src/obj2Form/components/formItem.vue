@@ -11,6 +11,7 @@
     :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:20,lg:span?span:4}"
     :wrapper-col-props="['NxGrid','NxTable','NxOAInfo'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
+    {{ item.relation }}
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="ifDisabled?'':item.configList.placeholder"/>
     <n-upload
       v-if="item.type=='NxUpload'"
@@ -311,7 +312,22 @@ export default {
           }
         })
       }
+    //   if(props.item.relation) {
+    //     props.formData[props.id] = props.formData[props.item.relation.relationCompo]
+    //     // console.log('props.item.relation.relationCompo: ', props.item.relation)
+    //     // console.log('props.id: ', props.id)
+    //     // console.log('props.formData.relation: ',props.formData, props.formData[props.item.relation.relationCompo])
+    //   }
     },{ deep: true, immediate:true })
+    if(props.item?.relation?.relationCompo) {
+      watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
+        console.log('val: ',props.item,val)
+
+        // 关联本表普通组件
+        props.formData[props.id] = val
+      })
+    }
+
     return {
       tableData:[{}],
       ...toRefs(config),

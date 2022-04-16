@@ -295,6 +295,40 @@ export function getComponentIdbyFileId (formItemList) {
   return _obj
 }
 
+// 获取关联表单的数据和结构
+export function getLinkTree (formItemList,tip = '',nodePathArray = []) {
+  let treeData = []
+  formItemList.forEach(item=>{
+    let obj = null
+    if(item.configList.layout) {
+      let mtip = tip
+      //重复表的判断条件
+      let condition = item.type === 'NxTable' || (item.type === 'NxCard' && item.configList.layout.ifAdd)
+      if(condition) { mtip = `(${item.configList.layout.label})` }
+      obj =  {
+        children:[],
+        nodePathArray:[].concat(nodePathArray,item.configList.layout.fileId)
+      }
+      // eslint-disable-next-line no-unused-vars
+      item.configList.layout.colContent.forEach((citem,index)=>{
+        //重复表需要把当前节点添加进去
+        let _parentId = condition ? [].concat(nodePathArray,item.configList.layout.fileId) : [].concat(nodePathArray)
+        let _childNode = getLinkTree(citem,mtip,_parentId)
+        obj.children = obj.children.concat(_childNode)
+      })
+      treeData = [...treeData, ...obj.children]
+    }else{
+      if(item.configList.label === '文本框') return
+      obj =  {
+        orgComponent: item.configList ? item.configList.label + tip : undefined,
+        orgComponentId: item.configList ? item.configList.fileId : undefined,
+        nodePathArray:[].concat(nodePathArray,item.configList.fileId)
+      }
+      treeData.push(obj)
+    }
+  })
+  return treeData
+}
 // 拍平数组中的对象
 export function  trsfromData (data, chidlren) {
   const targetData = data

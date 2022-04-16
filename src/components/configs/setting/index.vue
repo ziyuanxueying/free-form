@@ -1,12 +1,14 @@
 <template>
-  <a-button type="text" style="margin-bottom: 10px;" @click="showInforBase=true">
-    <icon-edit/>
-    设置读写信息库
-  </a-button>
-  <a-button type="text" class="link-btn" @click="linkShow=true">
-    <icon-plus/>
-    关联模板设置
-  </a-button>
+  <div class="flex-between" style="margin-bottom: 10px;">
+    <a-button type="text" @click="showInforBase=true">
+      <icon-edit/>
+      设置读写信息库
+    </a-button>
+    <a-button type="text" class="link-btn" @click="linkShow=true">
+      <icon-plus/>
+      关联模板设置
+    </a-button>
+  </div>
   <InforBase @closeInforBase="closeInforBase" v-if="showInforBase"/>
   <RelationSet v-model:linkShow="linkShow"/>
   <div class="line-view"/>
@@ -71,7 +73,7 @@ export default {
 }
 
 .link-btn {
-  margin-left: 10px;
+  margin-left: -10px;
 }
 
 .line-view {

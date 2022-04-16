@@ -1,7 +1,7 @@
 <template>
   <a-modal
     v-model:visible="linkModel"
-    @ok="handleOk"
+    :onBeforeOk="onBeforeOk"
     @cancel="handleCancel"
     title-align="start"
     width="800px"
@@ -24,7 +24,7 @@
           v-for="item in temList"
           :key="item.id"
           :value="item"
-          :label="item.name"
+          :label="item.value"
         />
       </a-select>
     </div>
@@ -67,7 +67,7 @@
                     v-for="item in temChooseList"
                     :key="item.id"
                     :value="item.id"
-                    :label="item.name"
+                    :label="item.value"
                   />
                 </a-select>
               </div>
@@ -132,11 +132,11 @@
 // <script lang="ts">
 import { reactive, toRefs, watch,defineComponent } from 'vue-demi'
 import { useFormConfigStore } from '../../../../store'
-import { getTree,trsfromData } from '../../../../utils'
+import { getLinkTree } from '../../../../utils'
 import { post } from '@/tools/request'
 // import { Components } from './interface'
 import _ from 'lodash'
-// import { Message } from '@arco-design/web-vue'
+import { Message } from '@arco-design/web-vue'
 export default defineComponent({
   props:{
     linkShow:{ type:Boolean, default:()=>false },
@@ -158,6 +158,8 @@ export default defineComponent({
       ],
       data:[],
       curCompos:[],
+      typeDisables:[],
+      funcDisables:[],
     //   data:Array as Array<components[]>:[],
     })
     // const tabData = ref<Components[]>([])
@@ -165,57 +167,82 @@ export default defineComponent({
 
     async function temInit () {
       state.temList = await post('/oa-platform/procTplConfig/selectListFlat') 
-      state.temList = _.map(state.temList,(item)=>{ return { ...item ,value:item.name } })
+      state.temChooseList = formConfig.relationSet.templates
     }
+
     async function getOrgData () {
-      state.data = getTree(formConfig.formItemList,true)
-      state.data = trsfromData(state.data,'children').map((item)=>{
-        return { orgComponent:item.title,orgComponentId:item.key } 
-      })
-      //   formConfig.formItemList
-      let list = _.filter(formConfig.relationTem.components, (item)=> { return item.relationTem || item.relationTem === 0 })
-      list.forEach(item => {
-        console.log('item: ', item.orgComponentId)
+      state.data = getLinkTree(formConfig.formItemList)
+      console.log('getLinkTree: ', getLinkTree(formConfig.formItemList))
+      formConfig.relationSet.components.forEach(item => {
         let index = _.findIndex(state.data,['orgComponentId',item.orgComponentId])
-        
         index !== undefined && (state.data[index] = item)
       })
-      console.log('formConfig: ', state.data, list)
-      //   console.log('list: ', _.merge(state.data, list))
       state.curCompos = state.data.map((item)=>{
         return { name:item.orgComponent, fileId:item.orgComponentId , procTplConfigId:0 } 
       })
     }
 
     async function typeChange (val,index,param) {
-      state.data[index][param] = val
+      state.data[index][param] = val === '' ? undefined : val
       console.log('name,index: ', val,index)
       if(param === 'relationTem') {
-        state.data[index].relationCompos = val === 0 ? state.curCompos : await post('/oa-platform/procTplConfig/componentList' ,{ procTplConfigIdList:[val] }) 
         state.data[index].relationCompo = ''
         state.data[index].relationType = ''
         state.data[index].relationFunc = ''
+        state.data[index].relationCompos = val === 0 ? state.curCompos : await post('/oa-platform/procTplConfig/componentList' ,{ procTplConfigIdList:[val] }) 
       }
       if(param === 'relationCompo') {
         state.data[index].relationType = val ? '0' : ''
+        state.data[index].relationFunc = ''
       }
       console.log(' state.data: ', state.data)
     }
 
-    function handleOk () {
-      console.log('state.data: ', state.data)
-      formConfig.setRelationTem(state.temChooseList,state.data)
+    function onBeforeOk (done) {
+      let funcFalse = false
+      let res = _.filter(state.data, (item,index)=> {
+        if(item.relationFunc) {
+          // 匹配出{}中的内容并行程一个数组
+          let array = item.relationFunc.match(/[^{]+(?=\})/g) 
+          if(!array) { 
+            state.data[index].relationFunc = ''
+            return funcFalse = true 
+          }
+          let relationFuncId = item.relationFunc
+          for (const name of array) {
+            let obj =  _.find(item.relationCompos,['name',name])
+            if(!obj) {
+              funcFalse = true
+              state.data[index].relationFunc = ''
+              break
+            }
+            relationFuncId = relationFuncId.replace(name, obj.fileId)
+          }
+          item.relationFuncId = relationFuncId
+        }
+        return item.relationTem || item.relationTem === 0 }
+      )
+      console.log('funcFalse: ', funcFalse)
+      if(funcFalse) {
+        Message.error('存在公式信息未匹配，请重新填写')
+        done(false)
+        return
+      }
+      formConfig.setRelationSet(state.temChooseList,res)
       handleCancel()
+      done()
     }
+
     function handleCancel () {
       state.linkModel = false
       emit('update:linkShow', false)
     }
+
     setTimeout(() => {
       getOrgData()
-      console.log(123)
     }, 1000)
     temInit()
+
     watch(()=>props.linkShow,(val)=>{
       console.log('val: ', val)
       val && getOrgData()
@@ -223,11 +250,10 @@ export default defineComponent({
       emit('update:linkShow', val)
     })
     // },{ immediate:true })
-
     return{
       ...toRefs(state),
       //   tabData,
-      handleOk,
+      onBeforeOk,
       handleCancel,
       formConfig,
       typeChange,

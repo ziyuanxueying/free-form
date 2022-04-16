@@ -96,6 +96,7 @@ export default {
     async function init () {
       getFormObj()
       getPathObj()
+      getRelation(formConfig.formObj)
       if(formStore.infobaseSet?.type && formStore.infobaseSet.type !== '0') {
         formConfig.infoBtn = ['copy','edit'].includes(route.query.type)
         formConfig.infoMetaId = formStore.infobaseSet.oaChooseDataitem
@@ -115,8 +116,7 @@ export default {
       for(let p in form.options) {
         try{
           formConfig.proxyOptions[p] = await getOptions(form.options[p])
-        }
-        catch(e) {
+        } catch(e) {
           formConfig. proxyOptions[p] = []
         }
       }
@@ -156,6 +156,19 @@ export default {
           parentProp:componentId2fileId[item.parentProp],
           equation:item.equation,
           value:item.value
+        }
+      })
+    }
+    function getRelation (list) {
+      list.forEach(tem =>{
+        if(tem.configList.layout) {
+          tem.configList.layout.colContent.forEach((citem)=>{
+            getRelation(citem)
+          })
+        } else {
+          let res = _.find(formStore.relationTem.components,['orgComponentId',tem.configList.fileId])
+          console.log('res: ', res)
+          res && (tem.relation =  _.omit(res,['relationCompos']))
         }
       })
     }

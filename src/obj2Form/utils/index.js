@@ -43,12 +43,8 @@ export function getForm (formItemList,options) {
         Object.assign(form,obj)
         Object.assign(componentId2fileId,componentId2fileIdObj)
       }
-    }else{
-      if(configList.multiple) {
-        form[configList.fileId] = []
-      }else{
-        form[configList.fileId] = configList.defaultVal
-      }
+    } else {
+      form[configList.fileId] = configList.multiple ? [] : configList.defaultVal
     }
     componentId2fileId[item.componentId] = configList.fileId || item.componentId
   })
