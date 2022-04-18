@@ -232,7 +232,4 @@ function pageInteraction ({ state }) {
 </script>
 
 <style lang="less" scoped>
-.link {
-  color: #0089ff;
-}
 </style>

@@ -10,14 +10,15 @@
         <div class="form-title">
           {{ formTitle }}
         </div>
-        <a-button
+        <FormLink/>
+        <!-- <a-button
           v-if="infoBtn"
           class="info-choose"
           type="primary"
           @click="linkShow=true"
         >
           选择信息库
-        </a-button>
+        </a-button> -->
         <a-form-item
           v-if="infoBtn"
           :label="`选择信息库`"
@@ -62,11 +63,13 @@ import { useFormConfigStore } from '../store'
 import { getTagData } from '../utils'
 import ItemOaInfoModal from './components/itemOaInfoModal.vue'
 import { useRoute } from 'vue-router'
+import FormLink from './components/formLink.vue'
 export default {
   components: {
     FormItem,
     VueJsonPretty,
     ItemOaInfoModal,
+    FormLink,
   },
   setup () {
     const config = useFormConfigStore()
@@ -166,8 +169,7 @@ export default {
             getRelation(citem)
           })
         } else {
-          let res = _.find(formStore.relationTem.components,['orgComponentId',tem.configList.fileId])
-          console.log('res: ', res)
+          let res = _.find(formStore.relationSet.components,['orgComponentId',tem.configList.fileId])
           res && (tem.relation =  _.omit(res,['relationCompos']))
         }
       })

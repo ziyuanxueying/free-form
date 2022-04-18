@@ -11,7 +11,6 @@
     :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:20,lg:span?span:4}"
     :wrapper-col-props="['NxGrid','NxTable','NxOAInfo'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
-    {{ item.relation }}
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="ifDisabled?'':item.configList.placeholder"/>
     <n-upload
       v-if="item.type=='NxUpload'"
@@ -84,7 +83,7 @@
         :sm="24"
         :md="12"
         :lg="{
-          span:Array.isArray(item.configList.layout.colCount)?item.configList.layout.colCount[cindex].key:Math.floor(24 / item.configList.layout.colCount),
+          span:Array.isArray(item.configList.layout.colCount)?item.configList.layout.colCount[cindex].key:Mathjs.floor(24 / item.configList.layout.colCount),
           offset:(Array.isArray(item.configList.layout.colCount)?item.configList.layout.colCount[cindex].value:0)}"
       >
         <FormItem
@@ -247,6 +246,7 @@ import{ getForm } from '../utils'
 import itemOa from './itemOa.vue'
 import ItemOaInfo from './itemOaInfo.vue'
 import { NUpload } from '@naxions/nax-common'
+import * as Mathjs from 'mathjs'
 export default {
   components:{ itemOa, NUpload,ItemOaInfo },
   name:'FormItem',
@@ -319,13 +319,58 @@ export default {
     //     // console.log('props.formData.relation: ',props.formData, props.formData[props.item.relation.relationCompo])
     //   }
     },{ deep: true, immediate:true })
-    if(props.item?.relation?.relationCompo) {
-      watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
-        console.log('val: ',props.item,val)
-
-        // 关联本表普通组件
-        props.formData[props.id] = val
-      })
+     
+    if(props.item?.relation?.relationTem === 0) {
+      const relation =  { ...props.item.relation }
+      // 本表单关联本表函数
+      if(relation.relationFuncId) {
+        // 根据{} 拆解因子，拆成一个数组
+        let array = relation.relationFuncId.match(/[^{]+(?=\})/g) 
+        // 动态监听每个因子的变化
+        for (let i = 0; i < array.length; i++) {
+          watch(()=>props.formData[array[i]],()=>{
+            let formula = relation.relationFuncId
+            for (const formVal of array) {
+              // 将因子式中的ID 替换成数组中对应的值，没有就取 0
+              // 类似于 {id1}*{id2} => 12*3
+              let num = Mathjs.evaluate(formVal, props.formData)
+              formula = formula.replace(`{${formVal}}`, 
+                isNaN(num) || num === '' ? 0 : Mathjs.evaluate(formVal, props.formData))
+            }
+            // 根据函数算出值
+            props.formData[props.id] = Mathjs.evaluate(formula)
+          })
+        }
+      }
+      // 关联其他组件，统计
+      else if(relation.relationType) {
+        if(relation.relationTypePath.length === 1) {
+          watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
+            // 关联本表普通组件
+            props.formData[props.id] = val
+          })
+        } else if(relation.relationTypePath.length === 2) {
+          console.log(123)
+          watch(()=>props.formData[relation.relationTypePath[0]],(val)=>{
+            console.log('统计--val: ',val)
+            // let aaa = props.formData[relation.relationTypePath[0]].map(item => {
+            //   return item[relation.relationTypePath[1]]
+            // })
+            //   // 关联本表普通组件
+            props.formData[props.id] = Mathjs.add(...props.formData[relation.relationTypePath[0]].map(item => {
+              return item[relation.relationTypePath[1]]
+            }),0)
+          },{ deep:true })
+        }
+      }
+      // 关联其他组件，相等
+      else if(relation?.relationCompo) {
+        watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
+          console.log('val: ',props.item,val)
+          // 关联本表普通组件
+          props.formData[props.id] = val
+        })
+      }
     }
 
     return {

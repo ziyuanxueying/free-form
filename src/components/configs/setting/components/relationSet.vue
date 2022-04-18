@@ -172,13 +172,16 @@ export default defineComponent({
 
     async function getOrgData () {
       state.data = getLinkTree(formConfig.formItemList)
-      console.log('getLinkTree: ', getLinkTree(formConfig.formItemList))
       formConfig.relationSet.components.forEach(item => {
         let index = _.findIndex(state.data,['orgComponentId',item.orgComponentId])
-        index !== undefined && (state.data[index] = item)
+        if(index !== undefined) {
+          item.orgComponent = state.data[index].orgComponent
+          item.orgComponentId = state.data[index].orgComponentId
+          state.data[index] = item
+        }
       })
       state.curCompos = state.data.map((item)=>{
-        return { name:item.orgComponent, fileId:item.orgComponentId , procTplConfigId:0 } 
+        return { name:item.orgComponent, fileId:item.orgComponentId, nodePath:item.nodePathArray,procTplConfigId:0 } 
       })
     }
 
@@ -220,9 +223,12 @@ export default defineComponent({
           }
           item.relationFuncId = relationFuncId
         }
+        if(item.relationType === '1') {
+          // let obj =  _.find(item.relationCompos,['fileId',item.relationCompo])
+          item.relationTypePath = _.find(item.relationCompos,['fileId',item.relationCompo]).nodePath
+        }
         return item.relationTem || item.relationTem === 0 }
       )
-      console.log('funcFalse: ', funcFalse)
       if(funcFalse) {
         Message.error('存在公式信息未匹配，请重新填写')
         done(false)
@@ -244,7 +250,6 @@ export default defineComponent({
     temInit()
 
     watch(()=>props.linkShow,(val)=>{
-      console.log('val: ', val)
       val && getOrgData()
       state.linkModel = val
       emit('update:linkShow', val)

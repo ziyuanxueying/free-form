@@ -78,7 +78,6 @@ export default {
     const { getInitData, ...pageInteractionFun } = pageInteraction({ props,state })
     function handleOk () {
       if(props.itemUse === 'show') {
-        console.log('state.chooseItem: ', state.chooseItem)
         emit('modalChoose', state.chooseItem)
         state.chooseItem = {}
         state.rowSelection.selectedRowKeys = []
