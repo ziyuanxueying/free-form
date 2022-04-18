@@ -246,7 +246,7 @@ import{ getForm } from '../utils'
 import itemOa from './itemOa.vue'
 import ItemOaInfo from './itemOaInfo.vue'
 import { NUpload } from '@naxions/nax-common'
-import * as Mathjs from 'mathjs'
+import { add,evaluate } from 'mathjs'
 export default {
   components:{ itemOa, NUpload,ItemOaInfo },
   name:'FormItem',
@@ -312,12 +312,6 @@ export default {
           }
         })
       }
-    //   if(props.item.relation) {
-    //     props.formData[props.id] = props.formData[props.item.relation.relationCompo]
-    //     // console.log('props.item.relation.relationCompo: ', props.item.relation)
-    //     // console.log('props.id: ', props.id)
-    //     // console.log('props.formData.relation: ',props.formData, props.formData[props.item.relation.relationCompo])
-    //   }
     },{ deep: true, immediate:true })
      
     if(props.item?.relation?.relationTem === 0) {
@@ -333,12 +327,12 @@ export default {
             for (const formVal of array) {
               // 将因子式中的ID 替换成数组中对应的值，没有就取 0
               // 类似于 {id1}*{id2} => 12*3
-              let num = Mathjs.evaluate(formVal, props.formData)
+              let num = evaluate(formVal, props.formData)
               formula = formula.replace(`{${formVal}}`, 
-                isNaN(num) || num === '' ? 0 : Mathjs.evaluate(formVal, props.formData))
+                isNaN(num) || num === '' ? 0 : evaluate(formVal, props.formData))
             }
             // 根据函数算出值
-            props.formData[props.id] = Mathjs.evaluate(formula)
+            props.formData[props.id] = evaluate(formula)
           })
         }
       }
@@ -350,14 +344,8 @@ export default {
             props.formData[props.id] = val
           })
         } else if(relation.relationTypePath.length === 2) {
-          console.log(123)
-          watch(()=>props.formData[relation.relationTypePath[0]],(val)=>{
-            console.log('统计--val: ',val)
-            // let aaa = props.formData[relation.relationTypePath[0]].map(item => {
-            //   return item[relation.relationTypePath[1]]
-            // })
-            //   // 关联本表普通组件
-            props.formData[props.id] = Mathjs.add(...props.formData[relation.relationTypePath[0]].map(item => {
+          watch(()=>props.formData[relation.relationTypePath[0]],()=>{
+            props.formData[props.id] = add(props.formData[relation.relationTypePath[0]].map(item => {
               return item[relation.relationTypePath[1]]
             }),0)
           },{ deep:true })
