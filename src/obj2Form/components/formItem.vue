@@ -1,5 +1,4 @@
 <template>
-  <!-- v-show="!hide&&item.type!=='NxCard'" -->
   <a-form-item
     v-show="!hide&&item.type!=='NxCard'" 
     :field="field&&id?`${field}${id}`:field||id"
@@ -283,7 +282,6 @@ export default {
     }
     function isRequired () {
       if(props.hidden) {
-        console.log(props.item.type)
         return false
       }
       return props.ifRequired || (props.pathSetObj[props.id]?.required ? config.required : (props.item.configList.required || false))
@@ -345,7 +343,7 @@ export default {
           })
         } else if(relation.relationTypePath.length === 2) {
           watch(()=>props.formData[relation.relationTypePath[0]],()=>{
-            props.formData[props.id] = add(props.formData[relation.relationTypePath[0]].map(item => {
+            props.formData[props.id] = add(...props.formData[relation.relationTypePath[0]].map(item => {
               return item[relation.relationTypePath[1]]
             }),0)
           },{ deep:true })

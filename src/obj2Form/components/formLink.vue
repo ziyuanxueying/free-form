@@ -1,7 +1,7 @@
 <template>
   <a-tooltip
     position="bl"
-    v-for="item in linkStore"
+    v-for="(item,index) in linkStore"
     :key="item.id"
     :content="`选择${item.value}`"
     :content-class="item.value.length <8 ?'tooltip-hide':''"
@@ -10,9 +10,10 @@
     <a-form-item
       :label="`选择${item.value}`"
       :label-col-props="{xs:20,lg:4}"
-      @click="linkShow=true"
+      :wrapper-col-props="{span:20}"
+      @click="formClick(item,index)"
     >
-      <a-input :placeholder="`请选择`" readonly/>
+      <a-input :placeholder="`请选择`" v-model="item.formTitle" readonly/>
     </a-form-item>
   </a-tooltip>
   <a-modal
@@ -124,28 +125,34 @@ export default {
   setup () { 
     const config = useFormConfigStore()
     const state = reactive({ linkStore: [], 
-      linkShow: true,
+      linkShow: false,
       form: { type:1 , search:1, draftTime:[] },
       pagination: { current: 1, total: 0, },
       tableList:[],
       rowSelection: { type: 'radio',selectedRowKeys:[]  },
-      chooseItem: {} 
+      chooseItem: { id:0 }
     })
+
+    function formClick (item,index) {
+      item.index = index
+      state.chooseItem = item
+      state.linkShow = true
+      typeChange()
+    }
 
     const selectChange = async (vals) => {
       state.rowSelection.selectedRowKeys = vals
-      let res = await API.getFormItems(vals[0])
-      console.log('res: ', res)
+      state.linkStore[state.chooseItem.index].res = await API.getFormItems(vals[0])
     }
 
     function cancelModal () {
       state.form = { type:1 , search:1, draftTime:[] }
       state.rowSelection.selectedRowKeys = []
-      typeChange()
     }
 
     function handleOk () {
       state.rowSelection.selectedRowKeys = []
+      state.linkStore[state.chooseItem.index].formTitle = state.chooseItem.value
     }
 
     function typeChange () {
@@ -178,6 +185,7 @@ export default {
       typeChange,
       searchChange,
       selectChange,
+      formClick,
       ...pageInteractionFun,
     }
   },
@@ -195,7 +203,8 @@ function getInitData ({ state }) {
     startTime: state.form.draftTime[0] ? state.form.draftTime[0] + ' 00:00:00' : '',
     endTime: state.form.draftTime[1] ? state.form.draftTime[1] + ' 23:59:59' : '',
     page: state.pagination.current,
-    type: state.form.type
+    type: state.form.type,
+    procTplConfigIdList:[state.chooseItem.id]
   }
   state.loading = true
   // eslint-disable-next-line consistent-return

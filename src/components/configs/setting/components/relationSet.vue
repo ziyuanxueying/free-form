@@ -183,6 +183,7 @@ export default defineComponent({
       state.curCompos = state.data.map((item)=>{
         return { name:item.orgComponent, fileId:item.orgComponentId, nodePath:item.nodePathArray,procTplConfigId:0 } 
       })
+      console.log('state.curCompos: ', JSON.stringify(state.curCompos))
     }
 
     async function typeChange (val,index,param) {
