@@ -41,7 +41,7 @@ export default {
     const state = reactive({
       showInforBase:false,
       settingType:'item',
-      linkShow:true,
+      linkShow:false,
     })
     function closeInforBase () {
       state.showInforBase = false

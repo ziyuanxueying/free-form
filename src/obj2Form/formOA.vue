@@ -10,7 +10,7 @@
         <div class="form-title">
           {{ formTitle }}
         </div>
-        <FormLink/>
+        <FormLink :formData="formData"/>
         <!-- <a-button
           v-if="infoBtn"
           class="info-choose"
@@ -100,6 +100,7 @@ export default {
       getFormObj()
       getPathObj()
       getRelation(formConfig.formObj)
+      console.log('getRelation(formConfig.formObj): ', formConfig.formObj)
       if(formStore.infobaseSet?.type && formStore.infobaseSet.type !== '0') {
         formConfig.infoBtn = ['copy','edit'].includes(route.query.type)
         formConfig.infoMetaId = formStore.infobaseSet.oaChooseDataitem
@@ -162,6 +163,7 @@ export default {
         }
       })
     }
+
     function getRelation (list) {
       list.forEach(tem =>{
         if(tem.configList.layout) {

@@ -148,7 +148,7 @@ export default defineComponent({
       temNames: { value: 'id', label: 'name' },
       temChooseList:[],
       loading:true,
-      linkModel:true,
+      linkModel:false,
       columns : [
         { title: '原组件', dataIndex: 'orgComponent',width:140 },
         { title: '关联模板', dataIndex: 'relationTem',width:160 },
@@ -183,17 +183,16 @@ export default defineComponent({
       state.curCompos = state.data.map((item)=>{
         return { name:item.orgComponent, fileId:item.orgComponentId, nodePath:item.nodePathArray,procTplConfigId:0 } 
       })
-      console.log('state.curCompos: ', JSON.stringify(state.curCompos))
     }
 
     async function typeChange (val,index,param) {
       state.data[index][param] = val === '' ? undefined : val
       console.log('name,index: ', val,index)
       if(param === 'relationTem') {
+        state.data[index].relationCompos = val === 0 ? state.curCompos : await post('/oa-platform/procTplConfig/componentList' ,{ procTplConfigIdList:[val] }) 
         state.data[index].relationCompo = ''
         state.data[index].relationType = ''
         state.data[index].relationFunc = ''
-        state.data[index].relationCompos = val === 0 ? state.curCompos : await post('/oa-platform/procTplConfig/componentList' ,{ procTplConfigIdList:[val] }) 
       }
       if(param === 'relationCompo') {
         state.data[index].relationType = val ? '0' : ''
@@ -223,7 +222,7 @@ export default defineComponent({
             relationFuncId = relationFuncId.replace(name, obj.fileId)
           }
           item.relationFuncId = relationFuncId
-        }
+        } else { item.relationFuncId  = undefined }
         if(item.relationType === '1') {
           // let obj =  _.find(item.relationCompos,['fileId',item.relationCompo])
           item.relationTypePath = _.find(item.relationCompos,['fileId',item.relationCompo]).nodePath

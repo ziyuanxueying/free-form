@@ -335,7 +335,7 @@ export default {
         }
       }
       // 关联其他组件，统计
-      else if(relation.relationType) {
+      else if(relation.relationType === '1') {
         if(relation.relationTypePath.length === 1) {
           watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
             // 关联本表普通组件
@@ -350,7 +350,7 @@ export default {
         }
       }
       // 关联其他组件，相等
-      else if(relation?.relationCompo) {
+      else if(relation.relationType === '0') {
         watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
           console.log('val: ',props.item,val)
           // 关联本表普通组件

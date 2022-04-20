@@ -114,6 +114,7 @@
 import { reactive, toRefs,  } from 'vue'
 import { useFormConfigStore } from '../../store'
 import * as API from './api.js'
+import { add,evaluate } from 'mathjs'
 const applys = [{ key: 1, value:'本人发起' },{ key:2, value:'他人发起' }]
 const searchs = [{ key: 1, value:'表单标题' },{ key:2, value:'发起人' },{ key:3, value:'申请时间' }]
 const columns = [  
@@ -121,10 +122,18 @@ const columns = [
   { title: '表单标题', dataIndex: 'title', width: 180 ,align:'left' },
   { title: '发起人', dataIndex: 'applyUserName', width: 120, align: 'left' },
   { title: '申请时间', dataIndex: 'submitTime', width: 150, align: 'left' }]
+import _ from 'lodash'
 export default {
-  setup () { 
+  props:{
+    formData:{ type:Object,default :()=>{}  },
+    ifDisabled:{ type:Boolean, default:()=>false },
+  },
+  emits: ['update:ifDisabled','modalChoose'],
+  setup (props) { 
     const config = useFormConfigStore()
-    const state = reactive({ linkStore: [], 
+    const state = reactive({ 
+      linkStore: [], 
+      relations: [], 
       linkShow: false,
       form: { type:1 , search:1, draftTime:[] },
       pagination: { current: 1, total: 0, },
@@ -150,9 +159,11 @@ export default {
       state.rowSelection.selectedRowKeys = []
     }
 
+    const { watchFormChange } = watchLink({ props, state })
     function handleOk () {
       state.rowSelection.selectedRowKeys = []
       state.linkStore[state.chooseItem.index].formTitle = state.chooseItem.value
+      watchFormChange()
     }
 
     function typeChange () {
@@ -169,9 +180,11 @@ export default {
 
     getInitData({ state })
     const pageInteractionFun = pageInteraction({ state })
+
     config.$onAction(({ store, })=>{
       setTimeout(() => {
         state.linkStore = store.relationSet.templates
+        state.relations = store.relationSet.components
       }, 0)
     })
 
@@ -188,11 +201,6 @@ export default {
       formClick,
       ...pageInteractionFun,
     }
-  },
-  mounted () {
-  },
-  methods:{
-
   },
 }
 //初始化表格数据
@@ -237,10 +245,88 @@ function pageInteraction ({ state }) {
     getInitData({ state })
   }
 
-  //搜索防抖
   return {
     conditionChange,
     pageChange,
+  }
+}
+
+function watchLink ({ props,state }) {
+  function watchFormChange () {
+    let singles = _.filter(state.relations,item=>{
+      return state.chooseItem.id === item.relationTem && item.nodePathArray.length === 1
+    })
+    if(singles) {
+      for (const single of singles) {
+        linkSingle(single,state.linkStore[state.chooseItem.index].res)
+      }
+    }
+
+    let complexs = _.filter(state.relations,item=>{
+      return item.nodePathArray.length > 1
+    })
+
+    let tabs = _(complexs).map(item=>{
+      return item.nodePathArray[0]
+    }).uniq().value()
+   
+    for (const tab of tabs) {
+      let arr = _(complexs).filter(item=>{
+        return item.nodePathArray[0] === tab
+      }).value()
+      let tabVal = state.linkStore[state.chooseItem.index].res[tab]
+      let formArr = []
+      for (let index = 0; index < arr.length; index++) {
+        const tabLink = arr[index]
+        let aaa =  _.map(tabVal,item=>{
+          let obj = {}
+          obj[tabLink.orgComponentId] = item[tabLink.relationCompo]
+          return { ...obj }
+        })
+        formArr = _.merge(aaa,formArr)
+      }
+      props.formData[tab] = formArr
+    }
+  }
+
+  function linkSingle (single,res) {
+    console.log('single: ', single)
+    if(single.relationFuncId) {
+      // 关联类型，函数
+      // 根据{} 拆解因子，拆成一个数组
+      let array = single.relationFuncId.match(/[^{]+(?=\})/g) 
+      console.log('array: ', array)
+      // 动态监听每个因子的变化
+      let formula = single.relationFuncId
+      for (const formVal of array) {
+        // 将因子式中的ID 替换成数组中对应的值，没有就取 0
+        // 类似于 {id1}*{id2} => 12*3
+        let num = evaluate(formVal, props.formData)
+        formula = formula.replace(`{${formVal}}`, 
+          isNaN(num) || num === '' ? 0 : evaluate(formVal, props.formData))
+      }
+      // 根据函数算出值
+      props.formData[single.orgComponentId] = evaluate(formula)
+    } else if(single.relationType === '0') {
+      // 关联类型，相等
+      props.formData[single.orgComponentId] = res[single.relationCompo]
+    } else if(single.relationType === '1') {
+      //关联类型， 统计
+      switch (single.relationTypePath.length) {
+      case 1:
+        props.formData[single.orgComponentId] = res[single.relationCompo]
+        break
+      case 2:
+        props.formData[props.id] = add(...res[single.relationTypePath[0]].map(item => {
+          return item[single.relationTypePath[1]]
+        }),0)
+        break
+      }
+    } 
+    console.log('props.formData[single.orgComponentId]: ', props.formData[single.orgComponentId])
+  }
+  return {
+    watchFormChange
   }
 }
 </script>
