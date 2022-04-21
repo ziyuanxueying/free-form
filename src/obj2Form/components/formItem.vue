@@ -1,9 +1,9 @@
 <template>
   <a-form-item
-    v-show="!hide&&item.type!=='NxCard'" 
+    v-show="!hide&&item.type!=='NxCard'&&item.opType!==2" 
     :field="field&&id?`${field}${id}`:field||id"
     :label="item.configList.label|| item.moduleName"
-    :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+    :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))||item.opType===0"
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
     :rules="[{required:isRequired(),message:'请完善当前项'},] "
