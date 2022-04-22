@@ -33,6 +33,7 @@
         :columns="columns"
         :data="data"
         :bordered="{wrapper: true, cell: true}"
+        :loading="tabLoading"
       >
         <template #columns>
           <a-table-column
@@ -160,6 +161,7 @@ export default defineComponent({
       curCompos:[],
       typeDisables:[],
       funcDisables:[],
+      tabLoading: false
     //   data:Array as Array<components[]>:[],
     })
     // const tabData = ref<Components[]>([])
@@ -168,6 +170,7 @@ export default defineComponent({
     async function temInit () {
       state.temList = await API.selectListFlat()
       state.temChooseList = formConfig.relationSet.templates
+      console.log('state.temChooseList: ', state.temChooseList)
     }
 
     async function getOrgData () {
@@ -175,7 +178,9 @@ export default defineComponent({
       state.curCompos = state.data.map((item)=>{
         return { name:item.orgComponent, fileId:item.orgComponentId, nodePath:item.nodePathArray,procTplConfigId:0 } 
       })
-      formConfig.relationSet.components.forEach(async item => {
+      let count = 0 
+      state.tabLoading = true
+      formConfig.relationSet.components.forEach(async (item)=> {
         let index = _.findIndex(state.data,['orgComponentId',item.orgComponentId])
         if(index !== undefined && state.data[index]) {
           item.orgComponent = state.data[index].orgComponent
@@ -183,8 +188,11 @@ export default defineComponent({
           item.relationCompos = item.relationTem === 0 ? state.curCompos : await API.componentList(item.relationTem)
           state.data[index] = item
         }
+        count++
+        if(count === formConfig.relationSet.components.length) {
+          state.tabLoading = false
+        }
       })
-      
     }
 
     async function typeChange (val,index,param) {
@@ -202,7 +210,6 @@ export default defineComponent({
       console.log(' state.data: ', state.data)
     }
 
-    // eslint-disable-next-line consistent-return
     function onBeforeOk (done) {
       let funcFalse = false
       //   let res = _.filter(state.data, (item,index)=> {
@@ -281,10 +288,8 @@ export default defineComponent({
     }
 
     setTimeout(() => {
-      getOrgData()
-    }, 1000)
-    temInit()
-
+      temInit()
+    }, 100)
     watch(()=>props.linkShow,(val)=>{
       val && getOrgData()
       state.linkModel = val
