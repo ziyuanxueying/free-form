@@ -82,7 +82,7 @@
         :sm="24"
         :md="12"
         :lg="{
-          span:Array.isArray(item.configList.layout.colCount)?item.configList.layout.colCount[cindex].key:Mathjs.floor(24 / item.configList.layout.colCount),
+          span:Array.isArray(item.configList.layout.colCount)?item.configList.layout.colCount[cindex].key:Math.floor(24 / item.configList.layout.colCount),
           offset:(Array.isArray(item.configList.layout.colCount)?item.configList.layout.colCount[cindex].value:0)}"
       >
         <FormItem
