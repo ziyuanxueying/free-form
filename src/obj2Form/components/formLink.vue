@@ -258,12 +258,12 @@ function watchLink ({ props,state }) {
     })
     if(singles) {
       for (const single of singles) {
-        linkSingle(single,state.linkStore[state.chooseItem.index].res)
+        props.formData[single.orgComponentId] = linkSingle(single,state.linkStore[state.chooseItem.index].res,props.formData)
       }
     }
 
     let complexs = _.filter(state.relations,item=>{
-      return item.nodePathArray.length > 1
+      return state.chooseItem.id === item.relationTem && item.nodePathArray.length > 1
     })
 
     let tabs = _(complexs).map(item=>{
@@ -280,7 +280,7 @@ function watchLink ({ props,state }) {
         const tabLink = arr[index]
         let aaa =  _.map(tabVal,item=>{
           let obj = {}
-          obj[tabLink.orgComponentId] = item[tabLink.relationCompo]
+          obj[tabLink.orgComponentId] = linkSingle(tabLink,item,item)
           return { ...obj }
         })
         formArr = _.merge(aaa,formArr)
@@ -289,41 +289,41 @@ function watchLink ({ props,state }) {
     }
   }
 
-  function linkSingle (single,res) {
-    console.log('single: ', single)
+  function linkSingle (single,res,construct) {
+    let val
     if(single.relationFuncId) {
       // 关联类型，函数
       // 根据{} 拆解因子，拆成一个数组
       let array = single.relationFuncId.match(/[^{]+(?=\})/g) 
-      console.log('array: ', array)
+      //   console.log('array: ', array)
       // 动态监听每个因子的变化
       let formula = single.relationFuncId
       for (const formVal of array) {
         // 将因子式中的ID 替换成数组中对应的值，没有就取 0
         // 类似于 {id1}*{id2} => 12*3
-        let num = evaluate(formVal, props.formData)
+        let num = evaluate(formVal, construct)
         formula = formula.replace(`{${formVal}}`, 
-          isNaN(num) || num === '' ? 0 : evaluate(formVal, props.formData))
+          isNaN(num) || num === '' ? 0 : evaluate(formVal,construct))
       }
       // 根据函数算出值
-      props.formData[single.orgComponentId] = evaluate(formula)
+      val = evaluate(formula)
     } else if(single.relationType === '0') {
       // 关联类型，相等
-      props.formData[single.orgComponentId] = res[single.relationCompo]
+      val = res[single.relationCompo]
     } else if(single.relationType === '1') {
       //关联类型， 统计
       switch (single.relationTypePath.length) {
       case 1:
-        props.formData[single.orgComponentId] = res[single.relationCompo]
+        val = res[single.relationCompo]
         break
       case 2:
-        props.formData[props.id] = add(...res[single.relationTypePath[0]].map(item => {
+        val = add(...res[single.relationTypePath[0]].map(item => {
           return item[single.relationTypePath[1]]
         }),0)
         break
       }
     } 
-    console.log('props.formData[single.orgComponentId]: ', props.formData[single.orgComponentId])
+    return val
   }
   return {
     watchFormChange

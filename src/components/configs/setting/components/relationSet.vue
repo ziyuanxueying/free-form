@@ -133,10 +133,10 @@
 import { reactive, toRefs, watch,defineComponent } from 'vue-demi'
 import { useFormConfigStore } from '../../../../store'
 import { getLinkTree } from '../../../../utils'
-import { post } from '@/tools/request'
 // import { Components } from './interface'
 import _ from 'lodash'
 import { Message } from '@arco-design/web-vue'
+import * as API from './api'
 export default defineComponent({
   props:{
     linkShow:{ type:Boolean, default:()=>false },
@@ -166,30 +166,31 @@ export default defineComponent({
     const formConfig  = useFormConfigStore()
 
     async function temInit () {
-      state.temList = await post('/oa-platform/procTplConfig/selectListFlat') 
+      state.temList = await API.selectListFlat()
       state.temChooseList = formConfig.relationSet.templates
     }
 
     async function getOrgData () {
       state.data = getLinkTree(formConfig.formItemList)
-      formConfig.relationSet.components.forEach(item => {
-        let index = _.findIndex(state.data,['orgComponentId',item.orgComponentId])
-        if(index !== undefined) {
-          item.orgComponent = state.data[index].orgComponent
-          item.orgComponentId = state.data[index].orgComponentId
-          state.data[index] = item
-        }
-      })
       state.curCompos = state.data.map((item)=>{
         return { name:item.orgComponent, fileId:item.orgComponentId, nodePath:item.nodePathArray,procTplConfigId:0 } 
       })
+      formConfig.relationSet.components.forEach(async item => {
+        let index = _.findIndex(state.data,['orgComponentId',item.orgComponentId])
+        if(index !== undefined && state.data[index]) {
+          item.orgComponent = state.data[index].orgComponent
+          item.orgComponentId = state.data[index].orgComponentId
+          item.relationCompos = item.relationTem === 0 ? state.curCompos : await API.componentList(item.relationTem)
+          state.data[index] = item
+        }
+      })
+      
     }
 
     async function typeChange (val,index,param) {
       state.data[index][param] = val === '' ? undefined : val
-      console.log('name,index: ', val,index)
       if(param === 'relationTem') {
-        state.data[index].relationCompos = val === 0 ? state.curCompos : await post('/oa-platform/procTplConfig/componentList' ,{ procTplConfigIdList:[val] }) 
+        state.data[index].relationCompos = val === 0 ? state.curCompos : await API.componentList(val)
         state.data[index].relationCompo = ''
         state.data[index].relationType = ''
         state.data[index].relationFunc = ''
@@ -201,9 +202,44 @@ export default defineComponent({
       console.log(' state.data: ', state.data)
     }
 
+    // eslint-disable-next-line consistent-return
     function onBeforeOk (done) {
       let funcFalse = false
-      let res = _.filter(state.data, (item,index)=> {
+      //   let res = _.filter(state.data, (item,index)=> {
+      //     let aaa = _.find(item.relationCompos,['fileId',item.relationCompo])
+      //     console.log('aaa: ', item,aaa)
+      //     if(item.relationFunc) {
+      //       // 匹配出{}中的内容并行程一个数组
+      //       let array = item.relationFunc.match(/[^{]+(?=\})/g) 
+      //       if(!array) { 
+      //         state.data[index].relationFunc = ''
+      //         return funcFalse = true 
+      //       }
+      //       let relationFuncId = item.relationFunc
+      //       for (const name of array) {
+      //         let obj =  _.find(item.relationCompos,['name',name])
+      //         if(!obj) {
+      //           funcFalse = true
+      //           state.data[index].relationFunc = ''
+      //           break
+      //         }
+      //         relationFuncId = relationFuncId.replace(name, obj.fileId)
+      //       }
+      //       item.relationFuncId = relationFuncId
+      //     } else { item.relationFuncId  = undefined }
+      //     if(item.relationType === '1') {
+      //       item.relationTypePath = _.find(item.relationCompos,['fileId',item.relationCompo]).nodePath
+      //     }
+      //     return item.relationTem || item.relationTem === 0 
+      //   })
+      let res = []
+      for (let index = 0; index < state.data.length; index++) {
+        const item = state.data[index]
+        if(!item.relationTem && item.relationTem !== 0) { continue }
+        if(!_.find(item.relationCompos,['fileId',item.relationCompo])) {
+          funcFalse = true 
+          break
+        }
         if(item.relationFunc) {
           // 匹配出{}中的内容并行程一个数组
           let array = item.relationFunc.match(/[^{]+(?=\})/g) 
@@ -224,19 +260,19 @@ export default defineComponent({
           item.relationFuncId = relationFuncId
         } else { item.relationFuncId  = undefined }
         if(item.relationType === '1') {
-          // let obj =  _.find(item.relationCompos,['fileId',item.relationCompo])
           item.relationTypePath = _.find(item.relationCompos,['fileId',item.relationCompo]).nodePath
         }
-        return item.relationTem || item.relationTem === 0 }
-      )
-      if(funcFalse) {
-        Message.error('存在公式信息未匹配，请重新填写')
-        done(false)
-        return
+        res.push(item)
       }
-      formConfig.setRelationSet(state.temChooseList,res)
-      handleCancel()
-      done()
+
+      if(funcFalse) {
+        Message.error('存在信息未匹配，请重新填写')
+        done(false)
+      } else {
+        formConfig.setRelationSet(state.temChooseList,res)
+        handleCancel()
+        done()
+      }
     }
 
     function handleCancel () {

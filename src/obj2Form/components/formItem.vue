@@ -324,8 +324,7 @@ export default {
             let formula = relation.relationFuncId
             for (const formVal of array) {
               // 将因子式中的ID 替换成数组中对应的值，没有就取 0
-              // 类似于 {id1}*{id2} => 12*3
-              let num = evaluate(formVal, props.formData)
+              let num = evaluate(formVal, props.formData) 
               formula = formula.replace(`{${formVal}}`, 
                 isNaN(num) || num === '' ? 0 : evaluate(formVal, props.formData))
             }
@@ -352,7 +351,6 @@ export default {
       // 关联其他组件，相等
       else if(relation.relationType === '0') {
         watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
-          console.log('val: ',props.item,val)
           // 关联本表普通组件
           props.formData[props.id] = val
         })
