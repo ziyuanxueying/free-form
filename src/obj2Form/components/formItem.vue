@@ -1,9 +1,9 @@
 <template>
   <a-form-item
-    v-show="!hide&&item.type!=='NxCard'&&item.opType!==2" 
+    v-show="showItemHandler(item)" 
     :field="field&&id?`${field}${id}`:field||id"
     :label="item.configList.label|| item.moduleName"
-    :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))||item.opType===0"
+    :disabled="disabledItemHandler(item)"
     :validate-trigger="['change','input']"
     :hideLabel="item.hideLabel"
     :rules="[{required:isRequired(),message:'请完善当前项'},] "
@@ -18,7 +18,7 @@
       :limit="item.configList.maxCount"
       :state="['copy','edit'].includes($route.query.type) ? 'edit' :'detail'"
       @change="changeFileList(field&&id?`${field}${id}`:field||id)"
-      :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+      :disabled="disabledItemHandler(item)"
     />
     <!-- <a-upload action="/" disabled v-if="item.type=='NxUpload'&&(ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false)))"/> -->
     <a-textarea
@@ -46,7 +46,7 @@
       v-model="formData[id]"
       :format="item.configList.format"
       :showTime="item.configList.showTime"
-      :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+      :disabled="disabledItemHandler(item)"
     />
     <a-range-picker
       v-if="item.type=='NxRangePicker'"
@@ -54,7 +54,7 @@
       allow-clear
       :placeholder="ifDisabled?' ':''"
       :showTime="item.configList.showTime"
-      :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+      :disabled="disabledItemHandler(item)"
     />
     <a-switch v-if="item.type=='NxSwitch'" v-model="formData[id]"/>
     <a-select
@@ -68,7 +68,7 @@
       </a-option>
     </a-select>
     <a-space v-if="item.type=='NxCheckbox'" direction="vertical" size="large">
-      <a-checkbox-group v-model="formData[item.configList.fileId]" :disabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))">
+      <a-checkbox-group v-model="formData[item.configList.fileId]" :disabled="disabledItemHandler(item)">
         <a-checkbox v-for="(citem,index) in proxyOptions[item.configList.fileId]" :key="index" :value="citem.key || citem.value">
           {{ citem.value }}
         </a-checkbox>
@@ -93,7 +93,7 @@
           :proxyOptions="proxyOptions"
           :pathSetObj="pathSetObj"
           :ifRequired="isRequired()"
-          :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+          :ifDisabled="disabledItemHandler(item)"
           :id="ccitem.configList.fileId||ccitem.componentId"
           :field="field"
           :hidden="hide"
@@ -280,6 +280,14 @@ export default {
     const changeFileList = (id)=>{
       props.formRef.validateField(id)
     }
+    const showItemHandler = (item)=>{
+      // NxCard解析不在这个dom里面   opType（操作设置）为2时是隐藏
+      return !props.hide && item.type !== 'NxCard' && item.opType !== 2
+    }
+    const disabledItemHandler = (item)=>{
+      // ifDisabled父级及以上被禁用 pathSetObj根据公式配置  configList表单设计的是否禁用选项 opType操作设置的配置为0时是只读选项
+      return props.ifDisabled || (props.pathSetObj[props.id]?.disabled ? config.disabled : (item.configList.disabled || false)) || item.opType === 0
+    }
     function isRequired () {
       if(props.hidden) {
         return false
@@ -367,6 +375,8 @@ export default {
       tableAdd,
       changeFileList,
       isRequired,
+      showItemHandler,
+      disabledItemHandler
     }
   },
   props:{
