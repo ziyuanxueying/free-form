@@ -115,6 +115,8 @@ import { reactive, toRefs,  } from 'vue'
 import { useFormConfigStore } from '../../store'
 import * as API from './api.js'
 import { add,evaluate } from 'mathjs'
+import { Message } from '@arco-design/web-vue'
+
 const applys = [{ key: 1, value:'本人发起' },{ key:2, value:'他人发起' }]
 const searchs = [{ key: 1, value:'表单标题' },{ key:2, value:'发起人' },{ key:3, value:'申请时间' }]
 const columns = [  
@@ -161,6 +163,9 @@ export default {
 
     const { watchFormChange } = watchLink({ props, state })
     function handleOk () {
+      if(!state.rowSelection.selectedRowKeys.length) {
+        return Message.warning('请选择关联表单')
+      }
       state.rowSelection.selectedRowKeys = []
       state.linkStore[state.chooseItem.index].formTitle = state.chooseItem.value
       watchFormChange()

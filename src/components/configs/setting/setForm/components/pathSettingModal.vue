@@ -3,7 +3,7 @@
     :visible="true"
     @ok="submit"
     @cancel="cancel"
-    width="1250px"
+    width="900px"
   >
     <template #title>
       流程设置
@@ -23,7 +23,7 @@
             v-model="item.parentProp"
           />
           值
-          <a-select placeholder="请选择表达式" :style="{width:'150px'}" v-model="item.equation">
+          <a-select placeholder="表达式" :style="{width:'100px'}" v-model="item.equation">
             <a-option v-for="ops in equations" :key="ops.value" :value="ops.value">
               {{ ops.label }}
             </a-option>
@@ -32,16 +32,16 @@
             placeholder="请填写值"
             allow-clear
             v-model="item.value"
-            :style="{width:'200px'}"
+            :style="{width:'150px'}"
           />
           时
           <a-tree-select
             placeholder="请选择字段"
-            :style="{width:'200px'}"
+            :style="{width:'150px'}"
             :data="treeData"
             v-model="item.childProp"
           />
-          <a-select placeholder="请选择行为" :style="{width:'200px'}" v-model="item.action">
+          <a-select placeholder="请选择行为" :style="{width:'150px'}" v-model="item.action">
             <a-option v-for="ops in actions" :key="ops.value" :value="ops.value">
               {{ ops.label }}
             </a-option>
