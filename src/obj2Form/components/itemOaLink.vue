@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-button v-if="!ifDisabled" @click="linkShow=true">
+    <a-button v-show="!ifDisabled" @click="linkShow=true">
       选择关联表单
     </a-button>
     <a
@@ -166,7 +166,7 @@ export default {
     const pageInteractionFun = pageInteraction({ state })
 
     watch(()=>props.data,()=>{ 
-      state.chooseItem = props.data
+      state.chooseItem = props.data || {}
     })
 
     return {
