@@ -12,7 +12,7 @@
       :data="formData[item.configList.fileId]"
       @btnClick="btnClick"
     />
-    <a-form-item v-else :label="item.configList.label" :label-col-props="{xs:4,lg:span?span:4}">
+    <a-form-item v-else-if="item.configList.oaChooseDataitem.length === 1" :label="item.configList.label" :label-col-props="{xs:4,lg:span?span:4}">
       <a-input
         v-model="formData[item.configList.fileId][0][columns[0].dataIndex]"
         placeholder="请点击选择"

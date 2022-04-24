@@ -246,6 +246,7 @@ import itemOa from './itemOa.vue'
 import ItemOaInfo from './itemOaInfo.vue'
 import { NUpload } from '@naxions/nax-common'
 import { add,evaluate } from 'mathjs'
+// import _ from 'lodash'
 export default {
   components:{ itemOa, NUpload,ItemOaInfo },
   name:'FormItem',
@@ -342,9 +343,11 @@ export default {
           })
         } else if(relation.relationTypePath.length === 2) {
           watch(()=>props.formData[relation.relationTypePath[0]],()=>{
-            props.formData[props.id] = add(...props.formData[relation.relationTypePath[0]].map(item => {
+            let sum =  props.formData[relation.relationTypePath[0]].map(item => {
               return item[relation.relationTypePath[1]]
-            }),0)
+            })
+            if(!sum[0]) { return }
+            props.formData[props.id] = add(...sum,0)
           },{ deep:true })
         }
       }
