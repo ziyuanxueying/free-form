@@ -129,7 +129,7 @@ export default {
     ifDisabled:{ type:Boolean, default:()=>false },
   },
   emits: ['update:ifDisabled','modalChoose'],
-  setup (props) { 
+  setup (props,{ emit }) { 
     const config = useFormConfigStore()
     const state = reactive({ 
       linkStore: [], 
@@ -138,8 +138,8 @@ export default {
       form: { type:1 , search:1, draftTime:[] },
       pagination: { current: 1, total: 0, },
       tableList:[],
-      rowSelection: { type: 'radio',selectedRowKeys:[]  },
-      chooseItem: { id:0 }
+      rowSelection: { type: 'radio', selectedRowKeys:[]  },
+      chooseItem: { id: 0 }
     })
 
     function formClick (item,index) {
@@ -164,6 +164,9 @@ export default {
       state.rowSelection.selectedRowKeys = []
       state.linkStore[state.chooseItem.index].formTitle = state.chooseItem.value
       watchFormChange()
+      if(!_.find(state.linkStore,['res',undefined])) {
+        emit('update:ifDisabled', false)
+      }
     }
 
     function typeChange () {
@@ -178,13 +181,16 @@ export default {
       getInitData({ state })
     }
 
-    getInitData({ state })
     const pageInteractionFun = pageInteraction({ state })
 
     config.$onAction(({ store, })=>{
       setTimeout(() => {
         state.linkStore = store.relationSet.templates
         state.relations = store.relationSet.components
+        if(state.linkStore.length) {
+          getInitData({ state })
+          emit('update:ifDisabled', true)
+        }
       }, 0)
     })
 
@@ -215,7 +221,6 @@ function getInitData ({ state }) {
     procTplConfigIdList:[state.chooseItem.id]
   }
   state.loading = true
-  // eslint-disable-next-line consistent-return
   API.pageList(params).then((res)=> {
     state.tableList = res.content
     state.pagination.total = res.totalElements

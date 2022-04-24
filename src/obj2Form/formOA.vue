@@ -10,7 +10,7 @@
         <div class="form-title">
           {{ formTitle }}
         </div>
-        <FormLink :formData="formData"/>
+        <FormLink :formData="formData" v-model:ifDisabled="ifDisabled"/>
         <!-- <a-button
           v-if="infoBtn"
           class="info-choose"
@@ -87,7 +87,7 @@ export default {
       linkShow: false,
       infoBtn: false,
       infoMetaId: undefined,
-      innerWidth:0
+      innerWidth:0,
     })
     formConfig.innerWidth =  window.innerWidth
     //存放原始表单数据，用于重置
@@ -100,7 +100,6 @@ export default {
       getFormObj()
       getPathObj()
       getRelation(formConfig.formObj)
-      console.log('getRelation(formConfig.formObj): ', formConfig.formObj)
       if(formStore.infobaseSet?.type && formStore.infobaseSet.type !== '0') {
         formConfig.infoBtn = ['copy','edit'].includes(route.query.type)
         formConfig.infoMetaId = formStore.infobaseSet.oaChooseDataitem
@@ -204,6 +203,7 @@ export default {
     config.$onAction(({ store, })=>{
       setTimeout(() => {
         formStore = store.toJSON
+        console.log('formStore: ', formStore.relationSet.templates.length)
         init()
       }, 0)
     })

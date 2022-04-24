@@ -178,6 +178,7 @@ export default defineComponent({
       state.curCompos = state.data.map((item)=>{
         return { name:item.orgComponent, fileId:item.orgComponentId, nodePath:item.nodePathArray,procTplConfigId:0 } 
       })
+      if(!formConfig.relationSet.components.length) { return }
       let count = 0 
       state.tabLoading = true
       formConfig.relationSet.components.forEach(async (item)=> {
