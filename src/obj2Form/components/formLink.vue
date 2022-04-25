@@ -117,7 +117,7 @@ import { useFormConfigStore } from '../../store'
 import * as API from './api.js'
 import { add,evaluate } from 'mathjs'
 import { Message } from '@arco-design/web-vue'
-
+import { useRoute } from 'vue-router'
 const applys = [{ key: 1, value:'本人发起' },{ key:2, value:'他人发起' }]
 const searchs = [{ key: 1, value:'表单标题' },{ key:2, value:'发起人' },{ key:3, value:'申请时间' }]
 const columns = [  
@@ -133,6 +133,7 @@ export default {
   },
   emits: ['update:ifDisabled','modalChoose'],
   setup (props,{ emit }) { 
+    const route = useRoute()
     const config = useFormConfigStore()
     const state = reactive({ 
       linkStore: [], 
@@ -146,6 +147,7 @@ export default {
     })
 
     function formClick (item,index) {
+      if(!['copy','edit'].includes(route.query.type)) { return }
       item.index = index
       state.chooseItem = item
       state.linkShow = true
