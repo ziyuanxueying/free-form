@@ -1,6 +1,6 @@
 {
   "name": "nx-free-form",
-  "version": "0.2.87",
+  "version": "0.2.88",
   "private": false,
   "main": "lib/nx-free-from.common.js",
   "scripts": {
