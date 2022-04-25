@@ -64,7 +64,6 @@ export default {
     })
 
     function setColumns () {
-      console.log('props.item.configList: ', props.item.configList)
       state.columns = _.chain(props.item.configList.oaChooseDataitem)
         .map((item)=>{ 
           return { 

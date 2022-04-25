@@ -338,9 +338,9 @@ export default {
             let formula = relation.relationFuncId
             for (const formVal of array) {
               // 将因子式中的ID 替换成数组中对应的值，没有就取 0
-              let num = evaluate(formVal, props.formData) 
-              formula = formula.replace(`{${formVal}}`, 
-                isNaN(num) || num === '' ? 0 : evaluate(formVal, props.formData))
+              //   let num = evaluate(formVal, props.formData) 
+              let num = props.formData[formVal] || ''
+              formula = formula.replace(`{${formVal}}`, isNaN(num) || num === '' ? 0 : evaluate(formVal, props.formData))
             }
             // 根据函数算出值
             props.formData[props.id] = evaluate(formula)

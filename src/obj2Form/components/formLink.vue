@@ -171,11 +171,16 @@ export default {
       }
       state.rowSelection.selectedRowKeys = []
       state.linkStore[state.chooseItem.index].formTitle = state.chooseItem.value
+      console.log('state.linkStore: ', state.linkStore)
       watchFormChange()
+      emptyCheck()
+    }
+    function emptyCheck () {
       let empty = state.linkStore.find((item)=>{
         return item.res === undefined
       })
       if(!empty) {
+        props.formData.linkStore = state.linkStore
         emit('update:ifDisabled', false)
       }
     }
@@ -196,13 +201,14 @@ export default {
 
     config.$onAction(({ store, })=>{
       setTimeout(() => {
-        state.linkStore = store.relationSet.templates
+        state.linkStore = props.formData.linkStore ? props.formData.linkStore : store.relationSet.templates
         state.relations = store.relationSet.components
-        if(state.linkStore.length) {
+        if(state.linkStore.length && ['copy','edit'].includes(route.query.type)) {
           getInitData({ state })
           emit('update:ifDisabled', true)
+          emptyCheck()
         }
-      }, 0)
+      }, 10)
     })
 
     return {
@@ -256,7 +262,6 @@ function pageInteraction ({ state }) {
   }
   //分页改变时
   const pageChange = (page) => {
-    console.log('page: ', page)
     state.pagination.current = page
     getInitData({ state })
   }
@@ -341,6 +346,7 @@ function watchLink ({ props,state }) {
     } 
     return val
   }
+
   return {
     watchFormChange
   }

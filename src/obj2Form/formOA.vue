@@ -189,7 +189,7 @@ export default {
           } 
         }).compact().value()
       formConfig.columns = _.uniqBy(formConfig.colShowList,'dataIndex')
-      formConfig.ifDisabled = true
+    //   formConfig.ifDisabled = true
     }
 
     config.$onAction(({ store, })=>{
