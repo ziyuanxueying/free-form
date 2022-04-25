@@ -4,8 +4,6 @@
     :label="label"
     :required="required"
     :hideLabel="hideLabel"
-    :label-col-props="{span:4}"
-    :wrapper-col-props="{span:20}"
   >
     <a-range-picker
       :showTime="showTime"

@@ -5,8 +5,6 @@
     :required="required"
     :hideLabel="hideLabel"
     :disabled="disabled"
-    :label-col-props="{span:4}"
-    :wrapper-col-props="{span:20}"
   >
     <a-upload action="/" :limit="maxCount">
       <template #upload-button>

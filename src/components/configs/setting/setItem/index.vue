@@ -1,11 +1,6 @@
 <template>
   <div>
-    <a-form
-      :model="form"
-      layout="vertical"
-      :label-col-props="{ span: 8 }"
-      :wrapper-col-props="{span: 16}"
-    >
+    <a-form :model="form" layout="vertical">
       <FormItem
         :element="item"
         :form="form"

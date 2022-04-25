@@ -166,10 +166,6 @@ export default {
   margin-left: 10px;
 }
 
-.arco-form-item {
-  margin: 10px 0;
-}
-
 .json-view {
   overflow: auto;
   height: 800px;
