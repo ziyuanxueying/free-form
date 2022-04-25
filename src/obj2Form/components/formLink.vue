@@ -12,6 +12,7 @@
       :label-col-props="{xs:20,lg:4}"
       :wrapper-col-props="{span:20}"
       @click="formClick(item,index)"
+      :disabled="!['copy','edit'].includes($route.query.type)"
     >
       <a-input :placeholder="`请选择`" v-model="item.formTitle" readonly/>
     </a-form-item>
@@ -169,7 +170,10 @@ export default {
       state.rowSelection.selectedRowKeys = []
       state.linkStore[state.chooseItem.index].formTitle = state.chooseItem.value
       watchFormChange()
-      if(!_.find(state.linkStore,['res',undefined])) {
+      let empty = state.linkStore.find((item)=>{
+        return item.res === undefined
+      })
+      if(!empty) {
         emit('update:ifDisabled', false)
       }
     }

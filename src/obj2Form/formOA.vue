@@ -11,14 +11,6 @@
           {{ formTitle }}
         </div>
         <FormLink :formData="formData" v-model:ifDisabled="ifDisabled"/>
-        <!-- <a-button
-          v-if="infoBtn"
-          class="info-choose"
-          type="primary"
-          @click="linkShow=true"
-        >
-          选择信息库
-        </a-button> -->
         <a-form-item
           v-if="infoBtn"
           :label="`选择信息库`"
@@ -203,7 +195,6 @@ export default {
     config.$onAction(({ store, })=>{
       setTimeout(() => {
         formStore = store.toJSON
-        console.log('formStore: ', formStore.relationSet.templates.length)
         init()
       }, 0)
     })

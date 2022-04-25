@@ -133,7 +133,7 @@
                 :hidden="hide"
               />
             </div>
-            <a-space v-if="citem.key === 'operate'">
+            <div class="flex-row-center" v-if="citem.key === 'operate'">
               <a-button
                 class="operate-btn"
                 type="text"
@@ -149,7 +149,7 @@
               >
                 删除
               </a-button>
-            </a-space>
+            </div>
           </template>
         </a-table-column>
       </template>
@@ -241,6 +241,7 @@
 </template>
 <script>
 import { reactive, toRefs, watch } from 'vue-demi'
+import { useRoute } from 'vue-router'
 import{ getForm } from '../utils'
 import itemOa from './itemOa.vue'
 import ItemOaInfo from './itemOaInfo.vue'
@@ -251,6 +252,7 @@ export default {
   components:{ itemOa, NUpload,ItemOaInfo },
   name:'FormItem',
   setup (props) {
+    const route = useRoute()
     const config = reactive({
       disabled:false,
       required:false,
@@ -259,7 +261,7 @@ export default {
       deafultList: [],
     })
     if(props.item.type === 'NxTable') {
-      config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作',width:100 ,align:'center' }]]
+      config.columns = [ ...props.item.configList.layout?.columns, ...[{ key:'operate',value:'操作',width:110 ,align:'center' }]]
     }
     if(props.item.type === 'NxDatePicker') {
       props.item.configList.showToday && (props.formData[props.id] = Date.now())
@@ -285,7 +287,10 @@ export default {
       // NxCard解析不在这个dom里面   opType（操作设置）为2时是隐藏
       return !props.hide && item.type !== 'NxCard' && item.opType !== 2
     }
+    
     const disabledItemHandler = (item)=>{
+      // 有opType取opType，没有的话增加默认值:编辑和复制时默认读写，其他默认只读
+      item.opType =  item.opType ? item.opType : ['copy','edit'].includes(route.query.type) ? 1 : 0
       // ifDisabled父级及以上被禁用 pathSetObj根据公式配置  configList表单设计的是否禁用选项 opType操作设置的配置为0时是只读选项
       return props.ifDisabled || (props.pathSetObj[props.id]?.disabled ? config.disabled : (item.configList.disabled || false)) || item.opType === 0
     }
@@ -296,7 +301,7 @@ export default {
       return props.ifRequired || (props.pathSetObj[props.id]?.required ? config.required : (props.item.configList.required || false))
     }
     watch(()=>props.formData,()=>{
-    //   if(props.item.type === 'NxUpload' && !config.deafultList.length) {
+      //   if(props.item.type === 'NxUpload' && !config.deafultList.length) {
       if(props.item.type === 'NxUpload') {
         let val = JSON.stringify(props.formData[props.id] || [])
         if(val !== JSON.stringify(config.deafultList)) {
