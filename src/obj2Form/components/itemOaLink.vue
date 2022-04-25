@@ -232,4 +232,8 @@ function pageInteraction ({ state }) {
 </script>
 
 <style lang="less" scoped>
+.link {
+  margin-left: 10px;
+  color: rgb(var(--primary-6));
+}
 </style>
