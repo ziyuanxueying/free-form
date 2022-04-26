@@ -174,7 +174,7 @@
       :ifDisabled="ifDisabled"
     />
   </a-form-item>
-  <template v-if="item.type=== 'NxCard'">
+  <template v-if="item.type=== 'NxCard'&&item.opType!==2">
     <div v-if="item.configList.layout.ifAdd" v-show="!hide" class="card-view">
       <div
         class="card-item"
