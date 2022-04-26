@@ -1,3 +1,5 @@
+import { Message } from '@arco-design/web-vue'
+import _ from 'lodash'
 /**
  * 根据files返回指定格式的组件list
  * @param {*} modulesFiles 文件列表
@@ -167,9 +169,22 @@ export function checkId (formItemList,arr = []) {
       })
     }
   })
-
-  return { fileId:arr.map((p)=>{ return p.fileId }) , label:arr.map((p)=>{ return p.label }) }
+  return { fileId:_.map(arr,'fileId'), label: _.map(arr,'label') }
 }
+
+export function checkOnly (formItemList,arr = []) {
+  let  checks = checkId(formItemList,arr)
+  if (_.uniq(checks.fileId).length !== checks.fileId.length) {
+    Message.warning('存在重复的字段标识，请修改后提交')
+    return false
+  }
+  if (_(checks.label).uniq().compact().value().length !== checks.label.length) {
+    Message.warning('组件标签名称存在为空/重复')
+    return false
+  } 
+  return true
+}
+
 /**
  * 获取表单中所有组件的componentId
  */

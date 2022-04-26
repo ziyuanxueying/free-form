@@ -1,10 +1,10 @@
 <template>
   <div class="flex-between" style="margin-bottom: 10px;">
-    <a-button type="text" @click="showInforBase=true">
+    <a-button type="text" @click="clickCheck('showInforBase')">
       <icon-edit/>
       设置读写信息库
     </a-button>
-    <a-button type="text" class="link-btn" @click="linkShow=true">
+    <a-button type="text" class="link-btn" @click="clickCheck('linkShow')">
       <icon-plus/>
       关联模板设置
     </a-button>
@@ -30,6 +30,8 @@ import Setting from './setItem'
 import SetForm from './setForm'
 import InforBase from './components/inforBase.vue'
 import RelationSet from './components/relationSet.vue'
+import { useFormConfigStore } from '../../../store'
+import { checkOnly } from '../../../utils/index'
 export default {
   components:{
     Setting,
@@ -38,17 +40,25 @@ export default {
     RelationSet,
   },
   setup () { 
+    const config = useFormConfigStore()
     const state = reactive({
       showInforBase:false,
       settingType:'item',
       linkShow:false,
     })
+
+    function clickCheck (type) {
+      if (!checkOnly(config.formItemList)) return
+      state[type] = true
+    }
+
     function closeInforBase () {
       state.showInforBase = false
     }
     return {
       ...toRefs(state),
-      closeInforBase
+      closeInforBase,
+      clickCheck,
     }
   },
   mounted () {
