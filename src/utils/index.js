@@ -159,15 +159,16 @@ export function checkId (formItemList,arr = []) {
   formItemList.forEach(item=>{
     let configList = item.configList
     if(!configList.layout) {
-      arr.push(configList.fileId)
+      arr.push({ fileId:configList.fileId, label: configList.label })
     }else{
-      arr.push(configList.layout.fileId)
+      arr.push({ fileId:configList.layout.fileId, label: configList.layout.label })
       configList.layout.colContent.forEach(citem=>{
         checkId(citem,arr)
       })
     }
   })
-  return arr
+
+  return { fileId:arr.map((p)=>{ return p.fileId }) , label:arr.map((p)=>{ return p.label }) }
 }
 /**
  * 获取表单中所有组件的componentId
