@@ -329,7 +329,7 @@ function watchLink ({ props,state }) {
       val = evaluate(formula)
     } else if(single.relationType === '0') {
       // 关联类型，相等
-    //   val = res[single.relationCompo]
+      val = res[single.relationCompo]
     } else if(single.relationType === '1') {
       //关联类型， 统计
       switch (single.relationTypePath.length) {
