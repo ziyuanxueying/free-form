@@ -356,3 +356,41 @@ export function  trsfromData (data, chidlren) {
   }
   return flat(targetData)
 }
+
+// 判断关联模板内容是否正确
+export function checkRelationSet (data) {
+  let funcFalse = false
+  let res = []
+  for (let index = 0; index < data.length; index++) {
+    const item = data[index]
+    if(!item.relationTem && item.relationTem !== 0) { continue }
+    if(!_.find(item.relationCompos,['fileId',item.relationCompo])) {
+      funcFalse = true 
+      break
+    }
+    if(item.relationFunc) {
+      // 匹配出{}中的内容并行程一个数组
+      let array = item.relationFunc.match(/[^{]+(?=\})/g) 
+      if(!array) { 
+        data[index].relationFunc = ''
+        return funcFalse = true 
+      }
+      let relationFuncId = item.relationFunc
+      for (const name of array) {
+        let obj =  _.find(item.relationCompos,['name',name])
+        if(!obj) {
+          funcFalse = true
+          data[index].relationFunc = ''
+          break
+        }
+        relationFuncId = relationFuncId.replace(name, obj.fileId)
+      }
+      item.relationFuncId = relationFuncId
+    } else { item.relationFuncId  = undefined }
+    if(item.relationType === '1') {
+      item.relationTypePath = _.find(item.relationCompos,['fileId',item.relationCompo]).nodePath
+    }
+    res.push(item)
+  }
+  return { funcFalse,res }
+}

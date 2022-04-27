@@ -133,7 +133,7 @@
 // <script lang="ts">
 import { reactive, toRefs, watch,defineComponent } from 'vue-demi'
 import { useFormConfigStore } from '../../../../store'
-import { getLinkTree } from '../../../../utils'
+import { getLinkTree,checkRelationSet } from '../../../../utils'
 // import { Components } from './interface'
 import _ from 'lodash'
 import { Message } from '@arco-design/web-vue'
@@ -212,67 +212,7 @@ export default defineComponent({
     }
 
     function onBeforeOk (done) {
-      let funcFalse = false
-      //   let res = _.filter(state.data, (item,index)=> {
-      //     let aaa = _.find(item.relationCompos,['fileId',item.relationCompo])
-      //     console.log('aaa: ', item,aaa)
-      //     if(item.relationFunc) {
-      //       // 匹配出{}中的内容并行程一个数组
-      //       let array = item.relationFunc.match(/[^{]+(?=\})/g) 
-      //       if(!array) { 
-      //         state.data[index].relationFunc = ''
-      //         return funcFalse = true 
-      //       }
-      //       let relationFuncId = item.relationFunc
-      //       for (const name of array) {
-      //         let obj =  _.find(item.relationCompos,['name',name])
-      //         if(!obj) {
-      //           funcFalse = true
-      //           state.data[index].relationFunc = ''
-      //           break
-      //         }
-      //         relationFuncId = relationFuncId.replace(name, obj.fileId)
-      //       }
-      //       item.relationFuncId = relationFuncId
-      //     } else { item.relationFuncId  = undefined }
-      //     if(item.relationType === '1') {
-      //       item.relationTypePath = _.find(item.relationCompos,['fileId',item.relationCompo]).nodePath
-      //     }
-      //     return item.relationTem || item.relationTem === 0 
-      //   })
-      let res = []
-      for (let index = 0; index < state.data.length; index++) {
-        const item = state.data[index]
-        if(!item.relationTem && item.relationTem !== 0) { continue }
-        if(!_.find(item.relationCompos,['fileId',item.relationCompo])) {
-          funcFalse = true 
-          break
-        }
-        if(item.relationFunc) {
-          // 匹配出{}中的内容并行程一个数组
-          let array = item.relationFunc.match(/[^{]+(?=\})/g) 
-          if(!array) { 
-            state.data[index].relationFunc = ''
-            return funcFalse = true 
-          }
-          let relationFuncId = item.relationFunc
-          for (const name of array) {
-            let obj =  _.find(item.relationCompos,['name',name])
-            if(!obj) {
-              funcFalse = true
-              state.data[index].relationFunc = ''
-              break
-            }
-            relationFuncId = relationFuncId.replace(name, obj.fileId)
-          }
-          item.relationFuncId = relationFuncId
-        } else { item.relationFuncId  = undefined }
-        if(item.relationType === '1') {
-          item.relationTypePath = _.find(item.relationCompos,['fileId',item.relationCompo]).nodePath
-        }
-        res.push(item)
-      }
-
+      let { funcFalse,res } = checkRelationSet(state.data)
       if(funcFalse) {
         Message.error('存在信息未匹配，请重新填写')
         done(false)
