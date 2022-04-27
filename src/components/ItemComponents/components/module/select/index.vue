@@ -4,6 +4,7 @@
     :label="label"
     :hideLabel="hideLabel"
     :disabled="disabled"
+    :required="required"
   >
     <a-select v-model="form[proto]" :placeholder="placeholder">
       <span v-if="!remote">
