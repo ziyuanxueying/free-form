@@ -171,7 +171,6 @@ export default {
       }
       state.rowSelection.selectedRowKeys = []
       state.linkStore[state.chooseItem.index].formTitle = state.chooseItem.value
-      console.log('state.linkStore: ', state.linkStore)
       watchFormChange()
       emptyCheck()
     }
@@ -279,7 +278,7 @@ function watchLink ({ props,state }) {
     })
     if(singles) {
       for (const single of singles) {
-        props.formData[single.orgComponentId] = linkSingle(single,state.linkStore[state.chooseItem.index].res,props.formData)
+        props.formData[single.orgComponentId] = linkSingle(single,state.linkStore[state.chooseItem.index].res)
       }
     }
 
@@ -301,7 +300,7 @@ function watchLink ({ props,state }) {
         const tabLink = arr[index]
         let aaa =  _.map(tabVal,item=>{
           let obj = {}
-          obj[tabLink.orgComponentId] = linkSingle(tabLink,item,item)
+          obj[tabLink.orgComponentId] = linkSingle(tabLink,item)
           return { ...obj }
         })
         formArr = _.merge(aaa,formArr)
@@ -310,7 +309,7 @@ function watchLink ({ props,state }) {
     }
   }
 
-  function linkSingle (single,res,construct) {
+  function linkSingle (single,res) {
     let val
     if(single.relationFuncId) {
       // 关联类型，函数
@@ -322,15 +321,15 @@ function watchLink ({ props,state }) {
       for (const formVal of array) {
         // 将因子式中的ID 替换成数组中对应的值，没有就取 0
         // 类似于 {id1}*{id2} => 12*3
-        let num = evaluate(formVal, construct)
-        formula = formula.replace(`{${formVal}}`, 
-          isNaN(num) || num === '' ? 0 : evaluate(formVal,construct))
+        // let num = evaluate(formVal, curForm)
+        let num = res[formVal] || ''
+        formula = formula.replace(`{${formVal}}`, isNaN(num) || num === '' ? 0 : evaluate(formVal,res))
       }
       // 根据函数算出值
       val = evaluate(formula)
     } else if(single.relationType === '0') {
       // 关联类型，相等
-      val = res[single.relationCompo]
+    //   val = res[single.relationCompo]
     } else if(single.relationType === '1') {
       //关联类型， 统计
       switch (single.relationTypePath.length) {
