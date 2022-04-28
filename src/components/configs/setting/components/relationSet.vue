@@ -138,12 +138,14 @@ import { getLinkTree,checkRelationSet } from '../../../../utils'
 import _ from 'lodash'
 import { Message } from '@arco-design/web-vue'
 import * as API from './api'
+import { useRoute } from 'vue-router'
 export default defineComponent({
   props:{
     linkShow:{ type:Boolean, default:()=>false },
   },
   emits:['update:linkShow'],
   setup (props,{ emit }) {
+    const route = useRoute()
     const state = reactive({
       temList:[],
       temNames: { value: 'id', label: 'name' },
@@ -168,7 +170,9 @@ export default defineComponent({
     const formConfig  = useFormConfigStore()
 
     async function temInit () {
-      state.temList = await API.selectListFlat()
+      state.temList = _.remove(await API.selectListFlat(),  (n)=> {
+        return n.id !== Number(route.query.temId) 
+      })
       state.temChooseList = formConfig.relationSet.templates
       console.log('state.temChooseList: ', state.temChooseList)
     }

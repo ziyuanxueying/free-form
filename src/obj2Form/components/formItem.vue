@@ -284,8 +284,8 @@ export default {
       props.formRef.validateField(id)
     }
     const showItemHandler = (item)=>{
-      // NxCard解析不在这个dom里面   opType（操作设置）为2时是隐藏
-      return !props.hide && item.type !== 'NxCard' && item.opType !== 2
+      // NxCard解析不在这个dom里面  opType（操作设置）为2时是隐藏
+      return !config.hide && item.type !== 'NxCard' && item.opType !== 2
     }
     
     const disabledItemHandler = (item)=>{
