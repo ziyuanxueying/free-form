@@ -174,7 +174,6 @@ export default defineComponent({
         return n.id !== Number(route.query.temId) 
       })
       state.temChooseList = formConfig.relationSet.templates
-      console.log('state.temChooseList: ', state.temChooseList)
     }
 
     async function getOrgData () {

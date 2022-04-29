@@ -143,7 +143,8 @@ export default {
       pagination: { current: 1, total: 0, },
       tableList:[],
       rowSelection: { type: 'radio', selectedRowKeys:[]  },
-      chooseItem: { id: 0 }
+      chooseItem: { id: 0 },
+      loading: false
     })
 
     function formClick (item,index) {
@@ -157,6 +158,7 @@ export default {
     const selectChange = async (vals) => {
       state.rowSelection.selectedRowKeys = vals
       state.linkStore[state.chooseItem.index].res = await API.getFormItems(vals[0])
+      state.linkStore[state.chooseItem.index].formTitle =  _.find(state.tableList,['id',vals[0]]).title
     }
 
     function cancelModal () {
@@ -170,9 +172,8 @@ export default {
         return Message.warning('请选择关联表单')
       }
       state.rowSelection.selectedRowKeys = []
-      state.linkStore[state.chooseItem.index].formTitle = state.chooseItem.value
       watchFormChange()
-      emptyCheck()
+      return emptyCheck()
     }
     function emptyCheck () {
       let empty = state.linkStore.find((item)=>{
