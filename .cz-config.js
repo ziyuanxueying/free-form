@@ -1,6 +1,6 @@
 const package = require('./package.json')
 const versions = package.version.split('.')
-versions[2] = parseInt(versions[2], 10) === 0 ? parseInt(versions[2], 10) : parseInt(versions[2], 10) + 1
+versions[2] = parseInt(versions[2], 10)
 const version = versions.join('.')
 module.exports = {
   types: [
