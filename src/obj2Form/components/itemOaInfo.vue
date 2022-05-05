@@ -38,6 +38,7 @@ import { reactive, toRefs, watch } from 'vue'
 import _ from 'lodash'
 import ItemOaInfoTable from './itemOaInfoTable.vue'
 import ItemOaInfoModal from './itemOaInfoModal.vue'
+import { Message } from '@arco-design/web-vue'
 export default {
   components:{ ItemOaInfoTable,ItemOaInfoModal },
   props:{
@@ -76,6 +77,12 @@ export default {
 
     function modalChoose (val) {
       if(_.isEmpty(val)) return
+      console.log('val: ', val)
+      let same =  _.find(props.formData[props.item.configList.fileId],['id',val.id])
+      if(same) { 
+        Message.warning('存在相同的信息库数据') 
+        return
+      }
       if(JSON.stringify(props.formData[props.item.configList.fileId][0]) === '{}' 
          || state.columns.length === 1) {
         props.formData[props.item.configList.fileId][0] = val
