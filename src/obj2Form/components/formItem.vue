@@ -332,44 +332,54 @@ export default {
       }
     },{ deep: true, immediate:true })
      
-    if(props.item?.relation?.relationTem === 0 || props.item?.relation?.relationCur) {
-      const relation =  { ...props.item.relation }
-      // 本表单关联本表函数
-      if(relation.relationFuncId) {
-        watchFuncChange(relation)  
-      }
-      // 关联其他组件，统计
-      else if(relation.relationType === '1') {
-        if(relation.relationTypePath.length === 1) {
-          watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
+    if(['copy','edit'].includes(route.query.type)) {
+      setTimeout(() => {
+        relationFunc()
+      }, route.query.type === 'edit' ? 0 : 100)
+    }
+    
+    function relationFunc () {
+      if(props.item?.relation?.relationTem === 0 || props.item?.relation?.relationCur) {
+        const relation =  { ...props.item.relation }
+        // 本表单关联本表函数
+        if(relation.relationFuncId) {
+          watchFuncChange(relation)  
+        }
+        // 关联其他组件，统计
+        else if(relation.relationType === '1') {
+          if(relation.relationTypePath.length === 1) {
+            watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
             // 关联本表普通组件
+              props.formData[props.id] = val
+            })
+          } else if(relation.relationTypePath.length === 2) {
+            watch(()=>props.formData[relation.relationTypePath[0]],()=>{
+              let sum = _(props.formData[relation.relationTypePath[0]]).map(item=>{
+                return item[relation.relationTypePath[1]]
+              }).compact().value()
+              if(!sum[0]) { return }
+              props.formData[props.id] = add(...sum,0)
+            },{ deep:true })
+          }
+        }
+        // 关联其他组件，相等
+        else if(relation.relationType === '0') {
+          watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
+          // 关联本表普通组件
             props.formData[props.id] = val
           })
-        } else if(relation.relationTypePath.length === 2) {
-          watch(()=>props.formData[relation.relationTypePath[0]],()=>{
-            let sum = _(props.formData[relation.relationTypePath[0]]).map(item=>{
-              return item[relation.relationTypePath[1]]
-            }).compact().value()
-            if(!sum[0]) { return }
-            props.formData[props.id] = add(...sum,0)
-          },{ deep:true })
         }
-      }
-      // 关联其他组件，相等
-      else if(relation.relationType === '0') {
-        watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
-          // 关联本表普通组件
-          props.formData[props.id] = val
-        })
       }
     }
     function watchFuncChange (relation) { 
-      let itemIndex = relation.relationCur ? props.itemIndex || ''  : ''
+      let itemIndex = relation.relationCur ? props.itemIndex === -1 ? '' : props.itemIndex  : ''
       relation = relation.relationCur ? _.find(store.getRelComponents,['orgComponentId',relation.orgComponentId]) : relation
       // 根据{} 拆解因子，拆成一个数组
       let array = relation[`relationFuncId${itemIndex}`].match(/[^{]+(?=\})/g) 
       // 动态监听每个因子的变化
       for (let i = 0; i < array.length; i++) {
+        console.log('props.formData[array[i]]: ', props.formData, [array[i]])
+        // if(!props.formData[array[i]]) return
         watch(()=>props.formData[array[i]],()=>{
           let formula = relation[`relationFuncId${itemIndex}`]
           let isNum = true
@@ -380,14 +390,16 @@ export default {
             if(!num) {
               isNum = false
               continue
-            }else {
+            } else {
               isNum = true
             }
             // formula = formula.replace(`{${formVal}}`, isNaN(num) || num === '' ? 0 : evaluate(formVal, props.formData))
             formula = formula.replace(`{${formVal}}`, isNaN(num) ? 0 : num)
+            console.log('formula: ', formula)
           }
           // 根据函数算出值
-          isNum && (props.formData[props.id] = evaluate(formula))
+          //   isNum && (props.formData[props.id] = evaluate(formula))
+          props.formData[props.id] = isNum ? evaluate(formula) : 0
         }, { immediate:true })
       }
     }

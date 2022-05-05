@@ -390,6 +390,7 @@ export function checkRelationSet (data, curCompos) {
         relationFuncId = relationFuncId.replace(name, obj.fileId)
       }
       item.relationFuncId = relationFuncId
+      if(item.relationCur) { item.relationFuncId0 = relationFuncId }
     } else { item.relationFuncId  = undefined }
     if(item.relationType === '1') {
       item.relationTypePath = _.find(item.relationCompos,['fileId',item.relationCompo]).nodePath

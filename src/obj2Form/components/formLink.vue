@@ -306,7 +306,7 @@ function watchLink ({ props,state }) {
           let obj = {}
           if(tabLink.relationCur) {
             tabLink[`relationFuncId${i}`] = linkSingle(tabLink,item).func
-            if(i === tabVal.length - 1) { tabLink.relationFuncId = tabLink.relationFuncId0 }
+            // if(i === tabVal.length - 1) { tabLink.relationFuncId = tabLink.relationFuncId0 }
           } else {
             obj[tabLink.orgComponentId] = linkSingle(tabLink,item).val
           }
@@ -353,12 +353,13 @@ function watchLink ({ props,state }) {
       case 1:
         val = res[single.relationCompo]
         break
-      case 2:
-        val = add(..._(res[single.relationTypePath[0]]).map(item=>{
+      case 2: {
+        let sumArr = _(res[single.relationTypePath[0]]).map(item=>{
           return item[single.relationTypePath[1]]
-        }).compact().value(),0)
-        
+        }).compact().value()
+        val = sumArr.length ? add(...sumArr,0) : 0
         break
+      }
       }
     } 
     return { val,func }
