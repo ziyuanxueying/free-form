@@ -298,7 +298,8 @@ function watchLink ({ props,state }) {
       let arr = _(complexs).filter(item=>{
         return item.nodePathArray[0] === tab
       }).value()
-      let tabVal = state.linkStore[state.chooseItem.index].res[tab]
+      let layout =  _.find(arr[0].relationCompos,['fileId',arr[0].relationCompo])
+      let tabVal = state.linkStore[state.chooseItem.index].res[layout?.nodePath[0]]
       let formArr = []
       for (let index = 0; index < arr.length; index++) {
         const tabLink = arr[index]
