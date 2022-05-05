@@ -122,6 +122,7 @@
             <div class="nxf-table-td" v-for="(ccitem,ccindex) in item.configList.layout.colContent[index]" :key="ccindex">
               <FormItem
                 :item="ccitem"
+                :itemIndex="rowIndex"
                 :formData="formData[item.configList.layout.fileId][rowIndex]"
                 :proxyOptions="proxyOptions"
                 :pathSetObj="pathSetObj"
@@ -335,22 +336,7 @@ export default {
       const relation =  { ...props.item.relation }
       // 本表单关联本表函数
       if(relation.relationFuncId) {
-        // 根据{} 拆解因子，拆成一个数组
-        let array = relation.relationFuncId.match(/[^{]+(?=\})/g) 
-        // 动态监听每个因子的变化
-        for (let i = 0; i < array.length; i++) {
-          watch(()=>props.formData[array[i]],()=>{
-            let formula = relation.relationCur ? _.find(store.getRelComponents,['orgComponentId',relation.orgComponentId]).relationFuncId : relation.relationFuncId
-            for (const formVal of array) {
-              // 将因子式中的ID 替换成数组中对应的值，没有就取 0
-              //   let num = evaluate(formVal, props.formData) 
-              let num = props.formData[formVal] || ''
-              formula = formula.replace(`{${formVal}}`, isNaN(num) || num === '' ? 0 : evaluate(formVal, props.formData))
-            }
-            // 根据函数算出值
-            props.formData[props.id] = evaluate(formula)
-          })
-        }
+        watchFuncChange(relation)  
       }
       // 关联其他组件，统计
       else if(relation.relationType === '1') {
@@ -375,6 +361,34 @@ export default {
           // 关联本表普通组件
           props.formData[props.id] = val
         })
+      }
+    }
+    function watchFuncChange (relation) { 
+      let itemIndex = relation.relationCur ? props.itemIndex || ''  : ''
+      relation = relation.relationCur ? _.find(store.getRelComponents,['orgComponentId',relation.orgComponentId]) : relation
+      // 根据{} 拆解因子，拆成一个数组
+      let array = relation[`relationFuncId${itemIndex}`].match(/[^{]+(?=\})/g) 
+      // 动态监听每个因子的变化
+      for (let i = 0; i < array.length; i++) {
+        watch(()=>props.formData[array[i]],()=>{
+          let formula = relation[`relationFuncId${itemIndex}`]
+          let isNum = true
+          for (const formVal of array) {
+            // 将因子式中的ID 替换成数组中对应的值，没有就取 0
+            //   let num = evaluate(formVal, props.formData) 
+            let num = props.formData[formVal] 
+            if(!num) {
+              isNum = false
+              continue
+            }else {
+              isNum = true
+            }
+            // formula = formula.replace(`{${formVal}}`, isNaN(num) || num === '' ? 0 : evaluate(formVal, props.formData))
+            formula = formula.replace(`{${formVal}}`, isNaN(num) ? 0 : num)
+          }
+          // 根据函数算出值
+          isNum && (props.formData[props.id] = evaluate(formula))
+        }, { immediate:true })
       }
     }
 
@@ -423,10 +437,8 @@ export default {
     // 校验是否必填增加的字段
     field:{ type: String, default:'' },
     formRef:{ type:Object },
-    hidden:{
-      type:Boolean,
-    //   default:()=>false
-    },
+    hidden:{ type:Boolean, },
+    itemIndex:{ type:Number, default: -1 }, // 为了他表关联本表，数据联动的时候加的
   }
 }
 </script>

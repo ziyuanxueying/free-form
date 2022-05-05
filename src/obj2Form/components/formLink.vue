@@ -1,17 +1,17 @@
 <template>
-  <div class="title-link">
+  <div class="title-link" v-if="linkStore.length">
     关联表单信息
   </div>
   <a-tooltip
     position="bl"
     v-for="(item,index) in linkStore"
     :key="item.id"
-    :content="`请选择${item.value}`"
+    :content="`关联${item.value}`"
     :content-class="item.value.length <8 ?'tooltip-hide':''"
     :arrow-class="item.value.length <8 ?'tooltip-hide':''"
   >
     <a-form-item
-      :label="`请选择${item.value}`"
+      :label="`关联${item.value}`"
       :label-col-props="{xs:20,lg:4}"
       :wrapper-col-props="{span:20}"
       @click="formClick(item,index)"
@@ -302,10 +302,11 @@ function watchLink ({ props,state }) {
       let formArr = []
       for (let index = 0; index < arr.length; index++) {
         const tabLink = arr[index]
-        let aaa =  _.map(tabVal,item=>{
+        let aaa =  _.map(tabVal,(item,i)=>{
           let obj = {}
           if(tabLink.relationCur) {
-            tabLink.relationFuncId =  linkSingle(tabLink,item).func
+            tabLink[`relationFuncId${i}`] = linkSingle(tabLink,item).func
+            if(i === tabVal.length - 1) { tabLink.relationFuncId = tabLink.relationFuncId0 }
           } else {
             obj[tabLink.orgComponentId] = linkSingle(tabLink,item).val
           }
