@@ -10,6 +10,7 @@
     :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:20,lg:span?span:4}"
     :wrapper-col-props="['NxGrid','NxTable','NxOAInfo'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
+    {{ item.relation?.relationFunc }}
     <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="ifDisabled?'':item.configList.placeholder"/>
     <n-upload
       v-if="item.type=='NxUpload'"
@@ -248,12 +249,13 @@ import ItemOaInfo from './itemOaInfo.vue'
 import { NUpload } from '@naxions/nax-common'
 import { add,evaluate } from 'mathjs'
 import _ from 'lodash'
-// import _ from 'lodash'
+import { useFormConfigStore } from '../../store'
 export default {
   components:{ itemOa, NUpload,ItemOaInfo },
   name:'FormItem',
   setup (props) {
     const route = useRoute()
+    const store = useFormConfigStore()
     const config = reactive({
       disabled:false,
       required:false,
@@ -327,7 +329,7 @@ export default {
       }
     },{ deep: true, immediate:true })
      
-    if(props.item?.relation?.relationTem === 0) {
+    if(props.item?.relation?.relationTem === 0 || props.item?.relation?.relationCur) {
       const relation =  { ...props.item.relation }
       // 本表单关联本表函数
       if(relation.relationFuncId) {
@@ -336,7 +338,7 @@ export default {
         // 动态监听每个因子的变化
         for (let i = 0; i < array.length; i++) {
           watch(()=>props.formData[array[i]],()=>{
-            let formula = relation.relationFuncId
+            let formula = relation.relationCur ? _.find(store.getRelComponents,['orgComponentId',relation.orgComponentId]).relationFuncId : relation.relationFuncId
             for (const formVal of array) {
               // 将因子式中的ID 替换成数组中对应的值，没有就取 0
               //   let num = evaluate(formVal, props.formData) 

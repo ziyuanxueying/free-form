@@ -33,6 +33,7 @@ export const useFormConfigStore = defineStore('formConfig', {
             relationFunc:'',// 关联函数
           }
         ],
+        curCompos:[]
       }
     }
   },
@@ -49,7 +50,10 @@ export const useFormConfigStore = defineStore('formConfig', {
     }, 
     getPreview () {
       return this.isPreview 
-    }
+    },
+    getRelComponents () {
+      return this.relationSet.components 
+    },
   },
   actions: {
     initJson (json) {
@@ -66,7 +70,8 @@ export const useFormConfigStore = defineStore('formConfig', {
       }
       this.relationSet = json.relationSet || {
         templates:[],
-        components:[]
+        components:[],
+        curCompos:[],
       }
     },
     setPreview (val) {
@@ -79,9 +84,10 @@ export const useFormConfigStore = defineStore('formConfig', {
       this.infobaseSet.informationBase = informationBase
       this.infobaseSet.type = type
     },
-    setRelationSet (tems,list) {
+    setRelationSet (tems,list,curCompos) {
       this.relationSet.templates = tems
       this.relationSet.components = list
+      this.relationSet.curCompos = curCompos
     }
   }
 })

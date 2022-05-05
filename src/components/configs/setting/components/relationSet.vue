@@ -34,6 +34,7 @@
         :data="data"
         :bordered="{wrapper: true, cell: true}"
         :loading="tabLoading"
+        :pagination="false"
       >
         <template #columns>
           <a-table-column
@@ -211,16 +212,15 @@ export default defineComponent({
         state.data[index].relationType = val ? '0' : ''
         state.data[index].relationFunc = ''
       }
-      console.log(' state.data: ', state.data)
     }
 
     function onBeforeOk (done) {
-      let { funcFalse,res } = checkRelationSet(state.data)
+      let { funcFalse,res } = checkRelationSet(state.data,state.curCompos)
       if(funcFalse) {
         Message.error('存在信息未匹配，请重新填写')
         done(false)
       } else {
-        formConfig.setRelationSet(state.temChooseList,res)
+        formConfig.setRelationSet(state.temChooseList,res,state.curCompos)
         handleCancel()
         done()
       }

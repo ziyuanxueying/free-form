@@ -1,14 +1,17 @@
 <template>
+  <div class="title-link">
+    关联表单信息
+  </div>
   <a-tooltip
     position="bl"
     v-for="(item,index) in linkStore"
     :key="item.id"
-    :content="`选择${item.value}`"
+    :content="`请选择${item.value}`"
     :content-class="item.value.length <8 ?'tooltip-hide':''"
     :arrow-class="item.value.length <8 ?'tooltip-hide':''"
   >
     <a-form-item
-      :label="`选择${item.value}`"
+      :label="`请选择${item.value}`"
       :label-col-props="{xs:20,lg:4}"
       :wrapper-col-props="{span:20}"
       @click="formClick(item,index)"
@@ -279,7 +282,8 @@ function watchLink ({ props,state }) {
     })
     if(singles) {
       for (const single of singles) {
-        props.formData[single.orgComponentId] = linkSingle(single,state.linkStore[state.chooseItem.index].res)
+        console.log('single: ', single)
+        props.formData[single.orgComponentId] = linkSingle(single,state.linkStore[state.chooseItem.index].res).val
       }
     }
 
@@ -301,7 +305,12 @@ function watchLink ({ props,state }) {
         const tabLink = arr[index]
         let aaa =  _.map(tabVal,item=>{
           let obj = {}
-          obj[tabLink.orgComponentId] = linkSingle(tabLink,item)
+          if(tabLink.relationCur) {
+            tabLink.relationFuncId =  linkSingle(tabLink,item).func
+          } else {
+            obj[tabLink.orgComponentId] = linkSingle(tabLink,item).val + ''
+            console.log('obj: ', obj)
+          }
           return { ...obj }
         })
         formArr = _.merge(aaa,formArr)
@@ -311,23 +320,31 @@ function watchLink ({ props,state }) {
   }
 
   function linkSingle (single,res) {
-    let val
+    let val,func
     if(single.relationFuncId) {
       // 关联类型，函数
       // 根据{} 拆解因子，拆成一个数组
       let array = single.relationFuncId.match(/[^{]+(?=\})/g) 
-      //   console.log('array: ', array)
       // 动态监听每个因子的变化
       let formula = single.relationFuncId
+      let isNum = true
       for (const formVal of array) {
         // 将因子式中的ID 替换成数组中对应的值，没有就取 0
         // 类似于 {id1}*{id2} => 12*3
         // let num = evaluate(formVal, curForm)
-        let num = res[formVal] || ''
-        formula = formula.replace(`{${formVal}}`, isNaN(num) || num === '' ? 0 : evaluate(formVal,res))
+        let num = res[formVal] 
+        if(!num) {
+          isNum = false
+          continue
+        }
+        formula = formula.replace(`{${formVal}}`, isNaN(num) ? 0 : num)
       }
       // 根据函数算出值
-      val = evaluate(formula)
+      if(!isNum) {
+        func = formula
+      }else{
+        val = evaluate(formula)
+      }
     } else if(single.relationType === '0') {
       // 关联类型，相等
       val = res[single.relationCompo]
@@ -344,7 +361,7 @@ function watchLink ({ props,state }) {
         break
       }
     } 
-    return val
+    return { val,func }
   }
 
   return {
@@ -356,4 +373,9 @@ function watchLink ({ props,state }) {
 <style lang="less" scoped>
 @import url('../../style/obg2form.less');
 
+.title-link {
+  margin-bottom: 14px;
+  font-size: 16px;
+  font-weight: bold;
+}
 </style>

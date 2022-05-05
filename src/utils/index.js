@@ -358,7 +358,7 @@ export function  trsfromData (data, chidlren) {
 }
 
 // 判断关联模板内容是否正确
-export function checkRelationSet (data) {
+export function checkRelationSet (data, curCompos) {
   let funcFalse = false
   let res = []
   for (let index = 0; index < data.length; index++) {
@@ -377,7 +377,11 @@ export function checkRelationSet (data) {
       }
       let relationFuncId = item.relationFunc
       for (const name of array) {
-        let obj =  _.find(item.relationCompos,['name',name])
+        let obj =  _.find(item.relationCompos,['name',name]) 
+        if(!obj) {
+          item.relationCur = true
+          obj = _.find(curCompos,['name',name])
+        }
         if(!obj) {
           funcFalse = true
           data[index].relationFunc = ''
