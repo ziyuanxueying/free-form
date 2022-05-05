@@ -374,8 +374,10 @@ export default {
     function watchFuncChange (relation) { 
       let itemIndex = relation.relationCur ? props.itemIndex === -1 ? '' : props.itemIndex  : ''
       relation = relation.relationCur ? _.find(store.getRelComponents,['orgComponentId',relation.orgComponentId]) : relation
+      if(!relation[`relationFuncId${itemIndex}`]) { return }
       // 根据{} 拆解因子，拆成一个数组
       let array = relation[`relationFuncId${itemIndex}`].match(/[^{]+(?=\})/g) 
+      console.log('array: ', array)
       // 动态监听每个因子的变化
       for (let i = 0; i < array.length; i++) {
         console.log('props.formData[array[i]]: ', props.formData, [array[i]])
@@ -397,9 +399,11 @@ export default {
             formula = formula.replace(`{${formVal}}`, isNaN(num) ? 0 : num)
             console.log('formula: ', formula)
           }
+          //   let empty =  formula.match(/[^{]+(?=\})/g) 
+          //   console.log('empty: ', empty)
           // 根据函数算出值
           //   isNum && (props.formData[props.id] = evaluate(formula))
-          props.formData[props.id] = isNum ? evaluate(formula) : 0
+          props.formData[props.id] = props.formData[props.id] ? props.formData[props.id] : isNum ? evaluate(formula) : 0
         }, { immediate:true })
       }
     }
