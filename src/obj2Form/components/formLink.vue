@@ -282,7 +282,6 @@ function watchLink ({ props,state }) {
     })
     if(singles) {
       for (const single of singles) {
-        console.log('single: ', single)
         props.formData[single.orgComponentId] = linkSingle(single,state.linkStore[state.chooseItem.index].res).val
       }
     }
@@ -308,8 +307,7 @@ function watchLink ({ props,state }) {
           if(tabLink.relationCur) {
             tabLink.relationFuncId =  linkSingle(tabLink,item).func
           } else {
-            obj[tabLink.orgComponentId] = linkSingle(tabLink,item).val + ''
-            console.log('obj: ', obj)
+            obj[tabLink.orgComponentId] = linkSingle(tabLink,item).val
           }
           return { ...obj }
         })
@@ -358,6 +356,7 @@ function watchLink ({ props,state }) {
         val = add(..._(res[single.relationTypePath[0]]).map(item=>{
           return item[single.relationTypePath[1]]
         }).compact().value(),0)
+        
         break
       }
     } 

@@ -10,8 +10,7 @@
     :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:20,lg:span?span:4}"
     :wrapper-col-props="['NxGrid','NxTable','NxOAInfo'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
-    {{ item.relation?.relationFunc }}
-    <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="ifDisabled?'':item.configList.placeholder"/>
+    <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="disabledItemHandler(item)?'':item.configList.placeholder"/>
     <n-upload
       v-if="item.type=='NxUpload'"
       :default-files="deafultList"
@@ -293,12 +292,12 @@ export default {
     
     const disabledItemHandler = (item)=>{
       // 有opType取opType，没有的话增加默认值:编辑和复制时默认读写，其他默认只读
-      item.opType =  item.opType ? item.opType : ['copy','edit'].includes(route.query.type) ? 1 : 0
+      item.opType =  item.opType !== undefined ? item.opType : ['copy','edit'].includes(route.query.type) ? 1 : 0
       // ifDisabled父级及以上被禁用 pathSetObj根据公式配置  configList表单设计的是否禁用选项 opType操作设置的配置为0时是只读选项
       return props.ifDisabled || (props.pathSetObj[props.id]?.disabled ? config.disabled : (item.configList.disabled || false)) || item.opType === 0
     }
     function isRequired () {
-      if(props.hidden) {
+      if(props.hidden || props.item.opType === 2) {
         return false
       }
       return props.ifRequired || (props.pathSetObj[props.id]?.required ? config.required : (props.item.configList.required || false))
@@ -310,6 +309,9 @@ export default {
         if(val !== JSON.stringify(config.deafultList)) {
           config.deafultList = JSON.parse(val)
         }
+      }
+      if(props.item.type === 'NxInputNum')  { 
+        props.formData[props.id] = Number(props.formData[props.id])
       }
       if(props.pathSetObj[props.id]) {
         let actArr = ['disabled','hide','required']
