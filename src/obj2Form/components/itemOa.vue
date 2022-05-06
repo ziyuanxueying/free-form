@@ -1,6 +1,7 @@
 <template>
   <div style="flex: 1;">
     <a-select
+      multiple
       v-if="item.type=='NxStaff'"
       v-model="formData[id]"
       :placeholder="ifDisabled?'':item.configList.placeholder"
