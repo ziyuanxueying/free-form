@@ -377,10 +377,8 @@ export default {
       if(!relation[`relationFuncId${itemIndex}`]) { return }
       // 根据{} 拆解因子，拆成一个数组
       let array = relation[`relationFuncId${itemIndex}`].match(/[^{]+(?=\})/g) 
-      console.log('array: ', array)
       // 动态监听每个因子的变化
       for (let i = 0; i < array.length; i++) {
-        console.log('props.formData[array[i]]: ', props.formData, [array[i]])
         // if(!props.formData[array[i]]) return
         watch(()=>props.formData[array[i]],()=>{
           let formula = relation[`relationFuncId${itemIndex}`]
@@ -460,8 +458,6 @@ export default {
 </script>
 <style lang="less" scoped>
 .card-view {
-  //   margin: 10px 0;
-
   .card-item {
     margin: 10px 0;
     border: 1px solid #eee;

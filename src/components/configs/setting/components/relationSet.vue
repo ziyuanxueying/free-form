@@ -4,7 +4,7 @@
     :onBeforeOk="onBeforeOk"
     @cancel="handleCancel"
     title-align="start"
-    width="800px"
+    width="1000px"
   >
     <template #title>
       关联模板设置
@@ -56,7 +56,7 @@
               <div v-if="column.dataIndex === 'relationTem'">
                 <a-select
                   v-model="record.relationTem"
-                  :style="{width:'150px',height:'44px'}"
+                  :style="{width:'270px',height:'44px'}"
                   placeholder="请选择"
                   @change="typeChange($event,rowIndex,'relationTem')"
                   allow-clear
@@ -77,13 +77,12 @@
               <div v-if="column.dataIndex === 'relationCompo'">
                 <a-select
                   v-model="record.relationCompo"
-                  :style="{width:'150px'}"
+                  :style="{width:'230px'}"
                   placeholder="请选择"
                   @change="typeChange($event,rowIndex,'relationCompo')"
                   :bordered="false"
                   allow-clear
                 >
-                  <!-- :bordered="false" -->
                   <a-option
                     v-for="item in record.relationCompos"
                     :key="item.fileId"
@@ -155,9 +154,9 @@ export default defineComponent({
       linkModel:false,
       columns : [
         { title: '原组件', dataIndex: 'orgComponent',width:140 },
-        { title: '关联模板', dataIndex: 'relationTem',width:160 },
-        { title: '关联组件', dataIndex: 'relationCompo',width:150  },
         { title: '关联类型', dataIndex: 'relationType',width:100 },
+        { title: '关联模板', dataIndex: 'relationTem',width:250 },
+        { title: '关联组件', dataIndex: 'relationCompo',width:230  },
         { title: '关联函数', dataIndex: 'relationFunc',width:200 },
       ],
       data:[],
@@ -291,9 +290,18 @@ export default defineComponent({
   }
 }
 
+:deep(.arco-select-option-content) {
+  padding: 6px 2px;
+  white-space: normal;
+  line-height: 20px;
+}
+
+:deep(.arco-select-view-value) {
+  white-space: normal;
+  line-height: 16px !important;
+}
+
 .org-view {
-  //   margin: px 0;
-  //   width: 142px;
   height: 44px;
   background-color: var(--color-neutral-2);
 }
