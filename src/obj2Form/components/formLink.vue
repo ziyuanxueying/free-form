@@ -298,22 +298,29 @@ function watchLink ({ props,state }) {
       let arr = _(complexs).filter(item=>{
         return item.nodePathArray[0] === tab
       }).value()
-      let layout =  _.find(arr[0].relationCompos,['fileId',arr[0].relationCompo])
+      let layout
+      if(arr[0].relationCur) {
+        let factors =  _.filter(arr[0].relationFuncId.match(/[^{]+(?=\})/g) ,(item)=>{
+          return _.find(arr[0].relationCompos,['fileId',item])
+        })
+        layout = _.find(arr[0].relationCompos,['fileId',factors[0]])
+      } else {
+        layout =  _.find(arr[0].relationCompos,['fileId',arr[0].relationFuncId.match(/[^{]+(?=\})/g)[0]])
+      }
       let tabVal = state.linkStore[state.chooseItem.index].res[layout?.nodePath[0]]
       let formArr = []
       for (let index = 0; index < arr.length; index++) {
         const tabLink = arr[index]
-        let aaa =  _.map(tabVal,(item,i)=>{
+        let tabFunc =  _.map(tabVal,(item,i)=>{
           let obj = {}
           if(tabLink.relationCur) {
             tabLink[`relationFuncId${i}`] = linkSingle(tabLink,item).func
-            // if(i === tabVal.length - 1) { tabLink.relationFuncId = tabLink.relationFuncId0 }
           } else {
             obj[tabLink.orgComponentId] = linkSingle(tabLink,item).val
           }
           return { ...obj }
         })
-        formArr = _.merge(aaa,formArr)
+        formArr = _.merge(tabFunc,formArr)
       }
       props.formData[tab] = formArr
     }

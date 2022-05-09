@@ -6,12 +6,12 @@
       v-for="(item,index) in form[fileId]"
       :key="index"
     >
-      <a-input
+      <a-input-number
         :placeholder="placeholderLeft||'请输入key'"
         allow-clear
         v-model="item.key"
       />
-      <a-input
+      <a-input-number
         :placeholder="placeholderRight||'请输入value'"
         allow-clear
         v-model="item.value"

@@ -52,6 +52,24 @@
                   {{ record.orgComponent }}
                 </span>
               </div>
+              <!-- 关联类型 -->
+              <div v-if="column.dataIndex === 'relationType'">
+                <a-select
+                  v-model="data[rowIndex].relationType"
+                  :style="{width:'100px'}"
+                  placeholder="请选择"
+                  @change="typeChange($event,rowIndex,'relationType')"
+                  allow-clear
+                  :bordered="false"
+                >
+                  <a-option value="0">
+                    相等
+                  </a-option>
+                  <a-option value="1">
+                    统计
+                  </a-option>
+                </a-select>
+              </div>
               <!-- 关联模板 -->
               <div v-if="column.dataIndex === 'relationTem'">
                 <a-select
@@ -79,6 +97,7 @@
                   v-model="record.relationCompo"
                   :style="{width:'230px'}"
                   placeholder="请选择"
+                  :disabled="Boolean(record.relationFunc)"
                   @change="typeChange($event,rowIndex,'relationCompo')"
                   :bordered="false"
                   allow-clear
@@ -91,31 +110,12 @@
                   />
                 </a-select>
               </div>
-              <!-- 关联类型 -->
-              <div v-if="column.dataIndex === 'relationType'">
-                <a-select
-                  v-model="data[rowIndex].relationType"
-                  :disabled="!record.relationCompo||Boolean(record.relationFunc)"
-                  :style="{width:'100px'}"
-                  placeholder="请选择"
-                  @change="typeChange($event,rowIndex,'relationType')"
-                  allow-clear
-                  :bordered="false"
-                >
-                  <a-option value="0">
-                    相等
-                  </a-option>
-                  <a-option value="1">
-                    统计
-                  </a-option>
-                </a-select>
-              </div>
 
               <!-- 关联函数 -->
               <div v-if="column.dataIndex === 'relationFunc'">
                 <a-input
                   v-model="data[rowIndex].relationFunc"
-                  :disabled="!record.relationCompo||Boolean(record.relationType)"
+                  :disabled="Boolean(record.relationCompo)||record.relationType==='1'"
                   :style="{width:'190px'}"
                   placeholder="请输入"
                   allow-clear
@@ -201,14 +201,16 @@ export default defineComponent({
 
     async function typeChange (val,index,param) {
       state.data[index][param] = val === '' ? undefined : val
+      console.log('state.data: ', state.data)
       if(param === 'relationTem') {
         state.data[index].relationCompos = val === 0 ? state.curCompos : await API.componentList(val)
         state.data[index].relationCompo = ''
-        state.data[index].relationType = ''
         state.data[index].relationFunc = ''
       }
       if(param === 'relationCompo') {
-        state.data[index].relationType = val ? '0' : ''
+        state.data[index].relationFunc = ''
+      }
+      if(param === 'relationType' && val === '1') {
         state.data[index].relationFunc = ''
       }
     }
