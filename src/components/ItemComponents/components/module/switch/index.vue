@@ -2,6 +2,7 @@
   <a-form-item
     :field="fileId"
     :label="label"
+    :hideLabel="hideLabel"
     :required="required"
     :disabled="disabled"
   >
@@ -33,6 +34,7 @@ export default {
     disabled:{
       type: Boolean,
     },
+    hideLabel:{ type: Boolean, },
     form:{
       type:Object,
       default () {

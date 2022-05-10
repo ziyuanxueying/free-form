@@ -305,7 +305,11 @@ function watchLink ({ props,state }) {
         })
         layout = _.find(arr[0].relationCompos,['fileId',factors[0]])
       } else {
-        layout =  _.find(arr[0].relationCompos,['fileId',arr[0].relationFuncId.match(/[^{]+(?=\})/g)[0]])
+        if(arr[0].relationFuncId) {
+          layout =  _.find(arr[0].relationCompos,['fileId',arr[0].relationFuncId.match(/[^{]+(?=\})/g)[0]])
+        } else if(arr[0].relationCompo) {
+          layout = _.find(arr[0].relationCompos,['fileId',arr[0].relationCompo])
+        }
       }
       let tabVal = state.linkStore[state.chooseItem.index].res[layout?.nodePath[0]]
       let formArr = []

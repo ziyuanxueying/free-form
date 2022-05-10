@@ -193,14 +193,14 @@
               :pathSetObj="pathSetObj"
               :ifRequired="isRequired()"
               :hidden="hide"
-              :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+              :ifDisabled="disabledItemHandler(item)||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
               :id="ccitem.configList.fileId||ccitem.componentId"
               :formRef="formRef"
               :field="id.indexOf('NxGrid') === -1 ?`${item.configList.layout.fileId}.${dindex}.`:`${item.configList.layout.fileId}.${dindex}.${ccitem.configList.fileId||ccitem.componentId}`"
             />
           </div>
           <a-button
-            v-if="!ifDisabled"
+            v-if="!disabledItemHandler(item)"
             :style="!dindex&&'visibility:hidden'"
             class="card-del"
             type="outline"
@@ -213,12 +213,12 @@
         </div>
       </div>
       <a-button
-        v-if="item.configList.layout.ifAdd && !ifDisabled"
+        v-if="item.configList.layout.ifAdd && !disabledItemHandler(item)"
         class="add-btn"
         type="outline"
         @click="cardAdd"
       >
-        添加
+        添加 
       </a-button>
     </div>
     <template v-else>
@@ -232,7 +232,7 @@
           :pathSetObj="pathSetObj"
           :ifRequired="isRequired()"
           :hidden="hide"
-          :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+          :ifDisabled="disabledItemHandler(item)||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
           :id="ccitem.configList.fileId||ccitem.componentId"
           :formRef="formRef"
         />
@@ -458,6 +458,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .card-view {
+  margin-bottom: 20px;
+
   .card-item {
     margin: 10px 0;
     border: 1px solid #eee;
