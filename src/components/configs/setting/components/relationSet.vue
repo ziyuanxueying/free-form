@@ -115,7 +115,7 @@
               <div v-if="column.dataIndex === 'relationFunc'">
                 <a-input
                   v-model="data[rowIndex].relationFunc"
-                  :disabled="Boolean(record.relationCompo)||record.relationType==='1'"
+                  :disabled="Boolean(record.relationCompo)||record.relationType!=='0'"
                   :style="{width:'190px'}"
                   placeholder="请输入"
                   allow-clear
@@ -201,7 +201,6 @@ export default defineComponent({
 
     async function typeChange (val,index,param) {
       state.data[index][param] = val === '' ? undefined : val
-      console.log('state.data: ', state.data)
       if(param === 'relationTem') {
         state.data[index].relationCompos = val === 0 ? state.curCompos : await API.componentList(val)
         state.data[index].relationCompo = ''
