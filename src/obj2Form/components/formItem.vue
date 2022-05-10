@@ -193,14 +193,14 @@
               :pathSetObj="pathSetObj"
               :ifRequired="isRequired()"
               :hidden="hide"
-              :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+              :ifDisabled="disabledItemHandler(item)||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
               :id="ccitem.configList.fileId||ccitem.componentId"
               :formRef="formRef"
               :field="id.indexOf('NxGrid') === -1 ?`${item.configList.layout.fileId}.${dindex}.`:`${item.configList.layout.fileId}.${dindex}.${ccitem.configList.fileId||ccitem.componentId}`"
             />
           </div>
           <a-button
-            v-if="!ifDisabled"
+            v-if="!disabledItemHandler(item)"
             :style="!dindex&&'visibility:hidden'"
             class="card-del"
             type="outline"
@@ -213,12 +213,12 @@
         </div>
       </div>
       <a-button
-        v-if="item.configList.layout.ifAdd && !ifDisabled"
+        v-if="item.configList.layout.ifAdd && !disabledItemHandler(item)"
         class="add-btn"
         type="outline"
         @click="cardAdd"
       >
-        添加
+        添加 
       </a-button>
     </div>
     <template v-else>
@@ -232,7 +232,7 @@
           :pathSetObj="pathSetObj"
           :ifRequired="isRequired()"
           :hidden="hide"
-          :ifDisabled="ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
+          :ifDisabled="disabledItemHandler(item)||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false))"
           :id="ccitem.configList.fileId||ccitem.componentId"
           :formRef="formRef"
         />
@@ -377,10 +377,8 @@ export default {
       if(!relation[`relationFuncId${itemIndex}`]) { return }
       // 根据{} 拆解因子，拆成一个数组
       let array = relation[`relationFuncId${itemIndex}`].match(/[^{]+(?=\})/g) 
-      console.log('array: ', array)
       // 动态监听每个因子的变化
       for (let i = 0; i < array.length; i++) {
-        console.log('props.formData[array[i]]: ', props.formData, [array[i]])
         // if(!props.formData[array[i]]) return
         watch(()=>props.formData[array[i]],()=>{
           let formula = relation[`relationFuncId${itemIndex}`]
@@ -460,7 +458,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .card-view {
-  //   margin: 10px 0;
+  margin-bottom: 20px;
 
   .card-item {
     margin: 10px 0;

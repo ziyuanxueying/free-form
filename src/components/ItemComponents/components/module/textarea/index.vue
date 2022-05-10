@@ -2,6 +2,7 @@
   <a-form-item
     :field="proto"
     :label="label"
+    :hideLabel="hideLabel"
     :required="required"
     :disabled="disabled"
   >
