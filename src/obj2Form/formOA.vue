@@ -29,6 +29,7 @@
           :id="item.configList.fileId||item.componentId"
           :ifDisabled="ifDisabled"
           :formRef="formRef"
+          @updateApproveFlow="updateApproveFlow"
         />
       </a-form>
     </div>
@@ -63,7 +64,8 @@ export default {
     ItemOaInfoModal,
     FormLink,
   },
-  setup () {
+  emits:['updateApproveFlow'],
+  setup (props,{ emit }) {
     const config = useFormConfigStore()
     let formStore = {}
     //form相关配置
@@ -198,12 +200,15 @@ export default {
         init()
       }, 0)
     })
-
+    const updateApproveFlow = ()=>{
+      emit('updateApproveFlow')
+    }
     return {
       ...toRefs(formConfig),
       pathSetObj,
       handleOk,
       reset,
+      updateApproveFlow
     }
   },
 }
