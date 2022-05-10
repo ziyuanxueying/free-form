@@ -16,7 +16,7 @@
       :default-files="deafultList"
       v-model:files="formData[id]"
       :limit="item.configList.maxCount"
-      :state="['copy','edit'].includes($route.query.type) ? 'edit' :'detail'"
+      :state="!disabledItemHandler(item) ? 'edit' :'detail'"
       @change="changeFileList(field&&id?`${field}${id}`:field||id)"
       :disabled="disabledItemHandler(item)"
     />
