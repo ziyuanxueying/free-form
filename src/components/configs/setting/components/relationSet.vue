@@ -4,7 +4,7 @@
     :onBeforeOk="onBeforeOk"
     @cancel="handleCancel"
     title-align="start"
-    width="800px"
+    width="1000px"
   >
     <template #title>
       关联模板设置
@@ -52,11 +52,29 @@
                   {{ record.orgComponent }}
                 </span>
               </div>
+              <!-- 关联类型 -->
+              <div v-if="column.dataIndex === 'relationType'">
+                <a-select
+                  v-model="data[rowIndex].relationType"
+                  :style="{width:'100px'}"
+                  placeholder="请选择"
+                  @change="typeChange($event,rowIndex,'relationType')"
+                  allow-clear
+                  :bordered="false"
+                >
+                  <a-option value="0">
+                    相等
+                  </a-option>
+                  <a-option value="1">
+                    统计
+                  </a-option>
+                </a-select>
+              </div>
               <!-- 关联模板 -->
               <div v-if="column.dataIndex === 'relationTem'">
                 <a-select
                   v-model="record.relationTem"
-                  :style="{width:'150px',height:'44px'}"
+                  :style="{width:'270px',height:'44px'}"
                   placeholder="请选择"
                   @change="typeChange($event,rowIndex,'relationTem')"
                   allow-clear
@@ -77,13 +95,13 @@
               <div v-if="column.dataIndex === 'relationCompo'">
                 <a-select
                   v-model="record.relationCompo"
-                  :style="{width:'150px'}"
+                  :style="{width:'230px'}"
                   placeholder="请选择"
+                  :disabled="Boolean(record.relationFunc)"
                   @change="typeChange($event,rowIndex,'relationCompo')"
                   :bordered="false"
                   allow-clear
                 >
-                  <!-- :bordered="false" -->
                   <a-option
                     v-for="item in record.relationCompos"
                     :key="item.fileId"
@@ -92,31 +110,12 @@
                   />
                 </a-select>
               </div>
-              <!-- 关联类型 -->
-              <div v-if="column.dataIndex === 'relationType'">
-                <a-select
-                  v-model="data[rowIndex].relationType"
-                  :disabled="!record.relationCompo||Boolean(record.relationFunc)"
-                  :style="{width:'100px'}"
-                  placeholder="请选择"
-                  @change="typeChange($event,rowIndex,'relationType')"
-                  allow-clear
-                  :bordered="false"
-                >
-                  <a-option value="0">
-                    相等
-                  </a-option>
-                  <a-option value="1">
-                    统计
-                  </a-option>
-                </a-select>
-              </div>
 
               <!-- 关联函数 -->
               <div v-if="column.dataIndex === 'relationFunc'">
                 <a-input
                   v-model="data[rowIndex].relationFunc"
-                  :disabled="!record.relationCompo||Boolean(record.relationType)"
+                  :disabled="Boolean(record.relationCompo)||record.relationType!=='0'"
                   :style="{width:'190px'}"
                   placeholder="请输入"
                   allow-clear
@@ -155,9 +154,9 @@ export default defineComponent({
       linkModel:false,
       columns : [
         { title: '原组件', dataIndex: 'orgComponent',width:140 },
-        { title: '关联模板', dataIndex: 'relationTem',width:160 },
-        { title: '关联组件', dataIndex: 'relationCompo',width:150  },
         { title: '关联类型', dataIndex: 'relationType',width:100 },
+        { title: '关联模板', dataIndex: 'relationTem',width:250 },
+        { title: '关联组件', dataIndex: 'relationCompo',width:230  },
         { title: '关联函数', dataIndex: 'relationFunc',width:200 },
       ],
       data:[],
@@ -205,11 +204,12 @@ export default defineComponent({
       if(param === 'relationTem') {
         state.data[index].relationCompos = val === 0 ? state.curCompos : await API.componentList(val)
         state.data[index].relationCompo = ''
-        state.data[index].relationType = ''
         state.data[index].relationFunc = ''
       }
       if(param === 'relationCompo') {
-        state.data[index].relationType = val ? '0' : ''
+        state.data[index].relationFunc = ''
+      }
+      if(param === 'relationType' && val === '1') {
         state.data[index].relationFunc = ''
       }
     }
@@ -291,9 +291,18 @@ export default defineComponent({
   }
 }
 
+:deep(.arco-select-option-content) {
+  padding: 6px 2px;
+  white-space: normal;
+  line-height: 20px;
+}
+
+:deep(.arco-select-view-value) {
+  white-space: normal;
+  line-height: 16px !important;
+}
+
 .org-view {
-  //   margin: px 0;
-  //   width: 142px;
   height: 44px;
   background-color: var(--color-neutral-2);
 }

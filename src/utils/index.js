@@ -161,9 +161,10 @@ export function checkId (formItemList,arr = []) {
   formItemList.forEach(item=>{
     let configList = item.configList
     if(!configList.layout) {
+      if(item.type  === 'NxText') return
       arr.push({ fileId:configList.fileId, label: configList.label })
-    }else{
-      arr.push({ fileId:configList.layout.fileId, label: configList.layout.label })
+    } else {
+      arr.push({ fileId:configList.layout.fileId })
       configList.layout.colContent.forEach(citem=>{
         checkId(citem,arr)
       })
@@ -178,7 +179,7 @@ export function checkOnly (formItemList,arr = []) {
     Message.warning('存在重复的字段标识，请修改后提交')
     return false
   }
-  if (_(checks.label).uniq().compact().value().length !== checks.label.length) {
+  if (_(checks.label).uniq().compact().value().length !== _.compact(checks.label).length) {
     Message.warning('组件标签名称存在为空/重复')
     return false
   } 
@@ -364,10 +365,11 @@ export function checkRelationSet (data, curCompos) {
   for (let index = 0; index < data.length; index++) {
     const item = data[index]
     if(!item.relationTem && item.relationTem !== 0) { continue }
-    if(!_.find(item.relationCompos,['fileId',item.relationCompo])) {
-      funcFalse = true 
-      break
-    }
+    console.log('_.find: ', _.find(item.relationCompos,['fileId',item.relationCompo]))
+    // if(!_.find(item.relationCompos,['fileId',item.relationCompo])) {
+    //   funcFalse = true 
+    //   break
+    // }
     if(item.relationFunc) {
       // 匹配出{}中的内容并行程一个数组
       let array = item.relationFunc.match(/[^{]+(?=\})/g) 
@@ -377,6 +379,7 @@ export function checkRelationSet (data, curCompos) {
       }
       let relationFuncId = item.relationFunc
       for (const name of array) {
+        console.log('item.relationCompos: ', item.relationCompos)
         let obj =  _.find(item.relationCompos,['name',name]) 
         if(!obj) {
           item.relationCur = true
