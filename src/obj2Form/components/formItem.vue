@@ -416,8 +416,7 @@ export default {
         }, { immediate:true })
       }
     }
-    const changeFormItem = (value)=>{
-      console.log(value)
+    const changeFormItem = ()=>{
       //预览下改变表单值，更新一下审批流
       if(route.query.type === 'preview') emit('updateApproveFlow')
     }
