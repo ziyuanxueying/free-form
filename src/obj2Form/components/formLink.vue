@@ -211,7 +211,7 @@ export default {
           emit('update:ifDisabled', true)
           emptyCheck()
         }
-      }, 10)
+      }, 100)
     })
 
     return {

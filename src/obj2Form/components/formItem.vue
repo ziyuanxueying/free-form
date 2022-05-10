@@ -323,7 +323,9 @@ export default {
         }
       }
       if(props.item.type === 'NxInputNum')  { 
-        props.formData[props.id] = Number(props.formData[props.id])
+        if(props.formData[props.id] && typeof props.formData[props.id] !== 'number') {
+          props.formData[props.id] = Number(props.formData[props.id])
+        }
       }
       if(props.pathSetObj[props.id]) {
         let actArr = ['disabled','hide','required']
