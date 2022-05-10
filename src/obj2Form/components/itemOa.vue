@@ -118,6 +118,7 @@ export default defineComponent({
       setTimeout(() => {
         if(!props.formData[props.id]) { handleSearch() } else {
           post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
+            if(!res) return
             state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
           })
           handleSearch()

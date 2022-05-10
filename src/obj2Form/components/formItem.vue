@@ -10,7 +10,11 @@
     :label-col-props="['NxGrid','NxTable'].includes(item.type)?{span:0}:{xs:20,lg:span?span:4}"
     :wrapper-col-props="['NxGrid','NxTable','NxOAInfo'].includes(item.type)?{span:24}:{xs:20,lg:span?(24-span):20}"
   >
-    <a-input v-if="item.type=='NxInput'" v-model="formData[id]" :placeholder="disabledItemHandler(item)?'':item.configList.placeholder"/>
+    <a-input
+      v-if="item.type=='NxInput'"
+      v-model="formData[id]"
+      :placeholder="disabledItemHandler(item)?'':item.configList.placeholder"
+    />
     <n-upload
       v-if="item.type=='NxUpload'"
       :default-files="deafultList"
@@ -35,6 +39,7 @@
       :min="item.configList.min"
       :max="item.configList.max"
       :precision="item.configList.precision" 
+      @change="changeFormItem"
     />
     <a-typography-paragraph v-if="item.type=='NxText'" :style="`width: 100%; text-align:${item.configList.position||'left'};`">
       {{ item.configList.defaultVal }}
@@ -47,6 +52,7 @@
       :format="item.configList.format"
       :showTime="item.configList.showTime"
       :disabled="disabledItemHandler(item)"
+      @change="changeFormItem"
     />
     <a-range-picker
       v-if="item.type=='NxRangePicker'"
@@ -55,6 +61,7 @@
       :placeholder="ifDisabled?' ':''"
       :showTime="item.configList.showTime"
       :disabled="disabledItemHandler(item)"
+      @change="changeFormItem"
     />
     <a-switch v-if="item.type=='NxSwitch'" v-model="formData[id]"/>
     <a-select
@@ -62,13 +69,14 @@
       v-model="formData[id]"
       :placeholder="ifDisabled?'':item.configList.placeholder"
       :multiple="item.configList.multiple"
+      @change="changeFormItem"
     >
       <a-option v-for="(citem,index) in proxyOptions[id]" :key="index" :value="citem.key || citem.value">
         {{ citem.value }}
       </a-option>
     </a-select>
     <a-space v-if="item.type=='NxCheckbox'" direction="vertical" size="large">
-      <a-checkbox-group v-model="formData[item.configList.fileId]" :disabled="disabledItemHandler(item)">
+      <a-checkbox-group v-model="formData[item.configList.fileId]" :disabled="disabledItemHandler(item)" @change="changeFormItem">
         <a-checkbox v-for="(citem,index) in proxyOptions[item.configList.fileId]" :key="index" :value="citem.key || citem.value">
           {{ citem.value }}
         </a-checkbox>
@@ -163,6 +171,7 @@
       :proxyOptions="proxyOptions"
       :id="item.configList.fileId||item.componentId"
       :ifDisabled="ifDisabled"
+      @change="changeFormItem"
     />
  
     <ItemOaInfo
@@ -173,6 +182,7 @@
       :proxyOptions="proxyOptions"
       :id="item.configList.fileId||item.componentId"
       :ifDisabled="ifDisabled"
+      @change="changeFormItem"
     />
   </a-form-item>
   <template v-if="item.type=== 'NxCard'&&item.opType!==2">
@@ -253,7 +263,8 @@ import { useFormConfigStore } from '../../store'
 export default {
   components:{ itemOa, NUpload,ItemOaInfo },
   name:'FormItem',
-  setup (props) {
+  emits:['updateApproveFlow'],
+  setup (props,{ emit }) {
     const route = useRoute()
     const store = useFormConfigStore()
     const config = reactive({
@@ -405,7 +416,10 @@ export default {
         }, { immediate:true })
       }
     }
-
+    const changeFormItem = ()=>{
+      //预览下改变表单值，更新一下审批流
+      if(route.query.type === 'preview') emit('updateApproveFlow')
+    }
     return {
       tableData:[{}],
       ...toRefs(config),
@@ -415,7 +429,8 @@ export default {
       changeFileList,
       isRequired,
       showItemHandler,
-      disabledItemHandler
+      disabledItemHandler,
+      changeFormItem
     }
   },
   props:{
