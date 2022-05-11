@@ -216,7 +216,7 @@ export default defineComponent({
 
     function onBeforeOk (done) {
       let { funcFalse,res } = checkRelationSet(state.data,state.curCompos)
-      if(funcFalse) {
+      if(funcFalse || funcFalse === undefined) {
         Message.error('存在信息未匹配，请重新填写')
         done(false)
       } else {
