@@ -365,7 +365,6 @@ export function checkRelationSet (data, curCompos) {
   for (let index = 0; index < data.length; index++) {
     const item = data[index]
     if(!item.relationTem && item.relationTem !== 0) { continue }
-    console.log('_.find: ', _.find(item.relationCompos,['fileId',item.relationCompo]))
     // if(!_.find(item.relationCompos,['fileId',item.relationCompo])) {
     //   funcFalse = true 
     //   break
@@ -379,7 +378,6 @@ export function checkRelationSet (data, curCompos) {
       }
       let relationFuncId = item.relationFunc
       for (const name of array) {
-        console.log('item.relationCompos: ', item.relationCompos)
         let obj =  _.find(item.relationCompos,['name',name]) 
         if(!obj) {
           item.relationCur = true
