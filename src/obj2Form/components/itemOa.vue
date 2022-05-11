@@ -39,7 +39,7 @@
 
 <script>
 import { reactive, toRefs, defineComponent } from 'vue'
-import { post } from '../utils/request'
+import{ post } from '@/tools/request'
 import { useRoute } from 'vue-router'
 import _ from 'lodash'
 import ItemOaLink from './itemOaLink.vue'
@@ -82,47 +82,43 @@ export default defineComponent({
     const selectSearch = (value)=>{
       value && (state.choose = [])
       state.staffLoad = true
-      post(`${process.env.VUE_APP_BASE_URL}${state.typeChoose.url}`,{ city: value }).then((res)=>{
+      post(`${state.typeChoose.url}`,{ city: value }).then((res)=>{
         state.staffLoad = false
-        state.list = res.data
-        state.list = [...res.data, ...state.choose]
+        state.list = res
+        state.list = [...res, ...state.choose]
       })
     }
 
     if(['NxOABank','NxOACity'].includes(props.item.type)) {
       setTimeout(() => {
         if(!props.formData[props.id]) { selectSearch() } else {
-          post(`${process.env.VUE_APP_BASE_URL}${state.typeChoose.url}`,{ city: props.formData[props.id] }).then((res)=>{
-            state.choose = res.data
+          post(`${state.typeChoose.url}`,{ city: props.formData[props.id] }).then((res)=>{
+            state.choose = res
           })
           selectSearch()
         }
       }, 0)
     }
-    
-    // 选择员工的接口
-    const handleSearch = (value)=>{
-      value && (state.choose = [])
+    // 选择员工的api
+    const searchStaffApi = ({ userIds,searchKey })=>{
       state.staffLoad = true
-      urlList
-      post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ userIds: value }).then((res)=>{
+      post('/user-api/user/search-compound',{ userIds,searchKey }).then((res)=>{
         state.staffLoad = false
-        state.list = res.data.map(item=>{
+        state.list = res.map(item=>{
           return { value: item.enName, key: item.id }
         })
-        state.list = [...state.list, ...state.choose]
       })
     }
-
+    // 选择员工处理函数
+    const handleSearch = (value)=>{
+      searchStaffApi({ searchKey:value,userIds:props.formData[props.id] })
+    }
+    
+    // 选择员工组件回显名称
     if(props.item.type === 'NxStaff') {
       setTimeout(() => {
-        if(!props.formData[props.id]) { handleSearch() } else {
-          post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ userIds : props.formData[props.id] }).then((res)=>{
-            if(!res) return
-            state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
-          })
-          handleSearch()
-        }
+        const userIds = props.formData[props.id] || []
+        searchStaffApi({ userIds })
       }, 0)
     }
 
@@ -138,6 +134,7 @@ export default defineComponent({
       handleSearch,
       changeApply,
       changeData,
+      searchStaffApi
     }
   },
   mounted () {
