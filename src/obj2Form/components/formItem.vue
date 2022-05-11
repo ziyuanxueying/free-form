@@ -20,7 +20,7 @@
       :default-files="deafultList"
       v-model:files="formData[id]"
       :limit="item.configList.maxCount"
-      :state="['copy','edit'].includes($route.query.type) ? 'edit' :'detail'"
+      :state="!disabledItemHandler(item) ? 'edit' :'detail'"
       @change="changeFileList(field&&id?`${field}${id}`:field||id)"
       :disabled="disabledItemHandler(item)"
     />
@@ -323,7 +323,9 @@ export default {
         }
       }
       if(props.item.type === 'NxInputNum')  { 
-        props.formData[props.id] = Number(props.formData[props.id])
+        if(props.formData[props.id] && typeof props.formData[props.id] !== 'number') {
+          props.formData[props.id] = Number(props.formData[props.id])
+        }
       }
       if(props.pathSetObj[props.id]) {
         let actArr = ['disabled','hide','required']
