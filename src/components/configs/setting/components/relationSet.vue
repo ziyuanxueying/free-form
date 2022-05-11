@@ -115,7 +115,7 @@
               <div v-if="column.dataIndex === 'relationFunc'">
                 <a-input
                   v-model="data[rowIndex].relationFunc"
-                  :disabled="Boolean(record.relationCompo)||record.relationType!=='0'"
+                  :disabled="funcDisabled(data[rowIndex])"
                   :style="{width:'190px'}"
                   placeholder="请输入"
                   allow-clear
@@ -164,11 +164,16 @@ export default defineComponent({
       typeDisables:[],
       funcDisables:[],
       tabLoading: false
-    //   data:Array as Array<components[]>:[],
     })
-    // const tabData = ref<Components[]>([])
-    const formConfig  = useFormConfigStore()
 
+    function funcDisabled (record) {
+      console.log('record: ', record)
+      if(record.relationTem || record.relationTem === 0) {
+        return  record.relationCompo || record.relationType !== '0'
+      }
+      return true
+    }
+    const formConfig  = useFormConfigStore()
     async function temInit () {
       state.temList = _.remove(await API.selectListFlat(),  (n)=> {
         return n.id !== Number(route.query.temId) 
@@ -247,6 +252,7 @@ export default defineComponent({
       handleCancel,
       formConfig,
       typeChange,
+      funcDisabled,
     }
   },
 })
