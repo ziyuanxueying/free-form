@@ -105,7 +105,7 @@ export default defineComponent({
       value && (state.choose = [])
       state.staffLoad = true
       urlList
-      post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: value }).then((res)=>{
+      post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ userIds: value }).then((res)=>{
         state.staffLoad = false
         state.list = res.data.map(item=>{
           return { value: item.enName, key: item.id }
@@ -117,7 +117,7 @@ export default defineComponent({
     if(props.item.type === 'NxStaff') {
       setTimeout(() => {
         if(!props.formData[props.id]) { handleSearch() } else {
-          post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ searchKey: props.formData[props.id] }).then((res)=>{
+          post(`${process.env.VUE_APP_BASE_URL}/user-api/user/search-compound`,{ userIds : props.formData[props.id] }).then((res)=>{
             if(!res) return
             state.choose = [{ value: res.data[0].enName, key: res.data[0].id }]
           })
