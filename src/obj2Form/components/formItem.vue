@@ -106,6 +106,7 @@
           :field="field"
           :hidden="hide"
           :span="Array.isArray(item.configList.layout.colCount)? (24/item.configList.layout.colCount[cindex].key)*4:item.configList.layout.colCount*4"  
+          @updateApproveFlow="changeFormItem"  
         />
       </a-col>
     </a-row>
@@ -206,6 +207,7 @@
               :id="ccitem.configList.fileId||ccitem.componentId"
               :formRef="formRef"
               :field="id.indexOf('NxGrid') === -1 ?`${item.configList.layout.fileId}.${dindex}.`:`${item.configList.layout.fileId}.${dindex}.${ccitem.configList.fileId||ccitem.componentId}`"
+              @updateApproveFlow="changeFormItem"
             />
           </div>
           <a-button
