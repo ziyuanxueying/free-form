@@ -11,6 +11,7 @@
       :loading="staffLoad"
       :disabled="ifDisabled"
       :show-extra-options="false"
+      @change="changeFormItem"
     >
       <a-option v-for="citem in list" :key="citem.key" :value="citem.key">
         {{ citem.value }}
@@ -21,13 +22,24 @@
       v-model="formData[id]"
       :placeholder="ifDisabled?'':item.configList.placeholder"
       :allow-search="true"
+      @change="changeFormItem"
     >
       <a-option v-for="(citem,index) in list" :key="index" :value="citem.value">
         {{ citem.value }}
       </a-option>
     </a-select>
-    <a-input v-if="item.type=='NxOAName'" v-model="formData[id]" disabled/>
-    <a-input v-if="item.type=='NxOADepart'" v-model="formData[id]" disabled/>
+    <a-input
+      v-if="item.type=='NxOAName'"
+      v-model="formData[id]"
+      @change="changeFormItem"
+      disabled
+    />
+    <a-input
+      v-if="item.type=='NxOADepart'"
+      @change="changeFormItem"
+      v-model="formData[id]"
+      disabled
+    />
     <ItemOaLink
       v-if="item.type=='NxOALinkForm'"
       :data="formData[id]"
@@ -59,7 +71,8 @@ export default defineComponent({
     ifDisabled:{ type:Boolean, default:()=>false },
     id:{ type: null, }
   },
-  setup (props) { 
+  emits:['changeFormItem'],
+  setup (props,{ emit }) { 
     const route = useRoute()
     const state = reactive({ 
       staffLoad:false ,
@@ -113,7 +126,10 @@ export default defineComponent({
     const handleSearch = (value)=>{
       searchStaffApi({ searchKey:value,userIds:props.formData[props.id] })
     }
-    
+    const changeFormItem = ()=>{
+      //预览下改变表单值，更新一下审批流
+      if(route.query.type === 'preview') emit('changeFormItem')
+    }
     // 选择员工组件回显名称
     if(props.item.type === 'NxStaff') {
       setTimeout(() => {
@@ -134,7 +150,8 @@ export default defineComponent({
       handleSearch,
       changeApply,
       changeData,
-      searchStaffApi
+      searchStaffApi,
+      changeFormItem
     }
   },
   mounted () {

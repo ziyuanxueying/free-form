@@ -171,7 +171,7 @@
       :proxyOptions="proxyOptions"
       :id="item.configList.fileId||item.componentId"
       :ifDisabled="ifDisabled"
-      @change="changeFormItem"
+      @changeFormItem="changeFormItem"
     />
  
     <ItemOaInfo
@@ -182,7 +182,6 @@
       :proxyOptions="proxyOptions"
       :id="item.configList.fileId||item.componentId"
       :ifDisabled="ifDisabled"
-      @change="changeFormItem"
     />
   </a-form-item>
   <template v-if="item.type=== 'NxCard'&&item.opType!==2">
