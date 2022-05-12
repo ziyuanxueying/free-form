@@ -178,6 +178,7 @@ export default {
       watchFormChange()
       return emptyCheck()
     }
+
     function emptyCheck () {
       let empty = state.linkStore.find((item)=>{
         return item.res === undefined

@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, defineComponent } from 'vue'
+import { reactive, toRefs, defineComponent,watch } from 'vue'
 import{ post } from '@/tools/request'
 import { useRoute } from 'vue-router'
 import _ from 'lodash'
@@ -115,7 +115,7 @@ export default defineComponent({
     // 选择员工的api
     const searchStaffApi = ({ userIds,searchKey })=>{
       state.staffLoad = true
-      post('/user-api/user/search-compound',{ userIds,searchKey }).then((res)=>{
+      post('/user-api/user/search-compound',{ userIds,searchKey,limitFlag:true }).then((res)=>{
         state.staffLoad = false
         state.list = res.map(item=>{
           return { value: item.enName, key: item.id }
@@ -140,11 +140,40 @@ export default defineComponent({
 
     function changeData (val) {
       props.formData[props.id] = val
-      console.log('val: ', val)
     }
 
     route.query.info && changeApply()
 
+    if(['copy','edit'].includes(route.query.type)) {
+      setTimeout(() => {
+        relationFunc()
+      }, route.query.type === 'edit' ? 0 : 100)
+    }
+    
+    function relationFunc () {
+      if(props.item?.relation?.relationTem === 0) {
+        const relation =  { ...props.item.relation }
+        // 关联其他组件，相等
+        if(relation.relationType === '0') {
+          watch(()=>props.formData[props.item.relation.relationCompo],(val)=>{
+            // 关联本表普通组件
+            props.formData[props.id] = val
+          })
+        }
+      }
+    }
+    if(props.item.type === 'NxStaff') {
+      watch(()=>props.formData[props.id],(val)=>{
+        if(Array.isArray(val)) {
+          searchStaffApi({ userIds:val })
+        }else {
+          searchStaffApi({ userIds:[val] })
+        }
+        // 关联本表普通组件
+        // props.formData[props.id] = val
+      })
+    }
+    
     return {
       ...toRefs(state),
       handleSearch,
