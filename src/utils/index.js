@@ -382,6 +382,8 @@ export function checkRelationSet (data, curCompos) {
         if(!obj) {
           item.relationCur = true
           obj = _.find(curCompos,['name',name])
+        } else {
+          item.relationCur = false
         }
         if(!obj) {
           funcFalse = true
