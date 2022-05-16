@@ -413,7 +413,10 @@ export default {
           //   console.log('empty: ', empty)
           // 根据函数算出值
           //   isNum && (props.formData[props.id] = evaluate(formula))
-          props.formData[props.id] = props.formData[props.id] ? props.formData[props.id] : isNum ? evaluate(formula) : 0
+          if(isNum && evaluate(formula)) {
+            props.formData[props.id] = evaluate(formula)
+          }
+        //   props.formData[props.id] = props.formData[props.id] ? props.formData[props.id] : isNum ? evaluate(formula) : 0
         }, { immediate:true })
       }
     }
