@@ -404,8 +404,6 @@ export default {
             if(!num) {
               isNum = false
               continue
-            } else {
-              isNum = true
             }
             // formula = formula.replace(`{${formVal}}`, isNaN(num) || num === '' ? 0 : evaluate(formVal, props.formData))
             formula = formula.replace(`{${formVal}}`, isNaN(num) ? 0 : num)
