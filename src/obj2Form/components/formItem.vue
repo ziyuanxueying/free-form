@@ -15,7 +15,7 @@
       v-model="formData[id]"
       :placeholder="disabledItemHandler(item)?'':item.configList.placeholder"
     />
-    <n-upload
+    <!-- <n-upload
       v-if="item.type=='NxUpload'"
       :default-files="deafultList"
       v-model:files="formData[id]"
@@ -23,8 +23,16 @@
       :state="!disabledItemHandler(item) ? 'edit' :'detail'"
       @change="changeFileList(field&&id?`${field}${id}`:field||id)"
       :disabled="disabledItemHandler(item)"
+    /> -->
+    <a-upload
+      v-if="item.type=='NxUpload'"
+      action="/"
+      :default-files="deafultList"
+      v-model:files="formData[id]"
+      :limit="item.configList.maxCount"
+      @change="changeFileList(field&&id?`${field}${id}`:field||id)"
+      :disabled="disabledItemHandler(item)"
     />
-    <!-- <a-upload action="/" disabled v-if="item.type=='NxUpload'&&(ifDisabled||(pathSetObj[id]?.disabled?disabled:(item.configList.disabled||false)))"/> -->
     <a-textarea
       v-if="item.type=='NxTextarea'"
       v-model="formData[id]"
