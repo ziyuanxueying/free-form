@@ -44,7 +44,7 @@ export function toFeishu () {
     url = localUrl
   }
   console.log('url: ', url)
-  location.href = url
+//   location.href = url
 }
 
 export function getDateNDayAgo (n) {
