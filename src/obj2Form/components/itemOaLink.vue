@@ -116,7 +116,7 @@
 
 <script>
 import { reactive, toRefs,watch, } from 'vue'
-import { post } from '../utils/request'
+import { post } from './utils/request'
 import _ from 'lodash'
 const applys = [{ key: 1, value:'本人发起' },{ key:2, value:'他人发起' }]
 const searchs = [{ key: 1, value:'表单标题' },{ key:2, value:'发起人' },{ key:3, value:'申请时间' }]

@@ -262,7 +262,7 @@
 <script>
 import { reactive, toRefs, watch } from 'vue-demi'
 import { useRoute } from 'vue-router'
-import{ getForm } from '../utils'
+import{ getForm } from './utils'
 import itemOa from './itemOa.vue'
 import ItemOaInfo from './itemOaInfo.vue'
 // import { NUpload } from '@naxions/nax-common'
