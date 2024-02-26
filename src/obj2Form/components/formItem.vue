@@ -265,12 +265,12 @@ import { useRoute } from 'vue-router'
 import{ getForm } from '../utils'
 import itemOa from './itemOa.vue'
 import ItemOaInfo from './itemOaInfo.vue'
-import { NUpload } from '@naxions/nax-common'
+// import { NUpload } from '@naxions/nax-common'
 import { add,evaluate } from 'mathjs'
 import _ from 'lodash'
 import { useFormConfigStore } from '../../store'
 export default {
-  components:{ itemOa, NUpload,ItemOaInfo },
+  components:{ itemOa,ItemOaInfo },
   name:'FormItem',
   emits:['updateApproveFlow'],
   setup (props,{ emit }) {

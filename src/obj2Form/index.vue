@@ -40,7 +40,7 @@
 <script>
 import { reactive, toRefs ,ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { getForm,getField } from './utils'
+import { getForm,getField } from '../utils'
 import FormItem from './components/formItem.vue'
 import{ post } from './../tools/request'
 import { Message } from '@arco-design/web-vue'

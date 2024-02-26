@@ -16,7 +16,7 @@
     }
   ],
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "[javascript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint" // 格式规范由prettier改为eslint

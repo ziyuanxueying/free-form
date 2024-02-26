@@ -15,7 +15,7 @@
     <span v-else>
       暂未选择关联表单
     </span>
-    <a-modal v-model:visible="linkShow" @ok="handleOk" width="800px">
+    <a-modal :visible="linkShow" @ok="handleOk" width="800px">
       <template #title>
         关联表单
       </template>

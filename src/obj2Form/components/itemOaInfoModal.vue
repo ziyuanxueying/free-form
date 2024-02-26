@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-modal v-model:visible="linkShow" @ok="handleOk" width="820px">
+    <a-modal :visible="linkShow" @ok="handleOk" width="820px">
       <template #title>
         选择信息库数据
       </template>

@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :width="800"
-    v-model:visible="backModal"
+    :visible="backModal"
     title="选择回滚版本"
   >
     <a-table

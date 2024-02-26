@@ -21,7 +21,7 @@
     </a-form-item>
   </a-tooltip>
   <a-modal
-    v-model:visible="linkShow"
+    visible="linkShow"
     @ok="handleOk"
     width="800px"
     @cancel="cancelModal"
